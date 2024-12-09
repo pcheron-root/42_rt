@@ -1,3 +1,5 @@
+// use crate::traits::type_trait::TypeTrait;
+
 pub struct Tuple {
     pub data: [f32; 4],
     pub x: f32,
