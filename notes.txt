@@ -1,0 +1,14 @@
+
+code cov
+
+bencher.dev -> tres actif / tres dispo
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhcGlfa2V5IiwiZXhwIjo2MDI4ODk5MjExLCJpYXQiOjE3MzM5MzE5MTYsImlzcyI6ImJlbmNoZXIuZGV2Iiwic3ViIjoicGFibG8uY2hlcm9uQHByb3Rvbi5tZSIsIm9yZyI6bnVsbH0.Uavi5Y3ueCzqbzBk9KbOuiBaUCLjdFsBVn0XLtCMF7o
+
+There is no heritage in Rust,
+for share functions with your differents classes, you can use traits
+for share attributes, you can use other structure and create a objet of this structure in yours structures
+
+
+-> penser a s'entrainer a conteneuriser son code
+
+Quand on implemente un trait on doit implementer toutes les fonctions du trait

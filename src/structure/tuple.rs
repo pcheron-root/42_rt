@@ -9,13 +9,21 @@ pub struct Tuple {
 }
 
 impl Tuple {
-    pub fn new(data: [f32; 4]) -> Self {
+    pub fn new(x: f32, y: f32, z: f32, w: f32) -> Self {
         Tuple {
-            data,
-            x: data[0],
-            y: data[1],
-            z: data[2],
-            w: data[3],
+            data: [x, y, z, w],
+            x: x,
+            y: y,
+            z: z,
+            w: w,
         }
+    }
+
+    pub fn is_point(&self) -> bool {
+        self.w == 1.0
+    }
+
+    pub fn is_vector(&self) -> bool {
+        self.w == 0.0
     }
 }
