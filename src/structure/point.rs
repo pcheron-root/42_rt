@@ -1,4 +1,5 @@
 use super::tuple::Tuple;
+use super::vector::Vector;
 use std::ops::{Add, Sub};
 
 pub struct Point {
@@ -24,22 +25,55 @@ impl Add for Point {
             self.data.x + other.data.x,
             self.data.y + other.data.y,
             self.data.z + other.data.z,
-            self.data.w + other.data.w,
+            0.0,
         );
 
         Self { data: new_tuple }
     }
 }
 
-impl Sub for Point {
+impl Add<Vector> for Point {
     type Output = Self;
 
-    fn sub(self, other: Self) -> Self::Output {
+    fn add(self, other: Vector) -> Self::Output {
+        let new_tuple = Tuple::new(
+            self.data.x + other.data.x,
+            self.data.y + other.data.y,
+            self.data.z + other.data.z,
+            0.0,
+        );
+
+        Self { data: new_tuple }
+    }
+}
+
+pub trait SubPoint {
+    fn sub(self, other: Self) -> Vector;
+}
+
+impl SubPoint for Point {
+
+    fn sub(self, other: Self) -> Vector {
         let new_tuple = Tuple::new(
             self.data.x - other.data.x,
             self.data.y - other.data.y,
             self.data.z - other.data.z,
-            self.data.w - other.data.w,
+            1.0,
+        );
+
+        Vector { data: new_tuple }
+    }
+}
+
+impl Sub<Vector> for Point {
+    type Output = Self;
+
+    fn sub(self, other: Vector) -> Self::Output {
+        let new_tuple = Tuple::new(
+            self.data.x - other.data.x,
+            self.data.y - other.data.y,
+            self.data.z - other.data.z,
+            0.0,
         );
 
         Self { data: new_tuple }
