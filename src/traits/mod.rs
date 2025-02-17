@@ -1,1 +1,2 @@
-pub mod type_trait;
+pub mod dot;
+pub mod shape;

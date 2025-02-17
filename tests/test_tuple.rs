@@ -1,6 +1,4 @@
 use rt::Tuple;
-// use traits::type_trait::TypeTrait;
-// use rt::TypeTrait;
 
 #[test]
 fn test_create_tuple() {

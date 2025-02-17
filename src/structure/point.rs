@@ -1,6 +1,9 @@
-use super::tuple::Tuple;
-use std::ops::{Add, Sub};
+use crate::Dot;
+use crate::Tuple;
+use crate::Vector;
+use std::ops::{Add, Div, Sub};
 
+#[derive(Debug, Clone, Copy)]
 pub struct Point {
     pub data: Tuple,
 }
@@ -19,29 +22,61 @@ impl Point {
 impl Add for Point {
     type Output = Self;
 
-    fn add(self, other: Self) -> Self::Output {
-        let new_tuple = Tuple::new(
-            self.data.x + other.data.x,
-            self.data.y + other.data.y,
-            self.data.z + other.data.z,
-            self.data.w + other.data.w,
-        );
+    fn add(self, rhs: Self) -> Self::Output {
+        Point::new([
+            self.data.x + rhs.data.x,
+            self.data.y + rhs.data.y,
+            self.data.z + rhs.data.z,
+        ])
+    }
+}
 
-        Self { data: new_tuple }
+impl Add<Vector> for Point {
+    type Output = Point;
+
+    fn add(self, rhs: Vector) -> Self::Output {
+        Point::new([
+            self.data.x + rhs.data.x,
+            self.data.y + rhs.data.y,
+            self.data.z + rhs.data.z,
+        ])
     }
 }
 
 impl Sub for Point {
     type Output = Self;
 
-    fn sub(self, other: Self) -> Self::Output {
-        let new_tuple = Tuple::new(
-            self.data.x - other.data.x,
-            self.data.y - other.data.y,
-            self.data.z - other.data.z,
-            self.data.w - other.data.w,
-        );
+    fn sub(self, rhs: Self) -> Self::Output {
+        Point::new([
+            self.data.x - rhs.data.x,
+            self.data.y - rhs.data.y,
+            self.data.z - rhs.data.z,
+        ])
+    }
+}
 
-        Self { data: new_tuple }
+impl PartialEq for Point {
+    fn eq(&self, rhs: &Self) -> bool {
+        self.data == rhs.data
+    }
+}
+
+impl Div<f32> for Point {
+    type Output = Self;
+
+    fn div(self, rhs: f32) -> Self::Output {
+        Point::new([self.data.x / rhs, self.data.y / rhs, self.data.z / rhs])
+    }
+}
+
+impl Dot<Point> for Point {
+    fn dot(&self, rhs: Point) -> f32 {
+        self.data.x * rhs.data.x + self.data.y * rhs.data.y + self.data.z * rhs.data.z
+    }
+}
+
+impl Dot<Vector> for Point {
+    fn dot(&self, rhs: Vector) -> f32 {
+        self.data.x * rhs.data.x + self.data.y * rhs.data.y + self.data.z * rhs.data.z
     }
 }
