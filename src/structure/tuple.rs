@@ -1,3 +1,5 @@
+use std::ops::{Div, Mul, Neg};
+
 #[derive(Debug, Clone, Copy)]
 pub struct Tuple {
     pub x: f32,
@@ -23,5 +25,44 @@ impl Tuple {
 impl PartialEq for Tuple {
     fn eq(&self, rhs: &Self) -> bool {
         self.x == rhs.x && self.y == rhs.y && self.z == rhs.z && self.w == rhs.w
+    }
+}
+
+impl Neg for Tuple {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        Tuple {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
+            w: -self.w,
+        }
+    }
+}
+
+impl Mul<f32> for Tuple {
+    type Output = Self;
+
+    fn mul(self, scalar: f32) -> Self::Output {
+        Tuple {
+            x: self.x * scalar,
+            y: self.y * scalar,
+            z: self.z * scalar,
+            w: self.w,
+        }
+    }
+}
+
+impl Div<f32> for Tuple {
+    type Output = Self;
+
+    fn div(self, scalar: f32) -> Self::Output {
+        Tuple {
+            x: self.x / scalar,
+            y: self.y / scalar,
+            z: self.z / scalar,
+            w: self.w,
+        }
     }
 }

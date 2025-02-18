@@ -33,13 +33,15 @@ impl Object {
     }
 
     pub fn update_matrices(&mut self) {
-        // let translation = Matrix::translation(self.position.data.x, self.position.y, self.position.z);
-        // let rotation = Matrix::euler_angles(self.pitch, self.yaw, self.roll);
-        // let scaling = Matrix::scaling(self.scale.x, self.scale.y, self.scale.z);
+        let vt = Vector::new([
+            self.position.data.x,
+            self.position.data.y,
+            self.position.data.z,
+        ]);
 
-        let translation = Matrix::identity();
-        let rotation = Matrix::identity();
-        let scaling = Matrix::identity();
+        let translation = Matrix::translation(&vt);
+        let rotation = Matrix::rotation(self.pitch, self.yaw, self.roll);
+        let scaling = Matrix::scaling(&self.scale);
 
         self.local_to_world = translation * rotation * scaling;
         self.world_to_local = self.local_to_world.inverse().unwrap();

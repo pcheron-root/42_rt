@@ -1,7 +1,8 @@
-use crate::Dot;
 use crate::Intersection;
+use crate::Point;
 use crate::Ray;
 use crate::Shape;
+use crate::SubPoint;
 use crate::Vector;
 
 pub struct Sphere {
@@ -16,13 +17,15 @@ impl Sphere {
 
 impl Shape for Sphere {
     fn intersect(&self, ray: &Ray) -> Option<Intersection> {
-        let o = ray.origin;
+        let center = Point::new([0., 0., 0.]);
+
+        let o = ray.origin.sub(center);
         let d = ray.direction;
         let r = self.radius;
 
-        let a = d.dot(d);
-        let b = 2.0 * o.dot(d);
-        let c = o.dot(o) - r * r;
+        let a = d.dot(&d);
+        let b = 2.0 * o.dot(&d);
+        let c = o.dot(&o) - r * r;
 
         let discriminant: f32 = b * b - 4.0 * a * c;
 
@@ -44,8 +47,8 @@ impl Shape for Sphere {
         let t = if t0 < 0.0 { t1 } else { t0 };
 
         // Calculate intersection point and normal
-        let point = o + d * t;
-        let normal = Vector::new([point.data.x / r, point.data.y / r, point.data.z / r]);
+        let point = ray.origin + d * t;
+        let normal = Vector::new([point.data.x, point.data.y, point.data.z]) / r;
 
         Some(Intersection { point, normal, t })
     }

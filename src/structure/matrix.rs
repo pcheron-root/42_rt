@@ -1,5 +1,5 @@
-use crate::{Point, Ray, Vector};
 use crate::constants::EPSILON;
+use crate::{Point, Ray, Vector};
 use std::ops::{Index, IndexMut, Mul, MulAssign};
 
 #[derive(Debug, Clone, Copy)]
@@ -168,61 +168,113 @@ impl Matrix {
     pub fn transpose(&self) -> Matrix {
         Matrix::from_row(self.data)
     }
-}
 
-impl Matrix
-{
-    fn lu_decomposition(&self) -> (Matrix, Matrix, Vec<usize>) {
+    pub fn rotation(pitch: f32, yaw: f32, roll: f32) -> Matrix {
+        Matrix::rotation_z(roll) * Matrix::rotation_y(yaw) * Matrix::rotation_x(pitch)
+    }
+
+    pub fn rotation_x(angle: f32) -> Matrix {
+        let mut r = Matrix::identity();
+
+        r[1][1] = f32::cos(angle);
+        r[1][2] = f32::sin(angle);
+        r[2][1] = -f32::sin(angle);
+        r[2][2] = f32::cos(angle);
+
+        r
+    }
+    pub fn rotation_y(angle: f32) -> Matrix {
+        let mut r = Matrix::identity();
+
+        r[0][0] = f32::cos(angle);
+        r[0][2] = -f32::sin(angle);
+        r[2][0] = f32::sin(angle);
+        r[2][2] = f32::cos(angle);
+
+        r
+    }
+    pub fn rotation_z(angle: f32) -> Matrix {
+        let mut r = Matrix::identity();
+
+        r[0][0] = f32::cos(angle);
+        r[0][1] = f32::sin(angle);
+        r[1][0] = -f32::sin(angle);
+        r[1][1] = f32::cos(angle);
+
+        r
+    }
+
+    pub fn translation(vector: &Vector) -> Matrix {
+        let mut t = Matrix::identity();
+
+        t[3][0] = vector.data.x;
+        t[3][1] = vector.data.y;
+        t[3][2] = vector.data.z;
+
+        t
+    }
+
+    pub fn scaling(vector: &Vector) -> Matrix {
+        let mut s = Matrix::new();
+
+        s[0][0] = vector.data.x;
+        s[1][1] = vector.data.y;
+        s[2][2] = vector.data.z;
+        s[3][3] = 1.;
+
+        s
+    }
+
+    fn lu_decomposition(&self) -> (Matrix, Matrix, Vec<usize>, usize) {
         let mut l = Matrix::new();
         let mut u = self.clone();
-        let n = 4;
-        let mut p: Vec<usize> = (0..n).collect(); // Track permutation order [0,1,2,3]
-    
-        for i in 0..n {
-            // Partial pivoting: find max row in column `i`
+        let mut p: Vec<usize> = (0..4).collect();
+        let mut s = 0;
+
+        for i in 0..4 {
             let mut max_row = i;
-            for row in i..n {
+            for row in i..4 {
                 if u.data[i][row].abs() > u.data[i][max_row].abs() {
                     max_row = row;
                 }
             }
-    
+
             if max_row != i {
-                // Swap rows in U and L
-                for col in 0..n {
+                for col in 0..4 {
                     u.data[col].swap(i, max_row);
                 }
                 for col in 0..i {
                     l.data[col].swap(i, max_row);
                 }
                 p.swap(i, max_row); // Update permutation vector
+                s += 1;
             }
-    
+
             // Compute L and U
             let pivot = u.data[i][i];
-            for row in i..n {
+            for row in i..4 {
                 l.data[i][row] = u.data[i][row] / pivot;
             }
-    
-            for row in (i + 1)..n {
+
+            for row in (i + 1)..4 {
                 let factor = l.data[i][row];
-                for col in i..n {
+                for col in i..4 {
                     u.data[col][row] -= factor * u.data[col][i];
                 }
             }
         }
-    
+
         // Set diagonal of L to 1
-        for i in 0..n {
+        for i in 0..4 {
             l.data[i][i] = 1.0;
         }
-    
-        (l, u, p)
+
+        (l, u, p, s)
     }
 
     // Function to compute the determinant using LU Decomposition
     pub fn determinant(&self) -> f32 {
-        let (_, u, p) = self.lu_decomposition();
+        let (_, u, _, s) = self.lu_decomposition();
         let mut determinant = 1.;
 
         // Product of diagonal elements of U
@@ -231,18 +283,16 @@ impl Matrix
         }
 
         // Adjust for row swaps
-        if p.len() % 2 != 0 {
-            determinant = -determinant;
-        }
+        determinant *= (-1.0f32).powi(s as i32);
 
         determinant
     }
 
     // Function to compute the inverse using LU Decomposition
     pub fn inverse(&self) -> Option<Matrix> {
-        let (l, u, p) = self.lu_decomposition();
+        let (l, u, p, _) = self.lu_decomposition();
         let mut inverse = Matrix::new();
-    
+
         // Check determinant (product of U's diagonal)
         let mut det = 1.0;
         for i in 0..4 {
@@ -251,7 +301,7 @@ impl Matrix
         if det == 0.0 {
             return None;
         }
-    
+
         // Solve for each column of the identity matrix (permuted by p)
         for col in 0..4 {
             // Apply permutation p to the identity column
@@ -262,7 +312,7 @@ impl Matrix
                     break;
                 }
             }
-    
+
             // Forward substitution: solve L * y = b
             let mut y = [0.0; 4];
             for row in 0..4 {
@@ -271,7 +321,7 @@ impl Matrix
                     y[row] -= l.data[k][row] * y[k];
                 }
             }
-    
+
             // Backward substitution: solve U * x = y
             let mut x = [0.0; 4];
             for row in (0..4).rev() {
@@ -281,13 +331,13 @@ impl Matrix
                 }
                 x[row] /= u.data[row][row];
             }
-    
+
             // Assign to inverse matrix (column-major)
             for row in 0..4 {
                 inverse.data[col][row] = x[row];
             }
         }
-    
+
         Some(inverse)
     }
 }
