@@ -19,20 +19,40 @@ pub struct Object {
 }
 
 impl Object {
-    pub fn new(shape: Box<dyn Shape>, position: Point) -> Object {
+    pub fn new(shape: Box<dyn Shape>) -> Object {
         Object {
-            position,
-            shape,
+            position: Point::new([0., 0., 0.]),
             pitch: 0.,
             yaw: 0.,
             roll: 0.,
+            shape,
             scale: Vector::new([1., 1., 1.]),
             world_to_local: Matrix::identity(),
             local_to_world: Matrix::identity(),
         }
     }
 
-    pub fn update_matrices(&mut self) {
+    pub fn translate(&mut self, vector: &Vector) {
+        self.position = self.position + *vector;
+
+        self.update();
+    }
+
+    pub fn rotate(&mut self, pitch: f32, yaw: f32, roll: f32) {
+        self.pitch = pitch;
+        self.yaw = yaw;
+        self.roll = roll;
+
+        self.update();
+    }
+
+    pub fn scale(&mut self, vector: &Vector) {
+        self.scale = *vector;
+
+        self.update();
+    }
+
+    fn update(&mut self) {
         let vt = Vector::new([
             self.position.data.x,
             self.position.data.y,

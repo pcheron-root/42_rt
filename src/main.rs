@@ -5,8 +5,7 @@ use rt::Sphere;
 use rt::Vector;
 
 fn main() {
-    let position = Point::new([0., 0., 0.]);
-    let obj = Object::new(Box::new(Sphere::new(1.)), position);
+    let obj = Object::new(Box::new(Sphere::new(1.)));
 
     let ray = Ray::new(Point::new([0., 0., 5.]), Vector::new([0., 0., 1.]));
 

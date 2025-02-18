@@ -382,6 +382,7 @@ fn test_shearing_zx_point() {
 
     assert_eq!(r, s * p);
 }
+
 #[test]
 fn test_shearing_zy_point() {
     let s = Matrix::shearing(0., 0., 0., 0., 0., 1.);
