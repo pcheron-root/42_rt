@@ -332,3 +332,62 @@ fn test_half_quarter_counter_clockwise_rotation_z() {
 
     assert_eq!(r, m * p);
 }
+
+#[test]
+fn test_shearing_xy_point() {
+    let s = Matrix::shearing(1., 0., 0., 0., 0., 0.);
+    let p = Point::new([2., 3., 4.]);
+    
+    let r = Point::new([5., 3., 4.]);
+
+    assert_eq!(r, s * p);
+}
+
+#[test]
+fn test_shearing_xz_point() {
+    let s = Matrix::shearing(0., 1., 0., 0., 0., 0.);
+    let p = Point::new([2., 3., 4.]);
+    
+    let r = Point::new([6., 3., 4.]);
+
+    assert_eq!(r, s * p);
+}
+
+#[test]
+fn test_shearing_yx_point() {
+    let s = Matrix::shearing(0., 0., 1., 0., 0., 0.);
+    let p = Point::new([2., 3., 4.]);
+    
+    let r = Point::new([2., 5., 4.]);
+
+    assert_eq!(r, s * p);
+}
+
+#[test]
+fn test_shearing_yz_point() {
+    let s = Matrix::shearing(0., 0., 0., 1., 0., 0.);
+    let p = Point::new([2., 3., 4.]);
+    
+    let r = Point::new([2., 7., 4.]);
+
+    assert_eq!(r, s * p);
+}
+
+#[test]
+fn test_shearing_zx_point() {
+    let s = Matrix::shearing(0., 0., 0., 0., 1., 0.);
+    let p = Point::new([2., 3., 4.]);
+    
+    let r = Point::new([2., 3., 6.]);
+
+    assert_eq!(r, s * p);
+}
+#[test]
+fn test_shearing_zy_point() {
+    let s = Matrix::shearing(0., 0., 0., 0., 0., 1.);
+    let p = Point::new([2., 3., 4.]);
+    
+    let r = Point::new([2., 3., 7.]);
+
+    assert_eq!(r, s * p);
+}

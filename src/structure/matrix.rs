@@ -225,6 +225,21 @@ impl Matrix {
         s
     }
 
+    pub fn shearing(xy: f32, xz: f32, yx: f32, yz: f32, zx: f32, zy: f32) -> Matrix {
+        let mut s = Matrix::identity();
+    
+        s[1][0] = xy;
+        s[2][0] = xz;
+
+        s[0][1] = yx;
+        s[2][1] = yz;
+
+        s[0][2] = zx;
+        s[1][2] = zy;
+
+        s
+    }
+
     fn lu_decomposition(&self) -> (Matrix, Matrix, Vec<usize>, usize) {
         let mut l = Matrix::new();
         let mut u = self.clone();
