@@ -1,8 +1,6 @@
-// use crate::traits::type_trait::TypeTrait;
-use std::ops::{Neg, Mul, Div};
-// use std::ops::{Add, Sub};
+use std::ops::{Div, Mul, Neg};
 
-
+#[derive(Debug, Clone, Copy)]
 pub struct Tuple {
     pub x: f32,
     pub y: f32,
@@ -12,12 +10,7 @@ pub struct Tuple {
 
 impl Tuple {
     pub fn new(x: f32, y: f32, z: f32, w: f32) -> Self {
-        Tuple {
-            x: x,
-            y: y,
-            z: z,
-            w: w,
-        }
+        Tuple { x, y, z, w }
     }
 
     pub fn is_point(&self) -> bool {
@@ -29,22 +22,11 @@ impl Tuple {
     }
 }
 
-// pas teste
-// impl Sub for Tuple {
-//     type Output = Self;
-
-//     fn sub(self, other: Self) -> Self::Output {
-//         let new_tuple = Tuple::new(
-//             self.x - other.x,
-//             self.y - other.y,
-//             self.z - other.z,
-//             self.w,
-//         );
-
-//         new_tuple
-//     }
-// }
-
+impl PartialEq for Tuple {
+    fn eq(&self, rhs: &Self) -> bool {
+        self.x == rhs.x && self.y == rhs.y && self.z == rhs.z && self.w == rhs.w
+    }
+}
 
 impl Neg for Tuple {
     type Output = Self;

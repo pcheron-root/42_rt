@@ -1,15 +1,12 @@
-use rt::{Point, Vector, SubPoint};
+use rt::{Point, SubPoint, Vector};
 
 #[test]
 fn test_create_point() {
     let p_a = Point::new([1.0, 2.0, 3.0]);
-    let p_b = Point::new([3.0, 4.0, 5.0]);
 
-    let p_c = p_a + p_b;
-
-    assert_eq!(p_c.data.x, 4.0);
-    assert_eq!(p_c.data.y, 6.0);
-    assert_eq!(p_c.data.z, 8.0);
+    assert_eq!(p_a.data.x, 1.0);
+    assert_eq!(p_a.data.y, 2.0);
+    assert_eq!(p_a.data.z, 3.0);
 }
 
 #[test]

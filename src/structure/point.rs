@@ -1,7 +1,9 @@
-use super::tuple::Tuple;
-use super::vector::Vector;
+use crate::constants::EPSILON;
+use crate::Tuple;
+use crate::Vector;
 use std::ops::{Add, Sub};
 
+#[derive(Debug, Clone, Copy)]
 pub struct Point {
     pub data: Tuple,
 }
@@ -17,33 +19,15 @@ impl Point {
 // Operator overloading
 // -----------------------------------------------------------------
 
-impl Add for Point {
-    type Output = Self;
-
-    fn add(self, other: Self) -> Self::Output {
-        let new_tuple = Tuple::new(
-            self.data.x + other.data.x,
-            self.data.y + other.data.y,
-            self.data.z + other.data.z,
-            0.0,
-        );
-
-        Self { data: new_tuple }
-    }
-}
-
 impl Add<Vector> for Point {
-    type Output = Self;
+    type Output = Point;
 
-    fn add(self, other: Vector) -> Self::Output {
-        let new_tuple = Tuple::new(
-            self.data.x + other.data.x,
-            self.data.y + other.data.y,
-            self.data.z + other.data.z,
-            0.0,
-        );
-
-        Self { data: new_tuple }
+    fn add(self, rhs: Vector) -> Self::Output {
+        Point::new([
+            self.data.x + rhs.data.x,
+            self.data.y + rhs.data.y,
+            self.data.z + rhs.data.z,
+        ])
     }
 }
 
@@ -52,16 +36,12 @@ pub trait SubPoint {
 }
 
 impl SubPoint for Point {
-
     fn sub(self, other: Self) -> Vector {
-        let new_tuple = Tuple::new(
+        Vector::new([
             self.data.x - other.data.x,
             self.data.y - other.data.y,
             self.data.z - other.data.z,
-            1.0,
-        );
-
-        Vector { data: new_tuple }
+        ])
     }
 }
 
@@ -69,13 +49,18 @@ impl Sub<Vector> for Point {
     type Output = Self;
 
     fn sub(self, other: Vector) -> Self::Output {
-        let new_tuple = Tuple::new(
+        Point::new([
             self.data.x - other.data.x,
             self.data.y - other.data.y,
             self.data.z - other.data.z,
-            0.0,
-        );
+        ])
+    }
+}
 
-        Self { data: new_tuple }
+impl PartialEq for Point {
+    fn eq(&self, other: &Self) -> bool {
+        (self.data.x - other.data.x).abs() < EPSILON
+            && (self.data.y - other.data.y).abs() < EPSILON
+            && (self.data.z - other.data.z).abs() < EPSILON
     }
 }
