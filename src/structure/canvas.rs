@@ -3,33 +3,38 @@ use minifb::{Window, WindowOptions};
 use std::fs::File;
 use std::io::{self, Write};
 use crate::Color;
+use crate::Point;
 
 use std::time::Duration;
 use minifb::Key;
 
 pub struct Canvas {
-    width: usize,
-    height: usize,
+    pub width: usize,
+    pub height: usize,
     pixels: Vec<Color>,
     pub window: Window,
+    pub camera_origin: Point,
+    pub wall: f32,
 }
 
 impl Canvas {
     // handle negative values ?
-    pub fn new(width: usize, height: usize) -> Canvas {
+    pub fn new(width: usize, height: usize, camera_origin: Point, wall: f32) -> Canvas {
         Canvas {
             width,
             height,
             pixels: vec![Color::new([0.0, 0.0, 0.0]); width * height],
             window: Window::new(
-                "My Canvas - ESC pour quitter",
+                "My Canvas - ESC to quit",
                 width,
                 height,
                 WindowOptions::default(),
             )
             .unwrap_or_else(|e| {
-                panic!("Impossible de créer la fenêtre : {}", e);
+                panic!("cant create window : {}", e);
             }),
+            camera_origin: camera_origin,
+            wall: wall,
         }
     }
 
