@@ -5,3 +5,5 @@ pub mod ray;
 pub mod shapes;
 pub mod tuple;
 pub mod vector;
+pub mod color;
+pub mod canvas;
