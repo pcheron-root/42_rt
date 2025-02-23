@@ -47,12 +47,15 @@ impl Canvas {
 
     pub fn get_pixel(&self, x: usize, y: usize) -> Color {
         let index = y * self.width + x;
+
         self.pixels[index]
     }
 
     pub fn get_pixel_buffer(&self) -> Vec<u32> {
-        let buffer: Vec<u32> = self.pixels.iter().map(|c| color_to_u32(c)).collect();
-        buffer
+        self.pixels
+            .iter()
+            .map(|c| (*c).into())
+            .collect()
     }
 
     pub fn update_window(&mut self) {
@@ -85,6 +88,7 @@ impl Canvas {
         let mut file = File::create(filename)?;
         let content = self.to_ppm();
         file.write_all(content.as_bytes())?;
+        
         Ok(())
     }
 
@@ -97,13 +101,3 @@ impl Canvas {
         }
     }
 }
-
-
-pub fn color_to_u32(color: &Color) -> u32 {
-    let r = (color.data.x.clamp(0.0, 1.0) * 255.0) as u32;
-    let g = (color.data.y.clamp(0.0, 1.0) * 255.0) as u32;
-    let b = (color.data.z.clamp(0.0, 1.0) * 255.0) as u32;
-
-    (r << 16) | (g << 8) | b
-}
-

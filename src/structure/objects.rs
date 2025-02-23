@@ -1,19 +1,20 @@
-use crate::{Matrix, Point, Ray, Shape, Vector, Intersection};
+use crate::{Intersection, Matrix, Shape, Point, Ray, Vector};
 
+#[derive(Debug, Clone)]
 pub struct Object {
     pub position: Point,
     pub pitch: f32,
     pub yaw: f32,
     pub roll: f32,
     pub scale: Vector,
-    pub shape: Box<dyn Shape>,
+    pub shape: Shape,
 
     world_to_local: Matrix,
     local_to_world: Matrix,
 }
 
 impl Object {
-    pub fn new(shape: Box<dyn Shape>) -> Object {
+    pub fn new(shape: Shape) -> Object {
         Object {
             position: Point::new([0., 0., 0.]),
             pitch: 0.,
@@ -68,10 +69,11 @@ impl Object {
         // Delegate to shape's local-space intersection logic
         if let Some(local_hit) = self.shape.intersect(&ray) {
             // Transform hit data back to WORLD space
-            let world_point = self.local_to_world * local_hit.point;
-            let world_normal = self.local_to_world * local_hit.normal;
+            let world_point: Point = self.local_to_world * local_hit.point;
+            let world_normal: Vector = self.local_to_world * local_hit.normal;
 
             Some(Intersection {
+                object: (*self).clone(),
                 point: world_point,
                 normal: world_normal.normalize(),
                 t: local_hit.t,

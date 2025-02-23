@@ -1,8 +1,6 @@
-
-// use crate::constants::EPSILON;
 use crate::Tuple;
-// use crate::Vector;
 use std::ops::{Add, Sub, Mul};
+use std::convert::Into;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Color {
@@ -26,6 +24,27 @@ impl Color {
     pub fn blue(&self) -> f32 {
         self.data.z
     }
+}
+
+impl Into<u32> for Color {
+    fn into(self) -> u32 {
+        let r: u32 = (self.data.x.clamp(0.0, 1.0) * 255.0) as u32;
+        let g = (self.data.y.clamp(0.0, 1.0) * 255.0) as u32;
+        let b = (self.data.z.clamp(0.0, 1.0) * 255.0) as u32;
+    
+        (r << 16) | (g << 8) | b
+    }
+}
+
+impl From<u32> for Color {
+    fn from(value: u32) -> Self {
+        let r = ((value >> 16) & 0xFF) as f32 / 255.0;
+        let g = ((value >> 8) & 0xFF) as f32 / 255.0;
+        let b = ((value >> 0) & 0xFF) as f32 / 255.0;
+        
+        Color::new([r, g, b])
+    }
+
 }
 
 impl Add for Color {
@@ -72,10 +91,3 @@ impl Mul for Color {
     }
 }
 
-pub fn hadamard_product(c1: &Color, c2: &Color) -> Color{
-    Color::new([
-        c1.data.x * c2.data.x,
-        c1.data.y * c2.data.y,
-        c1.data.z * c2.data.z,
-    ])
-}
