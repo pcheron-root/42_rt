@@ -39,3 +39,57 @@ fn test_sphere_intersection_with_translation() {
 
     assert!(result.is_some(), "Expected an intersection, but got none");
 }
+
+#[test]
+fn test_sphere_intersection_0() {
+    let obj = Object::new(Box::new(Sphere::new(1.)));
+
+    let ray = Ray::new(Point::new([0., 0., -5.]), Vector::new([0., 0., 1.]).normalize());
+    let result = obj.intersect(&ray).unwrap();
+    assert_eq!(result.t, 4.);
+}
+
+#[test]
+fn test_sphere_intersection_1() {
+    let obj = Object::new(Box::new(Sphere::new(1.)));
+
+    let ray = Ray::new(Point::new([0., 1., -5.]), Vector::new([0., 0., 1.]).normalize());
+    let result = obj.intersect(&ray).unwrap();
+    assert_eq!(result.t, 5.);
+}
+
+#[test]
+fn test_ray_miss_sphere() {
+    let obj = Object::new(Box::new(Sphere::new(1.)));
+
+    let ray = Ray::new(Point::new([0., 2., -5.]), Vector::new([0., 0., 1.]).normalize());
+    let result = obj.intersect(&ray).is_none();
+    assert_eq!(result, true);
+}
+
+#[test]
+fn test_ray_origin_in_sphere() {
+    let obj = Object::new(Box::new(Sphere::new(1.)));
+
+    let ray = Ray::new(Point::new([0., 0., 0.]), Vector::new([0., 0., 1.]).normalize());
+    let result = obj.intersect(&ray).unwrap();
+    assert_eq!(result.t, 1.);
+}
+
+#[test]
+fn test_ray_miss_sphere_2() {
+    let obj = Object::new(Box::new(Sphere::new(1.)));
+
+    let ray = Ray::new(Point::new([0., 0., 5.]), Vector::new([0., 0., 1.]).normalize());
+    let result = obj.intersect(&ray).is_none();
+    assert_eq!(result, true);
+}
+
+#[test]
+fn test_sphere_intersection_impact_point() {
+    let obj = Object::new(Box::new(Sphere::new(1.)));
+
+    let ray = Ray::new(Point::new([0., 0., 5.]), Vector::new([0., 0., 1.]).normalize());
+    let result = obj.intersect(&ray).is_none();
+    assert_eq!(result, true);
+}
