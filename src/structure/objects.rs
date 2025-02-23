@@ -1,10 +1,4 @@
-use crate::{Matrix, Point, Ray, Shape, Vector};
-
-pub struct Intersection {
-    pub point: Point,
-    pub normal: Vector,
-    pub t: f32,
-}
+use crate::{Matrix, Point, Ray, Shape, Vector, Intersection};
 
 pub struct Object {
     pub position: Point,

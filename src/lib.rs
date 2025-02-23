@@ -4,7 +4,7 @@ pub mod traits;
 pub mod utils;
 
 pub use structure::matrix::Matrix;
-pub use structure::objects::Intersection;
+pub use structure::intersection::Intersection;
 pub use structure::objects::Object;
 pub use structure::point::Point;
 pub use structure::ray::Ray;

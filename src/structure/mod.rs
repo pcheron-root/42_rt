@@ -7,3 +7,5 @@ pub mod tuple;
 pub mod vector;
 pub mod color;
 pub mod canvas;
+pub mod world;
+pub mod intersection;
