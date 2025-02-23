@@ -4,6 +4,9 @@ use std::fs::File;
 use std::io::{self, Write};
 use crate::Color;
 
+use std::time::Duration;
+use minifb::Key;
+
 pub struct Canvas {
     width: usize,
     height: usize,
@@ -78,6 +81,15 @@ impl Canvas {
         let content = self.to_ppm();
         file.write_all(content.as_bytes())?;
         Ok(())
+    }
+
+    pub fn canvas_loop(&mut self, draw: fn(&mut Canvas), sleep: u64) {
+        while self.window.is_open() && !self.window.is_key_down(Key::Escape) {
+
+            draw(self);
+            self.update_window();
+            std::thread::sleep(Duration::from_millis(sleep)); // 16 ~60 FPS
+        }
     }
 }
 
