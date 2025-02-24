@@ -1,4 +1,5 @@
 use crate::Tuple;
+
 use std::ops::{Add, Sub, Mul};
 use std::convert::Into;
 
@@ -9,7 +10,13 @@ pub struct Color {
 
 impl Color {
     pub fn new(data: [f32; 3]) -> Self {
-        let data = Tuple::new(data[0], data[1], data[2], 2.0);
+        let data = Tuple::new(
+            data[0].clamp(0., 1.),
+            data[1].clamp(0., 1.),
+            data[2].clamp(0., 1.),
+            2.0
+        );
+
         Self { data }
     }
 
@@ -32,7 +39,7 @@ impl Into<u32> for Color {
         let g = (self.data.y.clamp(0.0, 1.0) * 255.0) as u32;
         let b = (self.data.z.clamp(0.0, 1.0) * 255.0) as u32;
     
-        (r << 16) | (g << 8) | b
+        (r << 16) | (g << 8) | (b << 0)
     }
 }
 
@@ -44,7 +51,6 @@ impl From<u32> for Color {
         
         Color::new([r, g, b])
     }
-
 }
 
 impl Add for Color {
@@ -52,9 +58,9 @@ impl Add for Color {
 
     fn add(self, rhs: Self) -> Self::Output {
         Color::new([
-            self.data.x + rhs.data.x,
-            self.data.y + rhs.data.y,
-            self.data.z + rhs.data.z,
+            (self.data.x + rhs.data.x).clamp(0., 1.),
+            (self.data.y + rhs.data.y).clamp(0., 1.),
+            (self.data.z + rhs.data.z).clamp(0., 1.),
         ])
     }
 }
@@ -64,9 +70,9 @@ impl Sub for Color {
 
     fn sub(self, rhs: Self) -> Self::Output {
         Color::new([
-            self.data.x - rhs.data.x,
-            self.data.y - rhs.data.y,
-            self.data.z - rhs.data.z,
+            (self.data.x - rhs.data.x).clamp(0., 1.),
+            (self.data.y - rhs.data.y).clamp(0., 1.),
+            (self.data.z - rhs.data.z).clamp(0., 1.),
         ])
     }
 }
@@ -75,7 +81,11 @@ impl Mul<f32> for Color {
     type Output = Color;
 
     fn mul(self, rhs: f32) -> Self::Output {
-        Color::new([self.data.x * rhs, self.data.y * rhs, self.data.z * rhs])
+        Color::new([
+            (self.data.x * rhs).clamp(0., 1.),
+            (self.data.y * rhs).clamp(0., 1.),
+            (self.data.z * rhs).clamp(0., 1.)
+        ])
     }
 }
 
@@ -84,9 +94,9 @@ impl Mul for Color {
 
     fn mul(self, rhs: Self) -> Self::Output {
         Color::new([
-            self.data.x * rhs.data.x,
-            self.data.y * rhs.data.y,
-            self.data.z * rhs.data.z,
+            (self.data.x * rhs.data.x).clamp(0., 1.),
+            (self.data.y * rhs.data.y).clamp(0., 1.),
+            (self.data.z * rhs.data.z).clamp(0., 1.),
         ])
     }
 }

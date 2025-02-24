@@ -1,67 +1,53 @@
-
-use minifb::{Window, WindowOptions};
 use std::fs::File;
 use std::io::{self, Write};
-use crate::Color;
-use crate::Point;
 
-use std::time::Duration;
-use minifb::Key;
+use crate::Color;
 
 pub struct Canvas {
     pub width: usize,
     pub height: usize,
     pixels: Vec<Color>,
-    pub window: Window,
-    pub camera_origin: Point,
-    pub wall: f32,
 }
 
 impl Canvas {
     // handle negative values ?
-    pub fn new(width: usize, height: usize, camera_origin: Point, wall: f32) -> Canvas {
+    pub fn new(width: usize, height: usize) -> Canvas {
         Canvas {
             width,
             height,
             pixels: vec![Color::new([0.0, 0.0, 0.0]); width * height],
-            window: Window::new(
-                "My Canvas - ESC to quit",
-                width,
-                height,
-                WindowOptions::default(),
-            )
-            .unwrap_or_else(|e| {
-                panic!("cant create window : {}", e);
-            }),
-            camera_origin: camera_origin,
-            wall: wall,
         }
     }
 
-    pub fn write_pixel(&mut self, x: usize, y: usize, color: Color) {
+    pub fn write(&mut self, x: usize, y: usize, color: Color) {
+        *self.at_mut(x, y) = color;
+    }
+
+    pub fn at_mut(&mut self, x: usize, y: usize) -> &mut Color {
         if x < self.width && y < self.height {
             let index = y * self.width + x;
-            self.pixels[index] = color;
+            &mut self.pixels[index]
+
+        } else {
+            panic!("");
         }
     }
 
-    pub fn get_pixel(&self, x: usize, y: usize) -> Color {
-        let index = y * self.width + x;
+    pub fn at(&mut self, x: usize, y: usize) -> Color {
+        if x < self.width && y < self.height {
+            let index = y * self.width + x;
+            self.pixels[index]
 
-        self.pixels[index]
+        } else {
+            panic!("");
+        }
     }
 
-    pub fn get_pixel_buffer(&self) -> Vec<u32> {
+    pub fn pixels(&self) -> Vec<u32> {
         self.pixels
             .iter()
             .map(|c| (*c).into())
             .collect()
-    }
-
-    pub fn update_window(&mut self) {
-        // let mut buffer: Vec<u32> = self.pixels.iter().map(|c| color_to_u32(c)).collect();
-        let buffer = self.get_pixel_buffer();
-        self.window.update_with_buffer(&buffer, self.width, self.height).unwrap();
     }
 
     pub fn to_ppm(&self) -> String {
@@ -78,6 +64,7 @@ impl Canvas {
 
                 ppm.push_str(&format!("{} {} {} ", r, g, b));
             }
+
             ppm.push('\n');
         }
 
@@ -90,14 +77,5 @@ impl Canvas {
         file.write_all(content.as_bytes())?;
         
         Ok(())
-    }
-
-    pub fn canvas_loop(&mut self, draw: fn(&mut Canvas), sleep: u64) {
-        while self.window.is_open() && !self.window.is_key_down(Key::Escape) {
-
-            draw(self);
-            self.update_window();
-            std::thread::sleep(Duration::from_millis(sleep)); // 16 ~60 FPS
-        }
     }
 }

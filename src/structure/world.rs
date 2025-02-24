@@ -16,7 +16,7 @@ impl World {
         self.objects.push(object);
     }
 
-    pub fn intersect(&self, ray: &Ray) -> Option<Intersection> {
+    pub fn intersect(&self, ray: Ray) -> Option<Intersection> {
         let mut closest_intersection = None;
         
         for object in &self.objects {

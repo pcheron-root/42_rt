@@ -1,7 +1,7 @@
 use crate::constants::EPSILON;
 use crate::Tuple;
 
-use std::ops::{Add, Div, Mul, Sub};
+use std::ops::{Add, Div, Mul, Neg, Sub};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Vector {
@@ -90,5 +90,17 @@ impl Div<f32> for Vector {
 
     fn div(self, rhs: f32) -> Self::Output {
         Vector::new([self.data.x / rhs, self.data.y / rhs, self.data.z / rhs])
+    }
+}
+
+impl Neg for Vector {
+    type Output = Vector;
+
+    fn neg(self) -> Self::Output {
+        Vector::new([
+            -self.data.x,
+            -self.data.y,
+            -self.data.z,
+        ])
     }
 }

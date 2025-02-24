@@ -1,4 +1,7 @@
+use rt::World;
+use rt::Camera;
 use rt::Color;
+use rt::Matrix;
 use rt::Object;
 use rt::Point;
 use rt::Ray;
@@ -6,52 +9,95 @@ use rt::Sphere;
 use rt::Vector;
 use rt::Canvas;
 use rt::Shape;
-
 use rt::SubPoint;
 
-pub fn main_loop(canvas: &mut Canvas) { 
+use std::time::Duration;
 
-    let wall_z = 10.;
+use minifb::{Window, WindowOptions, Key};
 
-    let pixel_size = canvas.wall / canvas.width as f32;
-    let half = canvas.wall / 2.;
+pub fn render(canvas: &mut Canvas, world: &World, camera: &Camera) {
 
-    let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
-    let scale_v = Vector::new([1., 0.5, 1.]);
-    obj.scale(&scale_v);
-    let red = Color::new([1., 0., 0.]);
+    let aspect_ratio = canvas.width as f32 / canvas.height as f32;
+    
+    let view = Matrix::view(
+        camera.position,
+        camera.position + camera.direction,
+        Vector::new([0., 1., 0.])
+    );
 
-    for y in 0..canvas.width - 1 {
-        let world_y = -half + pixel_size * y as f32;
-        for x in 0..canvas.height - 1 {
-            let world_x = -half + pixel_size * x as f32;
-            let position = Point::new([world_x, world_y, wall_z]);
-            let r = Ray::new(canvas.camera_origin, (position.sub(canvas.camera_origin)).normalize());
+    let projection = Matrix::projection(
+        camera.fov,
+        aspect_ratio,
+        camera.near,
+        camera.far
+    );
+
+    let view_proj = projection * view;
+    let inv_view_proj = view_proj.inverse().unwrap();
+
+    for y in 0..canvas.height {
+        let ndc_y = 1.0 - 2.0 * (y as f32 + 0.5) / canvas.height as f32;
         
-            let result = obj.intersect(&r);
-            if result.is_some() {
-                canvas.write_pixel(x, y, red);
-            }
+        for x in 0..canvas.width {
+            let ndc_x = 2.0 * (x as f32 + 0.5) / canvas.width as f32 - 1.0;
             
+            let origin = inv_view_proj * Point::new([ndc_x, ndc_y, -1.0]);
+            let target = inv_view_proj * Point::new([ndc_x, ndc_y, 1.0]);
+            
+            let direction = (target.sub(origin)).normalize();
+            
+            let ray = Ray::new(Point::new([origin.data.x, origin.data.y, origin.data.z]), direction);
+            
+            if world.intersect(ray).is_some() {
+                canvas.write(x, y, Color::new([1., 0., 0.]));
+            }
         }
     }
-
 }
 
 fn main() {
+    let camera = Camera::new(
+        Point::new([0., 0., -5.]),
+        Vector::new([0., 0., 1.]),
+        45f32.to_radians(),
+        0.1,
+        100.
+    );
 
-    let camera_origin = Point::new([0., 0., -5.]);
-    let mut _canvas = Canvas::new(500, 500, camera_origin, 7.);
-    _canvas.canvas_loop(main_loop, 16);
+    let width = 300;
+    let height = 300;
     
-    let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
+    let mut window = Window::new(
+        "RT",
+        width,
+        height,
+        WindowOptions::default(),
+    ).unwrap();
 
-    let ray = Ray::new(Point::new([0., 0., 5.]), Vector::new([0., 0., 1.]));
+    let mut canvas = Canvas::new(width, height);
 
-    let result = obj.intersect(&ray);
+    let mut s1 = Object::new(Shape::Sphere(Sphere::new(1.)));
+    s1.translate(Vector::new([-1., 0., 0.]));
+    
+    let mut s2 = Object::new(Shape::Sphere(Sphere::new(1.)));
+    s2.translate(Vector::new([1., 0., 0.]));
+    
+    let mut world = World::new();
+    world.add_object(s1);
+    world.add_object(s2);
+    
+    while window.is_open() && !window.is_key_down(Key::Escape) {
 
-    match result {
-        Some(_) => println!("Intersection"),
-        None => println!("No intersection"),
+        render(&mut canvas, &world, &camera);
+
+        let buffer = canvas.pixels();
+
+        window.update_with_buffer(
+            &buffer,
+            width,
+            height
+        ).unwrap();
+
+        std::thread::sleep(Duration::from_millis(16));
     }
 }

@@ -9,7 +9,7 @@ pub enum Shape {
 }
 
 impl Shape {
-    pub fn intersect(&self, ray: &Ray) -> Option<LocalHit> {
+    pub fn intersect(&self, ray: Ray) -> Option<LocalHit> {
         match self {
             Shape::Sphere(s) => s.intersect(ray),
         }

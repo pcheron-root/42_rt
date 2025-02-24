@@ -11,7 +11,7 @@ mod tests {
     //     let white_color = Color::new([1.0, 1.0, 1.0]);
         
     //     for x in 0..200 {
-    //         canvas.write_pixel(x, x, white_color);
+    //         canvas.write(x, x, white_color);
     //     }
         
     //     assert_eq!(canvas.get_pixel(50, 50).red(), 1.0);

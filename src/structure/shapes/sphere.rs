@@ -17,7 +17,7 @@ impl Sphere {
 }
 
 impl Intersect for Sphere {
-    fn intersect(&self, ray: &Ray) -> Option<LocalHit> {
+    fn intersect(&self, ray: Ray) -> Option<LocalHit> {
         let center = Point::new([0., 0., 0.]);
 
         let o = ray.origin.sub(center);

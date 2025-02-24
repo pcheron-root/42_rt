@@ -8,7 +8,7 @@ fn test_create_color() {
 
     let c_c = c_a + c_b;
 
-    assert_eq!(are_almost_equal(c_c.data.x, 1.6), true);
+    assert_eq!(are_almost_equal(c_c.data.x, 1.0), true);
     assert_eq!(are_almost_equal(c_c.data.y, 0.7), true);
     assert_eq!(c_c.data.z, 1.0);
 }
@@ -32,9 +32,9 @@ fn test_sub_color_from_zero_color() {
 
     let c_b = c_zero - c_a;
 
-    assert_eq!(c_b.data.x, -1.0);
-    assert_eq!(c_b.data.y, -1.0);
-    assert_eq!(c_b.data.z, -1.0);
+    assert_eq!(c_b.data.x, 0.0);
+    assert_eq!(c_b.data.y, 0.0);
+    assert_eq!(c_b.data.z, 0.0);
 }
 
 #[test]

@@ -9,3 +9,4 @@ pub mod color;
 pub mod canvas;
 pub mod world;
 pub mod intersection;
+pub mod camera;
