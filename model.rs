@@ -35,7 +35,7 @@ fn main() {
     let camera = Camera::with_transform(
         600,
         400,
-        std::f64::consts::FRAC_PI_3,
+        std::f32::consts::FRAC_PI_3,
         view_transform(
             &Tuple::new_point(0., 1.5, -5.),
             &Tuple::new_point(0., 1., 0.),
@@ -83,14 +83,14 @@ fn build_world() -> World {
     let floor = Plane::new(Matrix::identity(), wall_material());
     let left_wall = Plane::new(
         translate(0., 0., 5.)
-            * rotate_y(-std::f64::consts::FRAC_PI_4)
-            * rotate_x(std::f64::consts::FRAC_PI_2),
+            * rotate_y(-std::f32::consts::FRAC_PI_4)
+            * rotate_x(std::f32::consts::FRAC_PI_2),
         wall_material(),
     );
     let right_wall = Plane::new(
         translate(0., 0., 5.)
-            * rotate_y(std::f64::consts::FRAC_PI_4)
-            * rotate_x(std::f64::consts::FRAC_PI_2),
+            * rotate_y(std::f32::consts::FRAC_PI_4)
+            * rotate_x(std::f32::consts::FRAC_PI_2),
         wall_material(),
     );
     let middle = Sphere::new(translate(-0.5, 1., 0.5), sphere_material());

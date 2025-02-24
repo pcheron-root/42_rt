@@ -16,8 +16,6 @@ use std::time::Duration;
 use minifb::{Window, WindowOptions, Key};
 
 pub fn render(canvas: &mut Canvas, world: &World, camera: &Camera) {
-
-    let aspect_ratio = canvas.width as f32 / canvas.height as f32;
     
     let view = Matrix::view(
         camera.position,
@@ -27,7 +25,7 @@ pub fn render(canvas: &mut Canvas, world: &World, camera: &Camera) {
 
     let projection = Matrix::projection(
         camera.fov,
-        aspect_ratio,
+        camera.aspect,
         camera.near,
         camera.far
     );
@@ -58,25 +56,29 @@ pub fn render(canvas: &mut Canvas, world: &World, camera: &Camera) {
 }
 
 fn main() {
+
+    let mut size = (300, 300);
+
+    let mut window = Window::new(
+        "RT",
+        size.0,
+        size.1,
+        WindowOptions {
+            resize: true,
+            ..WindowOptions::default()
+        },
+    ).unwrap();
+
+    let mut canvas = Canvas::new(size.0, size.1);
+
     let mut camera = Camera::new(
         Point::new([0., 0., 5.]),
         Vector::new([0., 0., -1.]),
+        size.0 as f32 / size.1 as f32,
         45f32.to_radians(),
         0.1,
         100.
     );
-
-    let width = 300;
-    let height = 300;
-
-    let mut window = Window::new(
-        "RT",
-        width,
-        height,
-        WindowOptions::default(),
-    ).unwrap();
-
-    let mut canvas = Canvas::new(width, height);
 
     let mut s1 = Object::new(Shape::Sphere(Sphere::new(1.)));
     s1.translate(Vector::new([-1., 0., 0.]));
@@ -92,6 +94,17 @@ fn main() {
 
         if window.is_key_down(Key::Escape) {
             break;
+        }
+
+        let current_size = window.get_size();
+
+        if size != current_size {
+            size = current_size;
+
+            canvas.resize(size.0, size.1);
+            camera.resize(size.0 as f32 / size.1 as f32);
+
+            size = (current_size.0, current_size.1);
         }
 
         if window.is_key_down(Key::A) {
@@ -115,8 +128,8 @@ fn main() {
 
         window.update_with_buffer(
             &buffer,
-            width,
-            height
+            size.0,
+            size.1
         ).unwrap();
 
         std::thread::sleep(Duration::from_millis(16));

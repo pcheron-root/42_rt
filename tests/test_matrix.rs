@@ -395,21 +395,21 @@ mod tests {
         assert_eq!(r, s * p);
     }
 
-    // #[test] 
-    // fn test_view_matrix() {
-    //     let from = Point::new([1., 3., 2.]);
-    //     let to = Point::new([4., -2., 8.]);
-    //     let up = Vector::new([1., 1., 0.]);
+    #[test] 
+    fn test_view_matrix() {
+        let from = Point::new([1., 3., 2.]);
+        let to = Point::new([4., -2., 8.]);
+        let up = Vector::new([1., 1., 0.]);
 
-    //     let t = Matrix::view(from, to, up);
+        let t = Matrix::view(from, to, up);
 
-    //     let r = Matrix::from_col([
-    //         [-0.50709,  0.76772, -0.35857, 0.00000],
-    //         [ 0.50709,  0.60609,  0.59761, 0.00000],
-    //         [ 0.67612,  0.12122, -0.71714, 0.00000],
-    //         [-2.36643, -2.82843,  0.00000, 1.00000],
-    //     ]);
+        let r = Matrix::from_col([
+            [-0.50709,  0.76772, -0.35857, 0.00000],
+            [ 0.50709,  0.60609,  0.59761, 0.00000],
+            [ 0.67612,  0.12122, -0.71714, 0.00000],
+            [-2.36643, -2.82843,  0.00000, 1.00000],
+        ]);
 
-    //     assert_eq!(r, t);
-    // }
+        assert_eq!(r, t);
+    }
 }

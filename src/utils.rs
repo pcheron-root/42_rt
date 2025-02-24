@@ -10,6 +10,6 @@ where
     T: Copy + Sub<Output = T> + Add<Output = T> + Mul<f32, Output = T>,
 {
     let t = t.clamp(0., 1.);
-    
+
     start * (1. - t) + end * t
 }

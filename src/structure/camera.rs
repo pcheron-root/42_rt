@@ -5,25 +5,27 @@ pub struct Camera {
     pub target: Point,
     pub position: Point,
     pub direction: Vector,
+    pub aspect: f32,
     pub fov: f32,
     pub near: f32,
     pub far: f32,
 }
 
 impl Camera {
-    pub fn new(position: Point, direction: Vector, fov: f32, near: f32, far: f32) -> Camera {
+    pub fn new(position: Point, direction: Vector, aspect: f32, fov: f32, near: f32, far: f32) -> Camera {
         Camera {
             target: position,
             position,
             direction,
+            aspect,
             fov,
             near,
             far
         }
     }
 
-    pub fn resize() {
-
+    pub fn resize(&mut self, aspect: f32) {
+        self.aspect = aspect;
     }
 
     pub fn translate(&mut self, vector: Vector) {
