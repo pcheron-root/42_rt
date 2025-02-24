@@ -19,6 +19,12 @@ impl Canvas {
         }
     }
 
+    pub fn resize(&mut self, width: usize, height: usize) {
+        self.width = width;
+        self.height = height;
+        self.pixels = vec![Color::new([0., 0., 0.]); width * height];
+    }
+
     pub fn write(&mut self, x: usize, y: usize, color: Color) {
         *self.at_mut(x, y) = color;
     }
@@ -33,7 +39,7 @@ impl Canvas {
         }
     }
 
-    pub fn at(&mut self, x: usize, y: usize) -> Color {
+    pub fn at(&self, x: usize, y: usize) -> Color {
         if x < self.width && y < self.height {
             let index = y * self.width + x;
             self.pixels[index]
@@ -55,7 +61,7 @@ impl Canvas {
 
         for y in 0..self.height {
             for x in 0..self.width {
-                let pixel = &self.pixels[y * self.width + x];
+                let pixel = &self.at(x, y);
 
                 // Clamp des valeurs entre 0 et 255
                 let r = (pixel.red().clamp(0.0, 1.0) * 255.0) as u32;

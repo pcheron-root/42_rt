@@ -50,15 +50,17 @@ pub fn render(canvas: &mut Canvas, world: &World, camera: &Camera) {
             
             if world.intersect(ray).is_some() {
                 canvas.write(x, y, Color::new([1., 0., 0.]));
+            } else {
+                canvas.write(x, y, Color::new([0., 0., 0.]));
             }
         }
     }
 }
 
 fn main() {
-    let camera = Camera::new(
-        Point::new([0., 0., -5.]),
-        Vector::new([0., 0., 1.]),
+    let mut camera = Camera::new(
+        Point::new([0., 0., 5.]),
+        Vector::new([0., 0., -1.]),
         45f32.to_radians(),
         0.1,
         100.
@@ -66,7 +68,7 @@ fn main() {
 
     let width = 300;
     let height = 300;
-    
+
     let mut window = Window::new(
         "RT",
         width,
@@ -86,7 +88,26 @@ fn main() {
     world.add_object(s1);
     world.add_object(s2);
     
-    while window.is_open() && !window.is_key_down(Key::Escape) {
+    while window.is_open() {
+
+        if window.is_key_down(Key::Escape) {
+            break;
+        }
+
+        if window.is_key_down(Key::A) {
+            camera.translate(Vector::new([-1., 0., 0.]));
+        }
+        if window.is_key_down(Key::D) {
+            camera.translate(Vector::new([1., 0., 0.]));
+        }
+        if window.is_key_down(Key::W) {
+            camera.translate(Vector::new([0., 0., -1.]));
+        }
+        if window.is_key_down(Key::S) {
+            camera.translate(Vector::new([0., 0., 1.]));
+        }
+
+        camera.update();
 
         render(&mut canvas, &world, &camera);
 
