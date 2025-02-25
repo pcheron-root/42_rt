@@ -61,12 +61,12 @@ impl Tuple {
         if self.is_point() || other.is_point() {
             panic!("Cannot calculate cross product with a point");
         }
-        
+
         Tuple::new(
             self.y * other.z - self.z * other.y,
             self.z * other.x - self.x * other.z,
             self.x * other.y - self.y * other.x,
-            0.
+            0.,
         )
     }
 }
