@@ -1,7 +1,7 @@
 use crate::{Intersection, Object, Ray};
 
 pub struct World {
-    objects: Vec<Object>,
+    pub objects: Vec<Object>,
     // pub lights: Vec<Light>,
 }
 
