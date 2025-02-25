@@ -54,9 +54,9 @@ impl Object {
             self.position.data.z,
         ]);
 
-        let translation = Matrix::translation(&vt);
+        let translation = Matrix::translation(vt);
         let rotation = Matrix::rotation(self.pitch, self.yaw, self.roll);
-        let scaling = Matrix::scaling(&self.scale);
+        let scaling = Matrix::scaling(self.scale.clone());
 
         self.local_to_world = translation * rotation * scaling;
         self.world_to_local = self.local_to_world.inverse().unwrap();

@@ -204,7 +204,7 @@ impl Matrix {
         r
     }
 
-    pub fn translation(vector: &Vector) -> Matrix {
+    pub fn translation(vector: Vector) -> Matrix {
         let mut t = Matrix::identity();
 
         t[3][0] = vector.data.x;
@@ -214,7 +214,7 @@ impl Matrix {
         t
     }
 
-    pub fn scaling(vector: &Vector) -> Matrix {
+    pub fn scaling(vector: Vector) -> Matrix {
         let mut s = Matrix::new();
 
         s[0][0] = vector.data.x;
@@ -241,18 +241,19 @@ impl Matrix {
     }
 
     pub fn view(from: Point, to: Point, up: Vector) -> Matrix {
-        let forward = (to - from.clone()).normalize();
-        let left = forward.cross(&up.normalize()).normalize();
-        let up = left.cross(&forward).normalize();
+        let forward = (from.clone() - to).normalize();
+        let up = up.normalize();
+        let right = up.cross(&forward).normalize();
+        let up = forward.cross(&right).normalize();
 
         let orientation = Matrix::from_col([
-            [left.data.x, up.data.x, -forward.data.x, 0.],
-            [left.data.y, up.data.y, -forward.data.y, 0.],
-            [left.data.z, up.data.z, -forward.data.z, 0.],
+            [right.data.x, up.data.x, forward.data.x, 0.],
+            [right.data.y, up.data.y, forward.data.y, 0.],
+            [right.data.z, up.data.z, forward.data.z, 0.],
             [0., 0., 0., 1.],
         ]);
 
-        orientation * Matrix::translation(&Vector::new([-from.data.x, -from.data.y, -from.data.z]))
+        orientation * Matrix::translation(Vector::new([-from.data.x, -from.data.y, -from.data.z]))
     }
 
     pub fn projection(fov: f32, ratio: f32, near: f32, far: f32) -> Matrix {
