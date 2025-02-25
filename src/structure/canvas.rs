@@ -32,9 +32,8 @@ impl Canvas {
     pub fn at_mut(&mut self, x: usize, y: usize) -> &mut Color {
         if x < self.width && y < self.height {
             let index = y * self.width + x;
-            
-            &mut self.pixels[index]
 
+            &mut self.pixels[index]
         } else {
             panic!("");
         }
@@ -43,19 +42,15 @@ impl Canvas {
     pub fn at(&self, x: usize, y: usize) -> Color {
         if x < self.width && y < self.height {
             let index = y * self.width + x;
-            
-            self.pixels[index].clone()
 
+            self.pixels[index].clone()
         } else {
             panic!("");
         }
     }
 
     pub fn pixels(&self) -> Vec<u32> {
-        self.pixels
-            .iter()
-            .map(|c| c.clone().into())
-            .collect()
+        self.pixels.iter().map(|c| c.clone().into()).collect()
     }
 
     pub fn to_ppm(&self) -> String {
@@ -83,7 +78,7 @@ impl Canvas {
         let mut file = File::create(filename)?;
         let content = self.to_ppm();
         file.write_all(content.as_bytes())?;
-        
+
         Ok(())
     }
 }

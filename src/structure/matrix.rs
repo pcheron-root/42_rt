@@ -1,5 +1,5 @@
 use crate::constants::EPSILON;
-use crate::{Point, Ray, Vector, SubPoint};
+use crate::{Point, Ray, Vector};
 use std::ops::{Index, IndexMut, Mul, MulAssign};
 
 #[derive(Debug, Clone)]
@@ -227,7 +227,7 @@ impl Matrix {
 
     pub fn shearing(xy: f32, xz: f32, yx: f32, yz: f32, zx: f32, zy: f32) -> Matrix {
         let mut s = Matrix::identity();
-    
+
         s[1][0] = xy;
         s[2][0] = xz;
 
@@ -240,25 +240,16 @@ impl Matrix {
         s
     }
 
-    pub fn view(
-        from: Point,
-        to: Point,
-        up: Vector,
-    ) -> Matrix {
-        let forward = (to.sub(from.clone())).normalize();
+    pub fn view(from: Point, to: Point, up: Vector) -> Matrix {
+        let forward = (to - from.clone()).normalize();
         let left = forward.cross(&up.normalize()).normalize();
         let up = left.cross(&forward).normalize();
-    
+
         let orientation = Matrix::from_col([
             [left.data.x, up.data.x, -forward.data.x, 0.],
             [left.data.y, up.data.y, -forward.data.y, 0.],
             [left.data.z, up.data.z, -forward.data.z, 0.],
-            [
-                0.,
-                0.,
-                0.,
-                1.,
-            ],
+            [0., 0., 0., 1.],
         ]);
 
         orientation * Matrix::translation(&Vector::new([-from.data.x, -from.data.y, -from.data.z]))
@@ -268,10 +259,10 @@ impl Matrix {
         let tan_half_fov = (fov / 2.0).tan();
         let fov_factor = 1. / tan_half_fov;
         let range = near - far;
-    
+
         Matrix::from_col([
             [fov_factor / ratio, 0., 0., 0.],
-            [0., - fov_factor, 0., 0.],
+            [0., -fov_factor, 0., 0.],
             [0., 0., far / range, -1.],
             [0., 0., (far * near) / range, 0.],
         ])

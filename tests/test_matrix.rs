@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod tests {    
+mod tests {
     use rt::{Matrix, Point, Vector};
 
     #[test]
@@ -339,7 +339,7 @@ mod tests {
     fn test_shearing_xy_point() {
         let s = Matrix::shearing(1., 0., 0., 0., 0., 0.);
         let p = Point::new([2., 3., 4.]);
-        
+
         let r = Point::new([5., 3., 4.]);
 
         assert_eq!(r, s * p);
@@ -349,7 +349,7 @@ mod tests {
     fn test_shearing_xz_point() {
         let s = Matrix::shearing(0., 1., 0., 0., 0., 0.);
         let p = Point::new([2., 3., 4.]);
-        
+
         let r = Point::new([6., 3., 4.]);
 
         assert_eq!(r, s * p);
@@ -359,7 +359,7 @@ mod tests {
     fn test_shearing_yx_point() {
         let s = Matrix::shearing(0., 0., 1., 0., 0., 0.);
         let p = Point::new([2., 3., 4.]);
-        
+
         let r = Point::new([2., 5., 4.]);
 
         assert_eq!(r, s * p);
@@ -369,7 +369,7 @@ mod tests {
     fn test_shearing_yz_point() {
         let s = Matrix::shearing(0., 0., 0., 1., 0., 0.);
         let p = Point::new([2., 3., 4.]);
-        
+
         let r = Point::new([2., 7., 4.]);
 
         assert_eq!(r, s * p);
@@ -379,7 +379,7 @@ mod tests {
     fn test_shearing_zx_point() {
         let s = Matrix::shearing(0., 0., 0., 0., 1., 0.);
         let p = Point::new([2., 3., 4.]);
-        
+
         let r = Point::new([2., 3., 6.]);
 
         assert_eq!(r, s * p);
@@ -389,13 +389,13 @@ mod tests {
     fn test_shearing_zy_point() {
         let s = Matrix::shearing(0., 0., 0., 0., 0., 1.);
         let p = Point::new([2., 3., 4.]);
-        
+
         let r = Point::new([2., 3., 7.]);
 
         assert_eq!(r, s * p);
     }
 
-    #[test] 
+    #[test]
     fn test_view_matrix() {
         let from = Point::new([1., 3., 2.]);
         let to = Point::new([4., -2., 8.]);
@@ -404,10 +404,10 @@ mod tests {
         let t = Matrix::view(from, to, up);
 
         let r = Matrix::from_col([
-            [-0.50709,  0.76772, -0.35857, 0.00000],
-            [ 0.50709,  0.60609,  0.59761, 0.00000],
-            [ 0.67612,  0.12122, -0.71714, 0.00000],
-            [-2.36643, -2.82843,  0.00000, 1.00000],
+            [-0.50709, 0.76772, -0.35857, 0.00000],
+            [0.50709, 0.60609, 0.59761, 0.00000],
+            [0.67612, 0.12122, -0.71714, 0.00000],
+            [-2.36643, -2.82843, 0.00000, 1.00000],
         ]);
 
         assert_eq!(r, t);

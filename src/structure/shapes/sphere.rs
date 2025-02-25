@@ -1,8 +1,7 @@
+use crate::Intersect;
 use crate::LocalHit;
 use crate::Point;
 use crate::Ray;
-use crate::Intersect;
-use crate::SubPoint;
 use crate::Vector;
 
 #[derive(Debug, Clone)]
@@ -20,7 +19,7 @@ impl Intersect for Sphere {
     fn intersect(&self, ray: Ray) -> Option<LocalHit> {
         let center = Point::new([0., 0., 0.]);
 
-        let o = ray.origin.clone().sub(center);
+        let o = ray.origin.clone() - center;
         let d = ray.direction.clone();
         let r = self.radius;
 
@@ -51,10 +50,6 @@ impl Intersect for Sphere {
         let point = ray.position(t);
         let normal = Vector::new([point.data.x, point.data.y, point.data.z]) / r;
 
-        Some(LocalHit {
-            point,
-            normal,
-            t
-        })
+        Some(LocalHit { point, normal, t })
     }
 }

@@ -1,9 +1,9 @@
 use rt::Object;
 use rt::Point;
 use rt::Ray;
+use rt::Shape;
 use rt::Sphere;
 use rt::Vector;
-use rt::Shape;
 
 #[test]
 fn test_sphere_intersection() {
@@ -29,10 +29,13 @@ fn test_sphere_no_intersection() {
 
 #[test]
 fn test_sphere_intersection_with_translation() {
-    let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));    
+    let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
     obj.translate(Vector::new([2., 0., 2.]));
 
-    let ray = Ray::new(Point::new([0., 0., 0.]), Vector::new([1., 0., 1.]).normalize());
+    let ray = Ray::new(
+        Point::new([0., 0., 0.]),
+        Vector::new([1., 0., 1.]).normalize(),
+    );
 
     let result = obj.intersect(ray);
 
@@ -43,7 +46,10 @@ fn test_sphere_intersection_with_translation() {
 fn test_sphere_intersection_0() {
     let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
-    let ray = Ray::new(Point::new([0., 0., -5.]), Vector::new([0., 0., 1.]).normalize());
+    let ray = Ray::new(
+        Point::new([0., 0., -5.]),
+        Vector::new([0., 0., 1.]).normalize(),
+    );
     let result = obj.intersect(ray).unwrap();
     assert_eq!(result.t, 4.);
 }
@@ -52,7 +58,10 @@ fn test_sphere_intersection_0() {
 fn test_sphere_intersection_1() {
     let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
-    let ray = Ray::new(Point::new([0., 1., -5.]), Vector::new([0., 0., 1.]).normalize());
+    let ray = Ray::new(
+        Point::new([0., 1., -5.]),
+        Vector::new([0., 0., 1.]).normalize(),
+    );
     let result = obj.intersect(ray).unwrap();
     assert_eq!(result.t, 5.);
 }
@@ -61,7 +70,10 @@ fn test_sphere_intersection_1() {
 fn test_ray_miss_sphere() {
     let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
-    let ray = Ray::new(Point::new([0., 2., -5.]), Vector::new([0., 0., 1.]).normalize());
+    let ray = Ray::new(
+        Point::new([0., 2., -5.]),
+        Vector::new([0., 0., 1.]).normalize(),
+    );
     let result = obj.intersect(ray).is_none();
     assert_eq!(result, true);
 }
@@ -70,7 +82,10 @@ fn test_ray_miss_sphere() {
 fn test_ray_origin_in_sphere() {
     let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
-    let ray = Ray::new(Point::new([0., 0., 0.]), Vector::new([0., 0., 1.]).normalize());
+    let ray = Ray::new(
+        Point::new([0., 0., 0.]),
+        Vector::new([0., 0., 1.]).normalize(),
+    );
     let result = obj.intersect(ray).unwrap();
     assert_eq!(result.t, 1.);
 }
@@ -79,7 +94,10 @@ fn test_ray_origin_in_sphere() {
 fn test_ray_miss_sphere_2() {
     let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
-    let ray = Ray::new(Point::new([0., 0., 5.]), Vector::new([0., 0., 1.]).normalize());
+    let ray = Ray::new(
+        Point::new([0., 0., 5.]),
+        Vector::new([0., 0., 1.]).normalize(),
+    );
     let result = obj.intersect(ray).is_none();
     assert_eq!(result, true);
 }
@@ -88,7 +106,10 @@ fn test_ray_miss_sphere_2() {
 fn test_sphere_intersection_impact_point() {
     let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
-    let ray = Ray::new(Point::new([0., 0., 5.]), Vector::new([0., 0., 1.]).normalize());
+    let ray = Ray::new(
+        Point::new([0., 0., 5.]),
+        Vector::new([0., 0., 1.]).normalize(),
+    );
     let result = obj.intersect(ray).is_none();
     assert_eq!(result, true);
 }

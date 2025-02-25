@@ -1,5 +1,5 @@
-use rt::Color;
 use rt::utils::are_almost_equal;
+use rt::Color;
 
 #[test]
 fn test_create_color() {

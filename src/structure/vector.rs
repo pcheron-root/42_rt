@@ -97,10 +97,6 @@ impl Neg for Vector {
     type Output = Vector;
 
     fn neg(self) -> Self::Output {
-        Vector::new([
-            -self.data.x,
-            -self.data.y,
-            -self.data.z,
-        ])
+        Vector::new([-self.data.x, -self.data.y, -self.data.z])
     }
 }

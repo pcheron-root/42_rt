@@ -15,5 +15,3 @@ impl Ray {
         self.origin.clone() + self.direction.clone() * t
     }
 }
-
-

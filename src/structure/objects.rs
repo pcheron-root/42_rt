@@ -1,4 +1,4 @@
-use crate::{Intersection, Matrix, Shape, Point, Ray, Vector};
+use crate::{Intersection, Matrix, Point, Ray, Shape, Vector};
 
 #[derive(Debug, Clone)]
 pub struct Object {

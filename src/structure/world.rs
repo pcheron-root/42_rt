@@ -8,7 +8,7 @@ pub struct World {
 impl World {
     pub fn new() -> World {
         World {
-            objects: Vec::new()
+            objects: Vec::new(),
         }
     }
 
@@ -18,7 +18,7 @@ impl World {
 
     pub fn intersect(&self, ray: Ray) -> Option<Intersection> {
         let mut closest_intersection = None;
-        
+
         for object in &self.objects {
             let intersection = object.intersect(ray.clone());
 

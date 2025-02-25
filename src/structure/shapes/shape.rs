@@ -1,7 +1,7 @@
+use crate::Intersect;
+use crate::LocalHit;
 use crate::Ray;
 use crate::Sphere;
-use crate::LocalHit;
-use crate::Intersect;
 
 #[derive(Debug, Clone)]
 pub enum Shape {

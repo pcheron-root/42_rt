@@ -1,5 +1,5 @@
-use crate::{Point, Vector};
 use crate::utils::lerp;
+use crate::{Point, Vector};
 
 pub struct Camera {
     pub target: Point,
@@ -12,7 +12,14 @@ pub struct Camera {
 }
 
 impl Camera {
-    pub fn new(position: Point, direction: Vector, aspect: f32, fov: f32, near: f32, far: f32) -> Camera {
+    pub fn new(
+        position: Point,
+        direction: Vector,
+        aspect: f32,
+        fov: f32,
+        near: f32,
+        far: f32,
+    ) -> Camera {
         Camera {
             target: position.clone(),
             position,
@@ -20,7 +27,7 @@ impl Camera {
             aspect,
             fov,
             near,
-            far
+            far,
         }
     }
 

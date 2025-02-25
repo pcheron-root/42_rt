@@ -1,7 +1,7 @@
 use crate::Tuple;
 
-use std::ops::{Add, Sub, Mul};
 use std::convert::Into;
+use std::ops::{Add, Mul, Sub};
 
 #[derive(Debug, Clone)]
 pub struct Color {
@@ -14,7 +14,7 @@ impl Color {
             data[0].clamp(0., 1.),
             data[1].clamp(0., 1.),
             data[2].clamp(0., 1.),
-            2.0
+            2.0,
         );
 
         Self { data }
@@ -38,7 +38,7 @@ impl Into<u32> for Color {
         let r: u32 = (self.data.x.clamp(0.0, 1.0) * 255.0) as u32;
         let g = (self.data.y.clamp(0.0, 1.0) * 255.0) as u32;
         let b = (self.data.z.clamp(0.0, 1.0) * 255.0) as u32;
-    
+
         (r << 16) | (g << 8) | (b << 0)
     }
 }
@@ -48,7 +48,7 @@ impl From<u32> for Color {
         let r = ((value >> 16) & 0xFF) as f32 / 255.0;
         let g = ((value >> 8) & 0xFF) as f32 / 255.0;
         let b = ((value >> 0) & 0xFF) as f32 / 255.0;
-        
+
         Color::new([r, g, b])
     }
 }
@@ -84,7 +84,7 @@ impl Mul<f32> for Color {
         Color::new([
             (self.data.x * rhs).clamp(0., 1.),
             (self.data.y * rhs).clamp(0., 1.),
-            (self.data.z * rhs).clamp(0., 1.)
+            (self.data.z * rhs).clamp(0., 1.),
         ])
     }
 }
@@ -100,4 +100,3 @@ impl Mul for Color {
         ])
     }
 }
-

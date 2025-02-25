@@ -1,8 +1,6 @@
-
 #[cfg(test)]
 mod tests {
     use rt::{Point, Ray, Vector};
-
 
     #[test]
     fn test_position_ray_0() {
@@ -36,5 +34,4 @@ mod tests {
         assert_eq!(result.data.y, 3.0);
         assert_eq!(result.data.z, 4.0);
     }
-
 }

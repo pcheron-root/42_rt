@@ -1,5 +1,5 @@
 use crate::constants::EPSILON;
-use std::ops::{Sub, Add, Mul};
+use std::ops::{Add, Mul, Sub};
 
 pub fn are_almost_equal(x: f32, y: f32) -> bool {
     (x - y).abs() < EPSILON
