@@ -28,7 +28,7 @@ impl Object {
     }
 
     pub fn translate(&mut self, vector: Vector) {
-        self.position = self.position + vector;
+        self.position = self.position.clone() + vector;
 
         self.update();
     }
@@ -64,13 +64,13 @@ impl Object {
 
     pub fn intersect(&self, ray: Ray) -> Option<Intersection> {
         // Transform ray to local space
-        let local_ray = self.world_to_local * ray;
+        let local_ray = self.world_to_local.clone() * ray.clone();
 
         // Delegate to shape's local-space intersection logic
         if let Some(local_hit) = self.shape.intersect(local_ray) {
             // Transform hit data back to WORLD space
-            let world_point: Point = self.local_to_world * local_hit.point;
-            let world_normal: Vector = self.local_to_world * local_hit.normal;
+            let world_point: Point = self.local_to_world.clone() * local_hit.point;
+            let world_normal: Vector = self.local_to_world.clone() * local_hit.normal;
 
             Some(Intersection {
                 hit_normal: -(ray.direction),

@@ -32,6 +32,7 @@ impl Canvas {
     pub fn at_mut(&mut self, x: usize, y: usize) -> &mut Color {
         if x < self.width && y < self.height {
             let index = y * self.width + x;
+            
             &mut self.pixels[index]
 
         } else {
@@ -42,7 +43,8 @@ impl Canvas {
     pub fn at(&self, x: usize, y: usize) -> Color {
         if x < self.width && y < self.height {
             let index = y * self.width + x;
-            self.pixels[index]
+            
+            self.pixels[index].clone()
 
         } else {
             panic!("");
@@ -52,7 +54,7 @@ impl Canvas {
     pub fn pixels(&self) -> Vec<u32> {
         self.pixels
             .iter()
-            .map(|c| (*c).into())
+            .map(|c| c.clone().into())
             .collect()
     }
 

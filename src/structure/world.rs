@@ -20,7 +20,7 @@ impl World {
         let mut closest_intersection = None;
         
         for object in &self.objects {
-            let intersection = object.intersect(ray);
+            let intersection = object.intersect(ray.clone());
 
             if intersection.is_some() {
                 if closest_intersection.is_none() {

@@ -2,7 +2,7 @@ use crate::constants::EPSILON;
 use crate::{Point, Ray, Vector, SubPoint};
 use std::ops::{Index, IndexMut, Mul, MulAssign};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Matrix {
     pub data: [[f32; 4]; 4],
 }
@@ -74,8 +74,8 @@ impl Mul<Ray> for Matrix {
 
     fn mul(self, rhs: Ray) -> Self::Output {
         Ray {
-            origin: self * rhs.origin,
-            direction: self * rhs.direction,
+            origin: self.clone() * rhs.origin,
+            direction: self.clone() * rhs.direction,
         }
     }
 }
@@ -245,7 +245,7 @@ impl Matrix {
         to: Point,
         up: Vector,
     ) -> Matrix {
-        let forward = (to.sub(from)).normalize();
+        let forward = (to.sub(from.clone())).normalize();
         let left = forward.cross(&up.normalize()).normalize();
         let up = left.cross(&forward).normalize();
     

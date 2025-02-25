@@ -125,8 +125,8 @@ mod tests {
 
         let i = Matrix::identity();
 
-        assert_eq!(m, i * m);
-        assert_eq!(m, m * i);
+        assert_eq!(m, i.clone() * m.clone());
+        assert_eq!(m, m.clone() * i.clone());
     }
 
     #[test]
@@ -212,7 +212,7 @@ mod tests {
 
         let v = Vector::new([-3., 4., 5.]);
 
-        assert_eq!(v, t * v);
+        assert_eq!(v, t * v.clone());
     }
 
     #[test]

@@ -17,7 +17,7 @@ pub use structure::color::Color;
 pub use structure::canvas::Canvas;
 pub use structure::camera::Camera;
 pub use structure::world::World;
+pub use structure::renderer::Renderer;
+pub use structure::point::SubPoint;
 
 pub use traits::intersect::Intersect;
-
-pub use structure::point::SubPoint;

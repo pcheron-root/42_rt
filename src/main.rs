@@ -1,3 +1,4 @@
+use rt::Renderer;
 use rt::World;
 use rt::Camera;
 use rt::Color;
@@ -11,15 +12,15 @@ use rt::Canvas;
 use rt::Shape;
 use rt::SubPoint;
 
-use std::time::Duration;
+// use std::time::Duration;
 
-use minifb::{Window, WindowOptions, Key};
+use minifb::{Window, WindowOptions};
 
-pub fn render(canvas: &mut Canvas, world: &World, camera: &Camera) {
+pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
     
     let view = Matrix::view(
-        camera.position,
-        camera.position + camera.direction,
+        camera.position.clone(),
+        camera.position.clone() + camera.direction.clone(),
         Vector::new([0., 1., 0.])
     );
 
@@ -39,10 +40,10 @@ pub fn render(canvas: &mut Canvas, world: &World, camera: &Camera) {
         for x in 0..canvas.width {
             let ndc_x = 2.0 * (x as f32 + 0.5) / canvas.width as f32 - 1.0;
             
-            let origin = inv_view_proj * Point::new([ndc_x, ndc_y, -1.0]);
-            let target = inv_view_proj * Point::new([ndc_x, ndc_y, 1.0]);
+            let origin = inv_view_proj.clone() * Point::new([ndc_x, ndc_y, -1.0]);
+            let target = inv_view_proj.clone() * Point::new([ndc_x, ndc_y, 1.0]);
             
-            let direction = (target.sub(origin)).normalize();
+            let direction = (target.sub(origin.clone())).normalize();
             
             let ray = Ray::new(Point::new([origin.data.x, origin.data.y, origin.data.z]), direction);
             
@@ -57,9 +58,9 @@ pub fn render(canvas: &mut Canvas, world: &World, camera: &Camera) {
 
 fn main() {
 
-    let mut size = (300, 300);
+    let size = (300, 300);
 
-    let mut window = Window::new(
+    let window = Window::new(
         "RT",
         size.0,
         size.1,
@@ -69,9 +70,9 @@ fn main() {
         },
     ).unwrap();
 
-    let mut canvas = Canvas::new(size.0, size.1);
+    let canvas = Canvas::new(size.0, size.1);
 
-    let mut camera = Camera::new(
+    let camera = Camera::new(
         Point::new([0., 0., 5.]),
         Vector::new([0., 0., -1.]),
         size.0 as f32 / size.1 as f32,
@@ -89,49 +90,13 @@ fn main() {
     let mut world = World::new();
     world.add_object(s1);
     world.add_object(s2);
-    
-    while window.is_open() {
 
-        if window.is_key_down(Key::Escape) {
-            break;
-        }
+    let mut renderer = Renderer::new(
+        window,
+        canvas,
+        world,
+        camera
+    );
 
-        let current_size = window.get_size();
-
-        if size != current_size {
-            size = current_size;
-
-            canvas.resize(size.0, size.1);
-            camera.resize(size.0 as f32 / size.1 as f32);
-
-            size = (current_size.0, current_size.1);
-        }
-
-        if window.is_key_down(Key::A) {
-            camera.translate(Vector::new([-1., 0., 0.]));
-        }
-        if window.is_key_down(Key::D) {
-            camera.translate(Vector::new([1., 0., 0.]));
-        }
-        if window.is_key_down(Key::W) {
-            camera.translate(Vector::new([0., 0., -1.]));
-        }
-        if window.is_key_down(Key::S) {
-            camera.translate(Vector::new([0., 0., 1.]));
-        }
-
-        camera.update();
-
-        render(&mut canvas, &world, &camera);
-
-        let buffer = canvas.pixels();
-
-        window.update_with_buffer(
-            &buffer,
-            size.0,
-            size.1
-        ).unwrap();
-
-        std::thread::sleep(Duration::from_millis(16));
-    }
+    renderer.render(draw);
 }

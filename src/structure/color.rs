@@ -3,7 +3,7 @@ use crate::Tuple;
 use std::ops::{Add, Sub, Mul};
 use std::convert::Into;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Color {
     pub data: Tuple,
 }

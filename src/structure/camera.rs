@@ -14,7 +14,7 @@ pub struct Camera {
 impl Camera {
     pub fn new(position: Point, direction: Vector, aspect: f32, fov: f32, near: f32, far: f32) -> Camera {
         Camera {
-            target: position,
+            target: position.clone(),
             position,
             direction,
             aspect,
@@ -29,7 +29,7 @@ impl Camera {
     }
 
     pub fn translate(&mut self, vector: Vector) {
-        self.target = self.position + vector;
+        self.target = self.position.clone() + vector;
     }
 
     pub fn update(&mut self) {
