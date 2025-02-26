@@ -1,11 +1,8 @@
 
-use crate::Color;
+use crate::{Color, Point};
 
 pub struct Light {
+    pub position: Point,
     pub color: Color,
-    pub entensity: f32,
-}
-
-impl Light {
-
+    pub intensity: Color,
 }

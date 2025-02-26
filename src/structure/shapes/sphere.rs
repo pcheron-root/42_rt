@@ -19,7 +19,7 @@ impl Shape for Sphere {
     fn intersect(&self, ray: &Ray) -> Option<Intersection> {
         let center = Point::new([0., 0., 0.]);
 
-        let o = ray.origin.sub(center);
+        let o = ray.origin - center;
         let d = ray.direction;
         let r = self.radius;
 

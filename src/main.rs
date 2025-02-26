@@ -1,3 +1,4 @@
+use rt::structure::light::Light;
 use rt::Color;
 // use rt::structure::canvas::Canvas;
 use rt::Object;
@@ -7,7 +8,9 @@ use rt::Sphere;
 use rt::Vector;
 use rt::Canvas;
 
-use rt::SubPoint;
+// use rt::SubPoint;
+
+// lighting(material: &Material, light: &Light, point: &Point, eyev: &Vector, normalv: &Vector)
 
 pub fn main_loop(canvas: &mut Canvas) { 
 
@@ -18,19 +21,28 @@ pub fn main_loop(canvas: &mut Canvas) {
 
     let mut obj = Object::new(Box::new(Sphere::new(1.)));
     let scale_v = Vector::new([1., 0.5, 1.]);
-    obj.scale(&scale_v);
-    let red = Color::new([1., 0., 0.]);
+    // obj.scale(&scale_v);
+    // let red = Color::new([1., 0., 0.]);
+
+    let light = Light {
+        position: Point::new([0.,-6.,-6.]),
+        color: Color::new([1.,1.,1.]),
+        intensity: Color::new([0.7, 0.7, 0.7]),
+    };
 
     for y in 0..canvas.width - 1 {
         let world_y = -half + pixel_size * y as f32;
-        for x in 0..canvas.height - 1 {
+        for x in 0..canvas.height {
             let world_x = -half + pixel_size * x as f32;
             let position = Point::new([world_x, world_y, wall_z]);
-            let r = Ray::new(canvas.camera_origin, (position.sub(canvas.camera_origin)).normalize());
+            let r = Ray::new(canvas.camera_origin, (position - canvas.camera_origin).normalize());
         
             let result = obj.intersect(&r);
             if result.is_some() {
-                canvas.write_pixel(x, y, red);
+                let intersect = result.unwrap();
+                let color = canvas.lighting(&obj.material, &light, &intersect.point, &(r.direction * -1.), &intersect.normal);
+                
+                canvas.write_pixel(x, y, color);
             }
             
         }
