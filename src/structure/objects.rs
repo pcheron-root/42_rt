@@ -8,11 +8,23 @@ pub struct Intersection {
 
 pub struct Material {
     pub shininess: f32, // between 10 and 200
-    pub specular: f32, // between 0 and 1
-
+    
     pub color: Color,
-    pub ambient: Color,
-    pub diffuse: Color,
+    pub ambient: f32, // between 0 and 1
+    pub diffuse: f32, // between 0 and 1
+    pub specular: f32, // between 0 and 1
+}
+
+impl Material {
+    pub fn new() -> Self {
+        let shininess = 200.;
+        let color = Color::new([1., 1., 1.,]);
+        let ambient = 0.1;
+        let diffuse = 0.9;
+        let specular = 0.9;
+
+        Self { shininess, specular, color, ambient, diffuse }
+    }
 }
 
 pub struct Object {
@@ -31,13 +43,7 @@ pub struct Object {
 impl Object {
     pub fn new(shape: Box<dyn Shape>) -> Object {
         Object {
-            material: Material{
-                specular: 0.9,
-                shininess: 100.0,
-                color: Color::new([1., 0., 1.]),
-                ambient: Color::new([0.1, 0., 0.1]),
-                diffuse: Color::new([0.7, 0., 0.7]),
-            },
+            material: Material::new(),
             position: Point::new([0., 0., 0.]),
             pitch: 0.,
             yaw: 0.,

@@ -13,6 +13,8 @@ pub use structure::tuple::Tuple;
 pub use structure::vector::Vector;
 pub use structure::color::Color;
 pub use structure::canvas::Canvas;
+pub use structure::light::Light;
+pub use structure::objects::Material;
 
 pub use traits::shape::Shape;
 
