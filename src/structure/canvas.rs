@@ -130,6 +130,36 @@ impl Canvas {
         ambient + diffuse + specular
     }
 
+    pub fn lighting_ext(material: &Material, light: &Light, point: &Point, eyev: &Vector, normalv: &Vector) -> Color {
+        let effective_color = material.color * light.intensity;
+        let lightv = (light.position - *point).normalize();
+
+        let ambient = effective_color * material.ambient;
+        let light_dot_normal = lightv.dot(normalv);
+
+        let diffuse;
+        let specular;
+        if light_dot_normal < 0. {
+            diffuse = Color::new([0., 0., 0.]);
+            specular = Color::new([0., 0., 0.]);
+        }
+        else {
+            diffuse = effective_color * material.diffuse * light_dot_normal;
+            let reflectv = (lightv * -1.).reflect(normalv);
+            let reflect_dot_eye = reflectv.dot(eyev);
+
+            if reflect_dot_eye <= 0. {
+                specular = Color::new([0., 0., 0.]);
+            }
+            else {
+                let factor = reflect_dot_eye.powf(material.shininess);
+                specular = light.intensity * material.specular * factor;
+            }
+            
+        }
+        ambient + diffuse + specular
+    }
+
 }
 
 

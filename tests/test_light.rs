@@ -43,10 +43,7 @@ mod tests {
             intensity: Color::new([1., 1., 1.]),
         };
 
-        
-        let canvas = Canvas::new(500, 500, position, 7.);
-
-        let result = canvas.lighting(&m, &light, &position, &eyev, &normalv);
+        let result = Canvas::lighting_ext(&m, &light, &position, &eyev, &normalv);
 
         assert_eq!(result.red(), 1.9);
         assert_eq!(result.green(), 1.9);
@@ -68,10 +65,7 @@ mod tests {
             intensity: Color::new([1., 1., 1.]),
         };
 
-        
-        let canvas = Canvas::new(500, 500, position, 7.);
-
-        let result = canvas.lighting(&m, &light, &position, &eyev, &normalv);
+        let result = Canvas::lighting_ext(&m, &light, &position, &eyev, &normalv);
 
         assert_eq!(result.red(), 1.);
         assert_eq!(result.green(), 1.);
@@ -93,10 +87,7 @@ mod tests {
             intensity: Color::new([1., 1., 1.]),
         };
 
-        
-        let canvas = Canvas::new(500, 500, position, 7.);
-
-        let result = canvas.lighting(&m, &light, &position, &eyev, &normalv);
+        let result = Canvas::lighting_ext(&m, &light, &position, &eyev, &normalv);
 
         assert_eq!(result.red(), 0.7363961);
         assert_eq!(result.green(), 0.7363961);
@@ -118,10 +109,7 @@ mod tests {
             intensity: Color::new([1., 1., 1.]),
         };
 
-        
-        let canvas = Canvas::new(500, 500, position, 7.);
-
-        let result = canvas.lighting(&m, &light, &position, &eyev, &normalv);
+        let result = Canvas::lighting_ext(&m, &light, &position, &eyev, &normalv);
 
         assert_eq!(result.red(), 1.6363853);
         assert_eq!(result.green(), 1.6363853);
@@ -143,10 +131,7 @@ mod tests {
             intensity: Color::new([1., 1., 1.]),
         };
 
-        
-        let canvas = Canvas::new(500, 500, position, 7.);
-
-        let result = canvas.lighting(&m, &light, &position, &eyev, &normalv);
+        let result = Canvas::lighting_ext(&m, &light, &position, &eyev, &normalv);
 
         assert_eq!(result.red(), 0.1);
         assert_eq!(result.green(), 0.1);
