@@ -90,7 +90,7 @@ impl Mul<Point> for Matrix {
         let w = rhs.x * self[0][3] + rhs.y * self[1][3] + rhs.z * self[2][3] + rhs.w * self[3][3];
 
         if w != 0.0 {
-            Point::new(x / w, y / w, z / w)
+            Point::new(x, y, z) / w
         } else {
             Point::new(x, y, z)
         }

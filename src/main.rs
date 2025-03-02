@@ -48,7 +48,7 @@ pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
                     &hit.object.material,
                     &world.light,
                     &hit.point,
-                    &(ray.direction * -1.),
+                    &(-ray.direction),
                     &hit.normal,
                 );
 

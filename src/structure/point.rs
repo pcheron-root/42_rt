@@ -1,6 +1,6 @@
 use crate::constants::EPSILON;
 use crate::Vector;
-use std::ops::{Add, Sub};
+use std::ops::{Add, Div, Sub};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Point {
@@ -37,10 +37,18 @@ impl Sub for Point {
 }
 
 impl Sub<Vector> for Point {
-    type Output = Self;
+    type Output = Point;
 
     fn sub(self, other: Vector) -> Self::Output {
         Point::new(self.x - other.x, self.y - other.y, self.z - other.z)
+    }
+}
+
+impl Div<f32> for Point {
+    type Output = Point;
+
+    fn div(self, rhs: f32) -> Self::Output {
+        Point::new(self.x / rhs, self.y / rhs, self.z / rhs)
     }
 }
 
