@@ -115,7 +115,7 @@ impl Canvas {
         }
         else {
             diffuse = effective_color * material.diffuse * light_dot_normal;
-            let reflectv = (lightv * -1.).reflect(eyev);
+            let reflectv = (lightv * -1.).reflect(normalv);
             let reflect_dot_eye = reflectv.dot(eyev);
 
             if reflect_dot_eye <= 0. {
@@ -127,7 +127,6 @@ impl Canvas {
             }
             
         }
-
         ambient + diffuse + specular
     }
 

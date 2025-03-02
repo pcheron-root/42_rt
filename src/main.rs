@@ -20,19 +20,24 @@ pub fn main_loop(canvas: &mut Canvas) {
     let half = canvas.wall / 2.;
 
     let mut obj = Object::new(Box::new(Sphere::new(1.)));
-    let scale_v = Vector::new([1., 0.5, 1.]);
+    // let scale_v = Vector::new([1., 0.5, 1.]); // transfo
     // obj.scale(&scale_v);
     // let red = Color::new([1., 0., 0.]);
+    obj.material.color = Color::new([1., 0.2, 1.]);
 
     let light = Light {
-        position: Point::new([0.,-6.,-6.]),
+        position: Point::new([-10., 10.,-10.]),
         color: Color::new([1.,1.,1.]),
-        intensity: Color::new([0.7, 0.7, 0.7]),
+        intensity: Color::new([1., 1., 1.]),
     };
 
-    for y in 0..canvas.width - 1 {
-        let world_y = -half + pixel_size * y as f32;
-        for x in 0..canvas.height {
+    // y == 0
+    // 100
+    // -50 
+
+    for y in 0..canvas.height {
+        let world_y = half - pixel_size * y as f32;
+        for x in 0..canvas.width {
             let world_x = -half + pixel_size * x as f32;
             let position = Point::new([world_x, world_y, wall_z]);
             let r = Ray::new(canvas.camera_origin, (position - canvas.camera_origin).normalize());

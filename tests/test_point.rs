@@ -1,4 +1,4 @@
-use rt::{Point, SubPoint, Vector};
+use rt::{Point, Vector};
 
 #[test]
 fn test_create_point() {

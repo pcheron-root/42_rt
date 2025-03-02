@@ -2,7 +2,6 @@ use crate::Intersection;
 use crate::Point;
 use crate::Ray;
 use crate::Shape;
-use crate::SubPoint;
 use crate::Vector;
 
 pub struct Sphere {
