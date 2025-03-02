@@ -1,19 +1,24 @@
-use crate::{Intersection, Object, Ray};
+use crate::{Color, Intersection, Light, Object, Point, Ray};
 
 pub struct World {
     pub objects: Vec<Object>,
-    // pub lights: Vec<Light>,
+    pub light: Light,
 }
 
 impl World {
     pub fn new() -> World {
         World {
+            light: Light::new(Point::new([100., 100., 0.]), Color::new([1., 1., 1.])),
             objects: Vec::new(),
         }
     }
 
     pub fn add_object(&mut self, object: Object) {
         self.objects.push(object);
+    }
+
+    pub fn add_light(&mut self, light: Light) {
+        self.light = light;
     }
 
     pub fn intersect(&self, ray: Ray) -> Option<Intersection> {

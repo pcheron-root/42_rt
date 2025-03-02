@@ -11,3 +11,4 @@ pub mod shapes;
 pub mod tuple;
 pub mod vector;
 pub mod world;
+pub mod light;

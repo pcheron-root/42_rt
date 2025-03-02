@@ -3,7 +3,7 @@ use crate::Tuple;
 
 use std::ops::{Add, Div, Mul, Neg, Sub};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Vector {
     pub data: Tuple,
 }
@@ -38,6 +38,10 @@ impl Vector {
             self.data.z * other.data.x - self.data.x * other.data.z,
             self.data.x * other.data.y - self.data.y * other.data.x,
         ])
+    }
+
+    pub fn reflect(&self, normal: &Vector) -> Vector {
+        self.clone() - normal.clone() * 2. * self.dot(normal)
     }
 }
 

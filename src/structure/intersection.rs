@@ -6,7 +6,7 @@ pub struct LocalHit {
     pub t: f32,
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Intersection {
     pub object: Object,
     pub t: f32,

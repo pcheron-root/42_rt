@@ -19,8 +19,8 @@ impl Intersect for Sphere {
     fn intersect(&self, ray: Ray) -> Option<LocalHit> {
         let center = Point::new([0., 0., 0.]);
 
-        let o = ray.origin.clone() - center;
-        let d = ray.direction.clone();
+        let o = ray.origin - center;
+        let d = ray.direction;
         let r = self.radius;
 
         let a = d.dot(&d);

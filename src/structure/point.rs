@@ -3,7 +3,7 @@ use crate::Tuple;
 use crate::Vector;
 use std::ops::{Add, Sub};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Point {
     pub data: Tuple,
 }

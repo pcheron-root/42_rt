@@ -1,7 +1,7 @@
 use crate::constants::EPSILON;
 use std::ops::{Add, Div, Mul, Neg, Sub};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Tuple {
     pub x: f32,
     pub y: f32,
