@@ -35,8 +35,10 @@ pub trait SubPoint {
     fn sub(self, other: Self) -> Vector;
 }
 
-impl SubPoint for Point {
-    fn sub(self, other: Self) -> Vector {
+impl Sub for Point {
+    type Output = Vector;
+
+    fn sub(self, other: Point) -> Self::Output {
         Vector::new([
             self.data.x - other.data.x,
             self.data.y - other.data.y,

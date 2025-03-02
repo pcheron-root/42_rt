@@ -2,7 +2,6 @@ use crate::Intersection;
 use crate::Point;
 use crate::Ray;
 use crate::Shape;
-use crate::SubPoint;
 use crate::Vector;
 
 pub struct Sphere {
@@ -19,7 +18,7 @@ impl Shape for Sphere {
     fn intersect(&self, ray: &Ray) -> Option<Intersection> {
         let center = Point::new([0., 0., 0.]);
 
-        let o = ray.origin.sub(center);
+        let o = ray.origin - center;
         let d = ray.direction;
         let r = self.radius;
 

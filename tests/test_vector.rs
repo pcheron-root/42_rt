@@ -132,3 +132,15 @@ fn test_cross_product_vector_2() {
     assert_eq!(result.data.y, -2.0);
     assert_eq!(result.data.z, 1.0);
 }
+
+#[test]
+fn test_reflect_vector() {
+    let v_a = Vector::new([1.0, -1.0, 0.0]);
+    let v_b = Vector::new([0.0, 1.0, 0.0]);
+
+    let result = v_a.reflect(&v_b);
+    assert_eq!(result.data.x, 1.0);
+    assert_eq!(result.data.y, 1.0);
+    assert_eq!(result.data.z, 0.0);
+}
+

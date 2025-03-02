@@ -1,4 +1,4 @@
-use crate::{Matrix, Point, Ray, Shape, Vector};
+use crate::{Matrix, Point, Ray, Shape, Vector, Color};
 
 pub struct Intersection {
     pub point: Point,
@@ -6,7 +6,29 @@ pub struct Intersection {
     pub t: f32,
 }
 
+pub struct Material {
+    pub shininess: f32, // between 10 and 200
+    
+    pub color: Color,
+    pub ambient: f32, // between 0 and 1
+    pub diffuse: f32, // between 0 and 1
+    pub specular: f32, // between 0 and 1
+}
+
+impl Material {
+    pub fn new() -> Self {
+        let shininess = 200.;
+        let color = Color::new([1., 1., 1.,]);
+        let ambient = 0.1;
+        let diffuse = 0.9;
+        let specular = 0.9;
+
+        Self { shininess, specular, color, ambient, diffuse }
+    }
+}
+
 pub struct Object {
+    pub material: Material,
     pub position: Point,
     pub pitch: f32,
     pub yaw: f32,
@@ -21,6 +43,7 @@ pub struct Object {
 impl Object {
     pub fn new(shape: Box<dyn Shape>) -> Object {
         Object {
+            material: Material::new(),
             position: Point::new([0., 0., 0.]),
             pitch: 0.,
             yaw: 0.,
