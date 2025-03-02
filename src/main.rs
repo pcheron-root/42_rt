@@ -27,7 +27,6 @@ pub fn main_loop(canvas: &mut Canvas) {
 
     let light = Light {
         position: Point::new([-10., 10.,-10.]),
-        color: Color::new([1.,1.,1.]),
         intensity: Color::new([1., 1., 1.]),
     };
 

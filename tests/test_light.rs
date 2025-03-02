@@ -8,12 +8,10 @@ mod tests {
     #[test]
     fn test_light_pos_and_intensity() {
         let intensity = Color::new([1., 1., 1.]);
-        let color = Color::new([1., 1., 1.]);
         let position = Point::new([0., 0., 0.]);
 
         let light = Light{
             position: position,
-            color: color,
             intensity: intensity,
         };
         assert_eq!(light.position.data.x, 0.);
@@ -22,9 +20,6 @@ mod tests {
         assert_eq!(light.intensity.data.x, 1.);
         assert_eq!(light.intensity.data.y, 1.);
         assert_eq!(light.intensity.data.z, 1.);
-        assert_eq!(light.color.data.x, 1.);
-        assert_eq!(light.color.data.y, 1.);
-        assert_eq!(light.color.data.z, 1.);
     }
 
     // p 106
@@ -39,7 +34,6 @@ mod tests {
 
         let light = Light {
             position: Point::new([0., 0., -10.]),
-            color: Color::new([1., 1., 1.]),
             intensity: Color::new([1., 1., 1.]),
         };
 
@@ -61,7 +55,6 @@ mod tests {
 
         let light = Light {
             position: Point::new([0., 0., -10.]),
-            color: Color::new([1., 1., 1.]),
             intensity: Color::new([1., 1., 1.]),
         };
 
@@ -83,7 +76,6 @@ mod tests {
 
         let light = Light {
             position: Point::new([0., 10., -10.]),
-            color: Color::new([1., 1., 1.]),
             intensity: Color::new([1., 1., 1.]),
         };
 
@@ -105,7 +97,6 @@ mod tests {
 
         let light = Light {
             position: Point::new([0., 10., -10.]),
-            color: Color::new([1., 1., 1.]),
             intensity: Color::new([1., 1., 1.]),
         };
 
@@ -127,7 +118,6 @@ mod tests {
 
         let light = Light {
             position: Point::new([0., 0., 10.]),
-            color: Color::new([1., 1., 1.]),
             intensity: Color::new([1., 1., 1.]),
         };
 

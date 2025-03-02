@@ -2,6 +2,7 @@ pub mod constants;
 pub mod structure;
 pub mod traits;
 pub mod utils;
+pub mod light_utils;
 
 pub use structure::matrix::Matrix;
 pub use structure::objects::Intersection;
