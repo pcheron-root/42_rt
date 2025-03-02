@@ -7,7 +7,10 @@ pub struct Light {
 }
 
 impl Light {
-    pub fn new(position: Point, intensity: Color) -> Self {
-        Self { position, intensity }
+    pub fn new(position: Point, intensity: Color) -> Light {
+        Light {
+            position,
+            intensity,
+        }
     }
 }

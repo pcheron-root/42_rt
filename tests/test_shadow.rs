@@ -1,90 +1,117 @@
 
 #[cfg(test)]
 mod tests {
-    use rt::{light_utils::is_shadowed, Canvas, Color, Light, Point, Vector};
-
-
-    // #[test]
-    // fn test_light_surface_in_shadow() {
-
-    //     let eyev = Vector::new([0., 0., -1.]);
-    //     let normalv = Vector::new([0., 0., -1.]);
-
-    //     let light = Light { position: Point::new([0., 0., -10.]), intensity: Color::new([1., 1., 1.]),};
-    
-    //     let in_shadow = true;
-
-    //     // let result = Canvas::lighting_ext(material, light, point, eyev, normalv)
-    // }
+    use rt::{light_utils::{is_shadowed, shade_it}, structure::point, Color, Light, Object, Point, Ray, Shape, Sphere, Vector, World};
 
     #[test]
     fn test_light_surface_in_shadow_0() {
+        let mut w = World::new();
+        let sphere = Object::new(
+            Shape::Sphere(Sphere::new(1.))
+        );
+        w.add_object(sphere);
+        let light = Light {
+            position: Point::new([0., 0., -10.]),
+            intensity: Color::new([1., 1., 1.]),
 
-        let eyev = Vector::new([0., 0., -1.]);
-        let normalv = Vector::new([0., 0., -1.]);
-
-        let light = Light { position: Point::new([0., 0., -10.]), intensity: Color::new([1., 1., 1.]),};
-    
-
-        // let w = 
-
+        };
+        w.add_light(light);
         let p = Point::new([0., 10., 0.]);
+        assert_eq!(is_shadowed(&w, &p), false);
+    }
+    
+    #[test]
+    fn test_light_surface_in_shadow_1() {
+        
+        let mut w = World::new();
+        let sphere = Object::new(
+            Shape::Sphere(Sphere::new(1.))
+        );
+        w.add_object(sphere);
+        let light = Light {
+            position: Point::new([-10., 10., -10.]),
+            intensity: Color::new([1., 1., 1.]),
+            
+        };
+        w.add_light(light);
+        
+        let p = Point::new([10., -10., 10.]);
+        assert_eq!(is_shadowed(&w, &p), true);
+        
+    }
+    
+    #[test]
+    fn test_light_surface_in_shadow_2() {
+        let mut w = World::new();
+        let sphere = Object::new(
+            Shape::Sphere(Sphere::new(1.))
+        );
+        w.add_object(sphere);
+        let light = Light {
+            position: Point::new([10., -10., 10.]),
+            intensity: Color::new([1., 1., 1.]),
 
+        };
+        w.add_light(light);
+
+        let p = Point::new([20., -20., 20.]);
         assert_eq!(is_shadowed(&w, &p), false);
     }
 
-    // Scenario: The shadow when an object is between the point and the light
-    // Given w ← default_world()
-    // And p ← point(10, -10, 10)
-    // Then is_shadowed(w, p) is true
-
     #[test]
-    fn test_light_surface_in_shadow() {
+    fn test_light_surface_in_shadow_3() {
+        let mut w = World::new();
+        let sphere = Object::new(
+            Shape::Sphere(Sphere::new(1.))
+        );
+        w.add_object(sphere);
+        let light = Light {
+            position: Point::new([10., -10., 10.]),
+            intensity: Color::new([1., 1., 1.]),
 
-        let eyev = Vector::new([0., 0., -1.]);
-        let normalv = Vector::new([0., 0., -1.]);
+        };
+        w.add_light(light);
 
-        let light = Light { position: Point::new([0., 0., -10.]), intensity: Color::new([1., 1., 1.]),};
-    
-        let in_shadow = true;
-
-        // let result = Canvas::lighting_ext(material, light, point, eyev, normalv)
+        let p = Point::new([2., -2., 2.]);
+        assert_eq!(is_shadowed(&w, &p), false);
     }
 
-    // Scenario: There is no shadow when an object is behind the light
-    // Given w ← default_world()
-    // And p ← point(-20, 20, -20)
-    // Then is_shadowed(w, p) is false
-
+    // p133
     #[test]
-    fn test_light_surface_in_shadow() {
+    fn test_rendering_shadow() {
+        let mut w = World::new();
+        let sphere1 = Object::new(
+            Shape::Sphere(Sphere::new(1.))
+        );
+        let mut sphere2 = Object::new(
+            Shape::Sphere(Sphere::new(1.))
+        );
+        sphere2.translate(Vector::new([0., 0., 10.]));
+        w.add_object(sphere1);
+        w.add_object(sphere2);
+        let light = Light {
+            position: Point::new([0., 0., -10.]),
+            intensity: Color::new([1., 1., 1.]),
 
-        let eyev = Vector::new([0., 0., -1.]);
-        let normalv = Vector::new([0., 0., -1.]);
+        };
+        w.add_light(light);
 
-        let light = Light { position: Point::new([0., 0., -10.]), intensity: Color::new([1., 1., 1.]),};
-    
-        let in_shadow = true;
+        let r = Ray {
+            origin: Point::new([0., 0., 5.]),
+            direction: Vector::new([0., 0., 1.]),
+        };
+        let i = w.intersect(r);
 
-        // let result = Canvas::lighting_ext(material, light, point, eyev, normalv)
-    }
+        let c;
+        if i.is_some() {
+            let comps = i.unwrap();
+            c = shade_it(&w, &comps);
 
-    // Scenario: There is no shadow when an object is behind the point
-    // Given w ← default_world()
-    // And p ← point(-2, 2, -2)
-    // Then is_shadowed(w, p) is false
+            assert_eq!(c.red(), 0.1);
+            assert_eq!(c.green(), 0.1);
+            assert_eq!(c.blue(), 0.1);
+        }
 
-    #[test]
-    fn test_light_surface_in_shadow() {
-
-        let eyev = Vector::new([0., 0., -1.]);
-        let normalv = Vector::new([0., 0., -1.]);
-
-        let light = Light { position: Point::new([0., 0., -10.]), intensity: Color::new([1., 1., 1.]),};
-    
-        let in_shadow = true;
-
-        // let result = Canvas::lighting_ext(material, light, point, eyev, normalv)
     }
 
 }

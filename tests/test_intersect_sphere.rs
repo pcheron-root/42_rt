@@ -1,7 +1,7 @@
 
 #[cfg(test)]
 mod tests {
-    use rt::{Point, Ray, Shape, Sphere, Vector};
+    use rt::{Point, Ray, Intersect, Sphere, Vector};
 
     #[test]
     fn test_intersect_sphere_0() {
@@ -14,7 +14,7 @@ mod tests {
 
         let sphere = Sphere::new(1.0);
 
-        let impact = sphere.intersect(&ray).unwrap();
+        let impact = sphere.intersect(ray).unwrap();
 
         assert_eq!(impact.normal.data.x, 1.);
         assert_eq!(impact.normal.data.y, 0.);

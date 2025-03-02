@@ -1,10 +1,14 @@
+pub mod camera;
+pub mod canvas;
+pub mod color;
+pub mod intersection;
 pub mod matrix;
 pub mod objects;
 pub mod point;
 pub mod ray;
+pub mod renderer;
 pub mod shapes;
 pub mod tuple;
 pub mod vector;
-pub mod color;
-pub mod canvas;
+pub mod world;
 pub mod light;

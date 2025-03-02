@@ -2,7 +2,7 @@ use crate::constants::EPSILON;
 use crate::{Point, Ray, Vector};
 use std::ops::{Index, IndexMut, Mul, MulAssign};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Matrix {
     pub data: [[f32; 4]; 4],
 }
@@ -74,8 +74,8 @@ impl Mul<Ray> for Matrix {
 
     fn mul(self, rhs: Ray) -> Self::Output {
         Ray {
-            origin: self * rhs.origin,
-            direction: self * rhs.direction,
+            origin: self.clone() * rhs.origin,
+            direction: self.clone() * rhs.direction,
         }
     }
 }
@@ -204,7 +204,7 @@ impl Matrix {
         r
     }
 
-    pub fn translation(vector: &Vector) -> Matrix {
+    pub fn translation(vector: Vector) -> Matrix {
         let mut t = Matrix::identity();
 
         t[3][0] = vector.data.x;
@@ -214,7 +214,7 @@ impl Matrix {
         t
     }
 
-    pub fn scaling(vector: &Vector) -> Matrix {
+    pub fn scaling(vector: Vector) -> Matrix {
         let mut s = Matrix::new();
 
         s[0][0] = vector.data.x;
@@ -227,7 +227,7 @@ impl Matrix {
 
     pub fn shearing(xy: f32, xz: f32, yx: f32, yz: f32, zx: f32, zy: f32) -> Matrix {
         let mut s = Matrix::identity();
-    
+
         s[1][0] = xy;
         s[2][0] = xz;
 
@@ -238,6 +238,35 @@ impl Matrix {
         s[1][2] = zy;
 
         s
+    }
+
+    pub fn view(from: Point, to: Point, up: Vector) -> Matrix {
+        let forward = (from.clone() - to).normalize();
+        let up = up.normalize();
+        let right = up.cross(&forward).normalize();
+        let up = forward.cross(&right).normalize();
+
+        let orientation = Matrix::from_col([
+            [right.data.x, up.data.x, forward.data.x, 0.],
+            [right.data.y, up.data.y, forward.data.y, 0.],
+            [right.data.z, up.data.z, forward.data.z, 0.],
+            [0., 0., 0., 1.],
+        ]);
+
+        orientation * Matrix::translation(Vector::new([-from.data.x, -from.data.y, -from.data.z]))
+    }
+
+    pub fn projection(fov: f32, ratio: f32, near: f32, far: f32) -> Matrix {
+        let tan_half_fov = (fov / 2.0).tan();
+        let fov_factor = 1. / tan_half_fov;
+        let range = near - far;
+
+        Matrix::from_col([
+            [fov_factor / ratio, 0., 0., 0.],
+            [0., -fov_factor, 0., 0.],
+            [0., 0., far / range, -1.],
+            [0., 0., (far * near) / range, 0.],
+        ])
     }
 
     fn lu_decomposition(&self) -> (Matrix, Matrix, Vec<usize>, usize) {

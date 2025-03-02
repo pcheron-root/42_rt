@@ -1,9 +1,10 @@
-use crate::Intersection;
+use crate::Intersect;
+use crate::LocalHit;
 use crate::Point;
 use crate::Ray;
-use crate::Shape;
 use crate::Vector;
 
+#[derive(Debug, Clone)]
 pub struct Sphere {
     pub radius: f32,
 }
@@ -14,8 +15,8 @@ impl Sphere {
     }
 }
 
-impl Shape for Sphere {
-    fn intersect(&self, ray: &Ray) -> Option<Intersection> {
+impl Intersect for Sphere {
+    fn intersect(&self, ray: Ray) -> Option<LocalHit> {
         let center = Point::new([0., 0., 0.]);
 
         let o = ray.origin - center;
@@ -46,9 +47,9 @@ impl Shape for Sphere {
         let t = if t0 < 0.0 { t1 } else { t0 };
 
         // Calculate intersection point and normal
-        let point = ray.origin + d * t;
+        let point = ray.position(t);
         let normal = Vector::new([point.data.x, point.data.y, point.data.z]) / r;
 
-        Some(Intersection { point, normal, t })
+        Some(LocalHit { point, normal, t })
     }
 }
