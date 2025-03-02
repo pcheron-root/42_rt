@@ -12,8 +12,6 @@ impl Ray {
     }
 
     pub fn position(&self, t: f32) -> Point {
-        self.origin + self.direction * t
+        self.origin.clone() + self.direction.clone() * t
     }
 }
-
-

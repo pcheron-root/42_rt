@@ -1,11 +1,6 @@
-use crate::{Matrix, Point, Ray, Shape, Vector, Color};
+use crate::{Intersection, Matrix, Point, Ray, Shape, Vector, Color};
 
-pub struct Intersection {
-    pub point: Point,
-    pub normal: Vector,
-    pub t: f32,
-}
-
+#[derive(Debug, Clone)]
 pub struct Material {
     pub shininess: f32, // between 10 and 200
     
@@ -27,6 +22,7 @@ impl Material {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct Object {
     pub material: Material,
     pub position: Point,
@@ -34,14 +30,14 @@ pub struct Object {
     pub yaw: f32,
     pub roll: f32,
     pub scale: Vector,
-    pub shape: Box<dyn Shape>,
+    pub shape: Shape,
 
     world_to_local: Matrix,
     local_to_world: Matrix,
 }
 
 impl Object {
-    pub fn new(shape: Box<dyn Shape>) -> Object {
+    pub fn new(shape: Shape) -> Object {
         Object {
             material: Material::new(),
             position: Point::new([0., 0., 0.]),
@@ -55,8 +51,8 @@ impl Object {
         }
     }
 
-    pub fn translate(&mut self, vector: &Vector) {
-        self.position = self.position + *vector;
+    pub fn translate(&mut self, vector: Vector) {
+        self.position = self.position.clone() + vector;
 
         self.update();
     }
@@ -69,8 +65,8 @@ impl Object {
         self.update();
     }
 
-    pub fn scale(&mut self, vector: &Vector) {
-        self.scale = *vector;
+    pub fn scale(&mut self, vector: Vector) {
+        self.scale = vector;
 
         self.update();
     }
@@ -82,25 +78,27 @@ impl Object {
             self.position.data.z,
         ]);
 
-        let translation = Matrix::translation(&vt);
+        let translation = Matrix::translation(vt);
         let rotation = Matrix::rotation(self.pitch, self.yaw, self.roll);
-        let scaling = Matrix::scaling(&self.scale);
+        let scaling = Matrix::scaling(self.scale.clone());
 
         self.local_to_world = translation * rotation * scaling;
         self.world_to_local = self.local_to_world.inverse().unwrap();
     }
 
-    pub fn intersect(&self, ray: &Ray) -> Option<Intersection> {
+    pub fn intersect(&self, ray: Ray) -> Option<Intersection> {
         // Transform ray to local space
-        let ray = self.world_to_local * *ray;
+        let local_ray = self.world_to_local.clone() * ray.clone();
 
         // Delegate to shape's local-space intersection logic
-        if let Some(local_hit) = self.shape.intersect(&ray) {
+        if let Some(local_hit) = self.shape.intersect(local_ray) {
             // Transform hit data back to WORLD space
-            let world_point = self.local_to_world * local_hit.point;
-            let world_normal = self.local_to_world * local_hit.normal;
+            let world_point: Point = self.local_to_world.clone() * local_hit.point;
+            let world_normal: Vector = self.local_to_world.clone() * local_hit.normal;
 
             Some(Intersection {
+                hit_normal: -(ray.direction),
+                object: (*self).clone(),
                 point: world_point,
                 normal: world_normal.normalize(),
                 t: local_hit.t,

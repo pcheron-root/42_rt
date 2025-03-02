@@ -1,5 +1,4 @@
 use rt::Vector;
-// use rt::{Vector, are_almost_equal};
 use rt::utils::are_almost_equal;
 
 #[test]

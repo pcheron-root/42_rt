@@ -31,10 +31,6 @@ impl Add<Vector> for Point {
     }
 }
 
-pub trait SubPoint {
-    fn sub(self, other: Self) -> Vector;
-}
-
 impl Sub for Point {
     type Output = Vector;
 
