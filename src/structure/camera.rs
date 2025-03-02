@@ -42,8 +42,8 @@ impl Camera {
     pub fn update(&mut self) {
         let factor = 0.75;
 
-        self.position.data.x = lerp(self.position.data.x, self.target.data.x, factor);
-        self.position.data.y = lerp(self.position.data.y, self.target.data.y, factor);
-        self.position.data.z = lerp(self.position.data.z, self.target.data.z, factor);
+        self.position.x = lerp(self.position.x, self.target.x, factor);
+        self.position.y = lerp(self.position.y, self.target.y, factor);
+        self.position.z = lerp(self.position.z, self.target.z, factor);
     }
 }

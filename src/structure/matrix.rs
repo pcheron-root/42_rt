@@ -84,27 +84,15 @@ impl Mul<Point> for Matrix {
     type Output = Point;
 
     fn mul(self, rhs: Point) -> Self::Output {
-        let x = rhs.data.x * self[0][0]
-            + rhs.data.y * self[1][0]
-            + rhs.data.z * self[2][0]
-            + rhs.data.w * self[3][0];
-        let y = rhs.data.x * self[0][1]
-            + rhs.data.y * self[1][1]
-            + rhs.data.z * self[2][1]
-            + rhs.data.w * self[3][1];
-        let z = rhs.data.x * self[0][2]
-            + rhs.data.y * self[1][2]
-            + rhs.data.z * self[2][2]
-            + rhs.data.w * self[3][2];
-        let w = rhs.data.x * self[0][3]
-            + rhs.data.y * self[1][3]
-            + rhs.data.z * self[2][3]
-            + rhs.data.w * self[3][3];
+        let x = rhs.x * self[0][0] + rhs.y * self[1][0] + rhs.z * self[2][0] + rhs.w * self[3][0];
+        let y = rhs.x * self[0][1] + rhs.y * self[1][1] + rhs.z * self[2][1] + rhs.w * self[3][1];
+        let z = rhs.x * self[0][2] + rhs.y * self[1][2] + rhs.z * self[2][2] + rhs.w * self[3][2];
+        let w = rhs.x * self[0][3] + rhs.y * self[1][3] + rhs.z * self[2][3] + rhs.w * self[3][3];
 
         if w != 0.0 {
-            Point::new([x / w, y / w, z / w])
+            Point::new(x / w, y / w, z / w)
         } else {
-            Point::new([x, y, z])
+            Point::new(x, y, z)
         }
     }
 }
@@ -112,21 +100,12 @@ impl Mul<Point> for Matrix {
 impl Mul<Vector> for Matrix {
     type Output = Vector;
 
-    fn mul(self, v: Vector) -> Self::Output {
-        Vector::new([
-            v.data.x * self[0][0]
-                + v.data.y * self[1][0]
-                + v.data.z * self[2][0]
-                + v.data.w * self[3][0],
-            v.data.x * self[0][1]
-                + v.data.y * self[1][1]
-                + v.data.z * self[2][1]
-                + v.data.w * self[3][1],
-            v.data.x * self[0][2]
-                + v.data.y * self[1][2]
-                + v.data.z * self[2][2]
-                + v.data.w * self[3][2],
-        ])
+    fn mul(self, rhs: Vector) -> Self::Output {
+        Vector::new(
+            rhs.x * self[0][0] + rhs.y * self[1][0] + rhs.z * self[2][0] + rhs.w * self[3][0],
+            rhs.x * self[0][1] + rhs.y * self[1][1] + rhs.z * self[2][1] + rhs.w * self[3][1],
+            rhs.x * self[0][2] + rhs.y * self[1][2] + rhs.z * self[2][2] + rhs.w * self[3][2],
+        )
     }
 }
 
@@ -207,9 +186,9 @@ impl Matrix {
     pub fn translation(vector: Vector) -> Matrix {
         let mut t = Matrix::identity();
 
-        t[3][0] = vector.data.x;
-        t[3][1] = vector.data.y;
-        t[3][2] = vector.data.z;
+        t[3][0] = vector.x;
+        t[3][1] = vector.y;
+        t[3][2] = vector.z;
 
         t
     }
@@ -217,9 +196,9 @@ impl Matrix {
     pub fn scaling(vector: Vector) -> Matrix {
         let mut s = Matrix::new();
 
-        s[0][0] = vector.data.x;
-        s[1][1] = vector.data.y;
-        s[2][2] = vector.data.z;
+        s[0][0] = vector.x;
+        s[1][1] = vector.y;
+        s[2][2] = vector.z;
         s[3][3] = 1.;
 
         s
@@ -247,13 +226,13 @@ impl Matrix {
         let up = forward.cross(&right).normalize();
 
         let orientation = Matrix::from_col([
-            [right.data.x, up.data.x, forward.data.x, 0.],
-            [right.data.y, up.data.y, forward.data.y, 0.],
-            [right.data.z, up.data.z, forward.data.z, 0.],
+            [right.x, up.x, forward.x, 0.],
+            [right.y, up.y, forward.y, 0.],
+            [right.z, up.z, forward.z, 0.],
             [0., 0., 0., 1.],
         ]);
 
-        orientation * Matrix::translation(Vector::new([-from.data.x, -from.data.y, -from.data.z]))
+        orientation * Matrix::translation(Vector::new(-from.x, -from.y, -from.z))
     }
 
     pub fn projection(fov: f32, ratio: f32, near: f32, far: f32) -> Matrix {

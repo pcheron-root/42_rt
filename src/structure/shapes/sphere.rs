@@ -17,7 +17,7 @@ impl Sphere {
 
 impl Intersect for Sphere {
     fn intersect(&self, ray: Ray) -> Option<LocalHit> {
-        let center = Point::new([0., 0., 0.]);
+        let center = Point::new(0., 0., 0.);
 
         let o = ray.origin - center;
         let d = ray.direction;
@@ -48,7 +48,7 @@ impl Intersect for Sphere {
 
         // Calculate intersection point and normal
         let point = ray.position(t);
-        let normal = Vector::new([point.data.x, point.data.y, point.data.z]) / r;
+        let normal = Vector::new(point.x, point.y, point.z) / r;
 
         Some(LocalHit { point, normal, t })
     }

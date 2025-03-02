@@ -8,7 +8,7 @@ pub struct World {
 impl World {
     pub fn new() -> World {
         World {
-            light: Light::new(Point::new([100., 100., 0.]), Color::new([1., 1., 1.])),
+            light: Light::new(Point::new(100., 100., 0.), Color::new(1., 1., 1.)),
             objects: Vec::new(),
         }
     }

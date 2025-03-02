@@ -1,13 +1,12 @@
 #[cfg(test)]
 mod tests {
-    use rt::{Color, Material, Sphere, Shape, Object};
+    use rt::{Color, Material, Object, Shape, Sphere};
 
     #[test]
     fn test_setup_material() {
-        let color = Color::new([1., 1., 1.]);
+        let color = Color::new(1., 1., 1.);
 
-
-        let material = Material{
+        let material = Material {
             shininess: 1.,
             specular: 1.,
             color: color,
@@ -24,7 +23,6 @@ mod tests {
 
     #[test]
     fn test_default_material() {
-
         let material = Material::new();
 
         assert_eq!(material.ambient, 0.1);
@@ -48,6 +46,4 @@ mod tests {
         assert_eq!(sphere.material.specular, 0.9);
         assert_eq!(sphere.material.shininess, 200.);
     }
-
-    
 }

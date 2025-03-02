@@ -1,17 +1,18 @@
 use crate::constants::EPSILON;
-use crate::Tuple;
 use crate::Vector;
 use std::ops::{Add, Sub};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Point {
-    pub data: Tuple,
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+    pub w: f32,
 }
 
 impl Point {
-    pub fn new(data: [f32; 3]) -> Self {
-        let data = Tuple::new(data[0], data[1], data[2], 1.0);
-        Self { data }
+    pub fn new(x: f32, y: f32, z: f32) -> Self {
+        Self { x, y, z, w: 1.0 }
     }
 }
 
@@ -23,11 +24,7 @@ impl Add<Vector> for Point {
     type Output = Point;
 
     fn add(self, rhs: Vector) -> Self::Output {
-        Point::new([
-            self.data.x + rhs.data.x,
-            self.data.y + rhs.data.y,
-            self.data.z + rhs.data.z,
-        ])
+        Point::new(self.x + rhs.x, self.y + rhs.y, self.z + rhs.z)
     }
 }
 
@@ -35,11 +32,7 @@ impl Sub for Point {
     type Output = Vector;
 
     fn sub(self, other: Point) -> Self::Output {
-        Vector::new([
-            self.data.x - other.data.x,
-            self.data.y - other.data.y,
-            self.data.z - other.data.z,
-        ])
+        Vector::new(self.x - other.x, self.y - other.y, self.z - other.z)
     }
 }
 
@@ -47,18 +40,14 @@ impl Sub<Vector> for Point {
     type Output = Self;
 
     fn sub(self, other: Vector) -> Self::Output {
-        Point::new([
-            self.data.x - other.data.x,
-            self.data.y - other.data.y,
-            self.data.z - other.data.z,
-        ])
+        Point::new(self.x - other.x, self.y - other.y, self.z - other.z)
     }
 }
 
 impl PartialEq for Point {
     fn eq(&self, other: &Self) -> bool {
-        (self.data.x - other.data.x).abs() < EPSILON
-            && (self.data.y - other.data.y).abs() < EPSILON
-            && (self.data.z - other.data.z).abs() < EPSILON
+        (self.x - other.x).abs() < EPSILON
+            && (self.y - other.y).abs() < EPSILON
+            && (self.z - other.z).abs() < EPSILON
     }
 }

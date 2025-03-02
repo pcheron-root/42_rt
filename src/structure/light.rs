@@ -1,4 +1,3 @@
-
 use crate::{Color, Point};
 
 pub struct Light {
@@ -12,7 +11,7 @@ impl Light {
         Light {
             position,
             color,
-            intensity: Color::new([1., 1., 1.]),
+            intensity: Color::new(1., 1., 1.),
         }
     }
 }
