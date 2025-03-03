@@ -48,8 +48,12 @@ impl Intersect for Sphere {
 
         // Calculate intersection point and normal
         let point = ray.position(t);
-        let normal = Vector::new(point.x, point.y, point.z) / r;
+        let normal = self.normal_at(point);
 
         Some(LocalHit { point, normal, t })
+    }
+
+    fn normal_at(&self, point: Point) -> Vector {
+        Vector::new(point.x, point.y, point.z) / self.radius
     }
 }
