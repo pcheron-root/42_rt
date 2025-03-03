@@ -1,6 +1,13 @@
 use crate::utils::lerp;
 use crate::{Point, Vector};
 
+pub enum Direction {
+    Forward,
+    Backward,
+    Left,
+    Right,
+}
+
 pub struct Camera {
     pub target: Point,
     pub position: Point,
@@ -52,8 +59,15 @@ impl Camera {
         self.aspect = aspect;
     }
 
-    pub fn translate(&mut self, vector: Vector) {
-        self.target = self.position.clone() + vector;
+    pub fn translate(&mut self, direction: Direction) {
+        let movement = match direction {
+            Direction::Forward => self.direction(),
+            Direction::Backward => -self.direction(),
+            Direction::Left => -self.direction().cross(&Vector::new(0.0, 1.0, 0.0)).normalize(),
+            Direction::Right => self.direction().cross(&Vector::new(0.0, 1.0, 0.0)).normalize(),
+        }.normalize() * 1.;
+
+        self.target = self.position + movement;
     }
 
     pub fn update(&mut self) {

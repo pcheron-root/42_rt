@@ -4,6 +4,8 @@ pub mod traits;
 pub mod utils;
 
 pub use structure::camera::Camera;
+pub use structure::camera::Direction;
+
 pub use structure::canvas::Canvas;
 pub use structure::color::Color;
 pub use structure::intersection::Intersection;
