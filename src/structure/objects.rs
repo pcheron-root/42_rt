@@ -1,24 +1,30 @@
-use crate::{Intersection, Matrix, Point, Ray, Shape, Vector, Color};
+use crate::{Color, Intersection, Matrix, Point, Ray, Shape, Vector};
 
 #[derive(Debug, Clone)]
 pub struct Material {
     pub shininess: f32, // between 10 and 200
-    
+
     pub color: Color,
-    pub ambient: f32, // between 0 and 1
-    pub diffuse: f32, // between 0 and 1
+    pub ambient: f32,  // between 0 and 1
+    pub diffuse: f32,  // between 0 and 1
     pub specular: f32, // between 0 and 1
 }
 
 impl Material {
     pub fn new() -> Self {
         let shininess = 200.;
-        let color = Color::new([1., 1., 1.,]);
+        let color = Color::new(1., 1., 1.);
         let ambient = 0.1;
         let diffuse = 0.9;
         let specular = 0.9;
 
-        Self { shininess, specular, color, ambient, diffuse }
+        Self {
+            shininess,
+            specular,
+            color,
+            ambient,
+            diffuse,
+        }
     }
 }
 
@@ -40,12 +46,12 @@ impl Object {
     pub fn new(shape: Shape) -> Object {
         Object {
             material: Material::new(),
-            position: Point::new([0., 0., 0.]),
+            position: Point::new(0., 0., 0.),
             pitch: 0.,
             yaw: 0.,
             roll: 0.,
             shape,
-            scale: Vector::new([1., 1., 1.]),
+            scale: Vector::new(1., 1., 1.),
             world_to_local: Matrix::identity(),
             local_to_world: Matrix::identity(),
         }
@@ -72,11 +78,7 @@ impl Object {
     }
 
     fn update(&mut self) {
-        let vt = Vector::new([
-            self.position.data.x,
-            self.position.data.y,
-            self.position.data.z,
-        ]);
+        let vt = Vector::new(self.position.x, self.position.y, self.position.z);
 
         let translation = Matrix::translation(vt);
         let rotation = Matrix::rotation(self.pitch, self.yaw, self.roll);

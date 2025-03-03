@@ -91,9 +91,9 @@ mod tests {
             [4., 2., 1., 1.],
         ]);
 
-        let v = Point::new([1., 2., 3.]);
+        let v = Point::new(1., 2., 3.);
 
-        let result = Point::new([18., 24., 33.]);
+        let result = Point::new(18., 24., 33.);
 
         assert_eq!(result, m * v);
     }
@@ -107,9 +107,9 @@ mod tests {
             [4., 2., 1., 1.],
         ]);
 
-        let v = Vector::new([1., 2., 3.]);
+        let v = Vector::new(1., 2., 3.);
 
-        let result = Vector::new([14., 22., 32.]);
+        let result = Vector::new(14., 22., 32.);
 
         assert_eq!(result, m * v);
     }
@@ -195,142 +195,142 @@ mod tests {
 
     #[test]
     fn test_point_translation() {
-        let vt = Vector::new([5., -3., 2.]);
+        let vt = Vector::new(5., -3., 2.);
         let t = Matrix::translation(vt);
 
-        let p = Point::new([-3., 4., 5.]);
+        let p = Point::new(-3., 4., 5.);
 
-        let r = Point::new([2., 1., 7.]);
+        let r = Point::new(2., 1., 7.);
 
         assert_eq!(r, t * p);
     }
 
     #[test]
     fn test_vector_translation() {
-        let vt = Vector::new([5., -3., 2.]);
+        let vt = Vector::new(5., -3., 2.);
         let t = Matrix::translation(vt);
 
-        let v = Vector::new([-3., 4., 5.]);
+        let v = Vector::new(-3., 4., 5.);
 
         assert_eq!(v, t * v.clone());
     }
 
     #[test]
     fn test_point_scaling() {
-        let vs = Vector::new([-1., 1., 1.]);
+        let vs = Vector::new(-1., 1., 1.);
         let s = Matrix::scaling(vs);
 
-        let p = Point::new([2., 3., 4.]);
+        let p = Point::new(2., 3., 4.);
 
-        let r = Point::new([-2., 3., 4.]);
+        let r = Point::new(-2., 3., 4.);
 
         assert_eq!(r, s * p);
     }
 
     #[test]
     fn test_half_quarter_rotation_x() {
-        let p: Point = Point::new([0., 1., 0.]);
+        let p: Point = Point::new(0., 1., 0.);
         let a: f32 = 45.;
 
         let m = Matrix::rotation_x(a.to_radians());
 
-        let r = Point::new([0., 2f32.sqrt() / 2., 2f32.sqrt() / 2.]);
+        let r = Point::new(0., 2f32.sqrt() / 2., 2f32.sqrt() / 2.);
 
         assert_eq!(r, m * p);
     }
 
     #[test]
     fn test_full_quarter_rotation_x() {
-        let p: Point = Point::new([0., 1., 0.]);
+        let p: Point = Point::new(0., 1., 0.);
         let a: f32 = 90.;
 
         let m = Matrix::rotation_x(a.to_radians());
 
-        let r = Point::new([0., 0., 1.]);
+        let r = Point::new(0., 0., 1.);
 
         assert_eq!(r, m * p);
     }
 
     #[test]
     fn test_half_quarter_counter_clockwise_rotation_x() {
-        let p: Point = Point::new([0., 1., 0.]);
+        let p: Point = Point::new(0., 1., 0.);
         let a: f32 = 45.;
 
         let m = Matrix::rotation_x(a.to_radians()).inverse().unwrap();
 
-        let r = Point::new([0., 2f32.sqrt() / 2., -2f32.sqrt() / 2.]);
+        let r = Point::new(0., 2f32.sqrt() / 2., -2f32.sqrt() / 2.);
 
         assert_eq!(r, m * p);
     }
 
     #[test]
     fn test_half_quarter_rotation_y() {
-        let p: Point = Point::new([0., 0., 1.]);
+        let p: Point = Point::new(0., 0., 1.);
         let a: f32 = 45.;
 
         let m = Matrix::rotation_y(a.to_radians());
 
-        let r = Point::new([2f32.sqrt() / 2., 0., 2f32.sqrt() / 2.]);
+        let r = Point::new(2f32.sqrt() / 2., 0., 2f32.sqrt() / 2.);
 
         assert_eq!(r, m * p);
     }
 
     #[test]
     fn test_full_quarter_rotation_y() {
-        let p: Point = Point::new([0., 0., 1.]);
+        let p: Point = Point::new(0., 0., 1.);
         let a: f32 = 90.;
 
         let m = Matrix::rotation_y(a.to_radians());
 
-        let r = Point::new([1., 0., 0.]);
+        let r = Point::new(1., 0., 0.);
 
         assert_eq!(r, m * p);
     }
 
     #[test]
     fn test_half_quarter_counter_clockwise_rotation_y() {
-        let p: Point = Point::new([0., 0., 1.]);
+        let p: Point = Point::new(0., 0., 1.);
         let a: f32 = 45.;
 
         let m = Matrix::rotation_y(a.to_radians()).inverse().unwrap();
 
-        let r = Point::new([-2f32.sqrt() / 2., 0., 2f32.sqrt() / 2.]);
+        let r = Point::new(-2f32.sqrt() / 2., 0., 2f32.sqrt() / 2.);
 
         assert_eq!(r, m * p);
     }
 
     #[test]
     fn test_half_quarter_rotation_z() {
-        let p: Point = Point::new([0., 1., 0.]);
+        let p: Point = Point::new(0., 1., 0.);
         let a: f32 = 45.;
 
         let m = Matrix::rotation_z(a.to_radians());
 
-        let r = Point::new([-2f32.sqrt() / 2., 2f32.sqrt() / 2., 0.]);
+        let r = Point::new(-2f32.sqrt() / 2., 2f32.sqrt() / 2., 0.);
 
         assert_eq!(r, m * p);
     }
 
     #[test]
     fn test_full_quarter_rotation_z() {
-        let p: Point = Point::new([0., 1., 0.]);
+        let p: Point = Point::new(0., 1., 0.);
         let a: f32 = 90.;
 
         let m = Matrix::rotation_z(a.to_radians());
 
-        let r = Point::new([-1., 0., 0.]);
+        let r = Point::new(-1., 0., 0.);
 
         assert_eq!(r, m * p);
     }
 
     #[test]
     fn test_half_quarter_counter_clockwise_rotation_z() {
-        let p: Point = Point::new([0., 1., 0.]);
+        let p: Point = Point::new(0., 1., 0.);
         let a: f32 = 45.;
 
         let m = Matrix::rotation_z(a.to_radians()).inverse().unwrap();
 
-        let r = Point::new([2f32.sqrt() / 2., 2f32.sqrt() / 2., 0.]);
+        let r = Point::new(2f32.sqrt() / 2., 2f32.sqrt() / 2., 0.);
 
         assert_eq!(r, m * p);
     }
@@ -338,9 +338,9 @@ mod tests {
     #[test]
     fn test_shearing_xy_point() {
         let s = Matrix::shearing(1., 0., 0., 0., 0., 0.);
-        let p = Point::new([2., 3., 4.]);
+        let p = Point::new(2., 3., 4.);
 
-        let r = Point::new([5., 3., 4.]);
+        let r = Point::new(5., 3., 4.);
 
         assert_eq!(r, s * p);
     }
@@ -348,9 +348,9 @@ mod tests {
     #[test]
     fn test_shearing_xz_point() {
         let s = Matrix::shearing(0., 1., 0., 0., 0., 0.);
-        let p = Point::new([2., 3., 4.]);
+        let p = Point::new(2., 3., 4.);
 
-        let r = Point::new([6., 3., 4.]);
+        let r = Point::new(6., 3., 4.);
 
         assert_eq!(r, s * p);
     }
@@ -358,9 +358,9 @@ mod tests {
     #[test]
     fn test_shearing_yx_point() {
         let s = Matrix::shearing(0., 0., 1., 0., 0., 0.);
-        let p = Point::new([2., 3., 4.]);
+        let p = Point::new(2., 3., 4.);
 
-        let r = Point::new([2., 5., 4.]);
+        let r = Point::new(2., 5., 4.);
 
         assert_eq!(r, s * p);
     }
@@ -368,9 +368,9 @@ mod tests {
     #[test]
     fn test_shearing_yz_point() {
         let s = Matrix::shearing(0., 0., 0., 1., 0., 0.);
-        let p = Point::new([2., 3., 4.]);
+        let p = Point::new(2., 3., 4.);
 
-        let r = Point::new([2., 7., 4.]);
+        let r = Point::new(2., 7., 4.);
 
         assert_eq!(r, s * p);
     }
@@ -378,9 +378,9 @@ mod tests {
     #[test]
     fn test_shearing_zx_point() {
         let s = Matrix::shearing(0., 0., 0., 0., 1., 0.);
-        let p = Point::new([2., 3., 4.]);
+        let p = Point::new(2., 3., 4.);
 
-        let r = Point::new([2., 3., 6.]);
+        let r = Point::new(2., 3., 6.);
 
         assert_eq!(r, s * p);
     }
@@ -388,18 +388,18 @@ mod tests {
     #[test]
     fn test_shearing_zy_point() {
         let s = Matrix::shearing(0., 0., 0., 0., 0., 1.);
-        let p = Point::new([2., 3., 4.]);
+        let p = Point::new(2., 3., 4.);
 
-        let r = Point::new([2., 3., 7.]);
+        let r = Point::new(2., 3., 7.);
 
         assert_eq!(r, s * p);
     }
 
     #[test]
     fn test_view_matrix_1() {
-        let from = Point::new([0., 0., 0.]);
-        let to = Point::new([0., 0., -1.]);
-        let up = Vector::new([0., 1., 0.]);
+        let from = Point::new(0., 0., 0.);
+        let to = Point::new(0., 0., -1.);
+        let up = Vector::new(0., 1., 0.);
 
         let view = Matrix::view(from, to, up);
 
@@ -408,24 +408,24 @@ mod tests {
 
     #[test]
     fn test_view_matrix_2() {
-        let from = Point::new([0., 0., 0.]);
-        let to = Point::new([0., 0., 1.]);
-        let up = Vector::new([0., 1., 0.]);
+        let from = Point::new(0., 0., 0.);
+        let to = Point::new(0., 0., 1.);
+        let up = Vector::new(0., 1., 0.);
 
         let view = Matrix::view(from, to, up);
 
-        assert_eq!(view, Matrix::scaling(Vector::new([-1., 1., -1.])));
+        assert_eq!(view, Matrix::scaling(Vector::new(-1., 1., -1.)));
     }
 
     #[test]
     fn test_view_matrix_3() {
-        let from = Point::new([0., 0., 8.]);
-        let to = Point::new([0., 0., 0.]);
-        let up = Vector::new([0., 1., 0.]);
+        let from = Point::new(0., 0., 8.);
+        let to = Point::new(0., 0., 0.);
+        let up = Vector::new(0., 1., 0.);
 
         let view = Matrix::view(from, to, up);
 
-        assert_eq!(view, Matrix::translation(Vector::new([0., 0., -8.])));
+        assert_eq!(view, Matrix::translation(Vector::new(0., 0., -8.)));
     }
 
     // #[test]
