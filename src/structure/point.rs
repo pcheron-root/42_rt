@@ -1,6 +1,6 @@
 use crate::constants::EPSILON;
 use crate::Vector;
-use std::ops::{Add, Div, Sub, Neg};
+use std::ops::{Add, Div, Neg, Sub};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Point {

@@ -106,13 +106,13 @@ impl Canvas {
         if light_dot_normal < 0. {
             return ambient;
         }
-        
+
         let specular;
         let diffuse = effective_color * material.diffuse * light_dot_normal;
-        
+
         let reflectv = (-lightv).reflect(normalv);
         let reflect_dot_eye = reflectv.dot(eyev);
-        
+
         if reflect_dot_eye <= 0. {
             specular = Color::new(0., 0., 0.);
         } else {
@@ -139,13 +139,13 @@ impl Canvas {
         if light_dot_normal < 0. {
             return ambient;
         }
-        
+
         let specular;
         let diffuse = effective_color * material.diffuse * light_dot_normal;
-        
+
         let reflectv = (-lightv).reflect(normalv);
         let reflect_dot_eye = reflectv.dot(eyev);
-        
+
         if reflect_dot_eye <= 0. {
             specular = Color::new(0., 0., 0.);
         } else {

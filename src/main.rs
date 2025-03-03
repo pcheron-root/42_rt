@@ -20,7 +20,7 @@ pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
 
     let view = Matrix::view(
         camera.position,
-        camera.position + camera.direction,
+        camera.position + camera.direction(),
         Vector::new(0., 1., 0.),
     );
 
@@ -79,7 +79,6 @@ fn main() {
 
     let camera = Camera::new(
         Point::new(0., 5., 5.),
-        Vector::new(0., 0., -1.),
         size.0 as f32 / size.1 as f32,
         45f32.to_radians(),
         0.1,

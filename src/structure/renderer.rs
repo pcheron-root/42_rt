@@ -53,6 +53,20 @@ impl Renderer {
                 self.camera.translate(Vector::new(0., 0., 1.));
             }
 
+            if self.window.is_key_down(Key::Up) {
+                self.camera.rotate_x(1.);
+            }
+            if self.window.is_key_down(Key::Down) {
+                self.camera.rotate_x(-1.);
+            }
+
+            if self.window.is_key_down(Key::Right) {
+                self.camera.rotate_y(1.);
+            }
+            if self.window.is_key_down(Key::Left) {
+                self.camera.rotate_y(-1.);
+            }
+
             self.camera.update();
 
             draw(&mut self.canvas, &self.world, &self.camera);

@@ -1,14 +1,12 @@
 use crate::constants::EPSILON;
 use crate::Intersect;
 use crate::LocalHit;
-use crate::Ray;
 use crate::Point;
+use crate::Ray;
 use crate::Vector;
 
 #[derive(Debug, Clone)]
-pub struct Plane {
-
-}
+pub struct Plane {}
 
 impl Plane {
     pub fn new() -> Plane {
@@ -24,17 +22,13 @@ impl Intersect for Plane {
 
         let t = -ray.origin.y / ray.direction.y;
         if t < 0. {
-            return None
+            return None;
         }
 
         let point = ray.position(t);
         let normal = self.normal_at(point);
-        
-        Some(LocalHit {
-            t,
-            point,
-            normal,
-        })
+
+        Some(LocalHit { t, point, normal })
     }
 
     fn normal_at(&self, _point: Point) -> Vector {
