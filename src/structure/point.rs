@@ -1,6 +1,6 @@
 use crate::constants::EPSILON;
 use crate::Vector;
-use std::ops::{Add, Div, Sub};
+use std::ops::{Add, Div, Sub, Neg};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Point {
@@ -57,5 +57,13 @@ impl PartialEq for Point {
         (self.x - other.x).abs() < EPSILON
             && (self.y - other.y).abs() < EPSILON
             && (self.z - other.z).abs() < EPSILON
+    }
+}
+
+impl Neg for Point {
+    type Output = Point;
+
+    fn neg(self) -> Self::Output {
+        Point::new(-self.x, -self.y, -self.z)
     }
 }

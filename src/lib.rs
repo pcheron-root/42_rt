@@ -17,6 +17,7 @@ pub use structure::ray::Ray;
 pub use structure::renderer::Renderer;
 pub use structure::shapes::shape::Shape;
 pub use structure::shapes::sphere::Sphere;
+pub use structure::shapes::plane::Plane;
 pub use structure::vector::Vector;
 pub use structure::world::World;
 
