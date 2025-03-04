@@ -1,6 +1,5 @@
 #[cfg(test)]
 mod tests {
-    use rt::utils::are_almost_equal;
     use rt::Vector;
 
     #[test]
@@ -87,6 +86,7 @@ mod tests {
 
         let norm_va = v_a.normalize();
         let val = Vector::new(1.0, 0.0, 0.0);
+        
         assert_eq!(norm_va.x, val.x);
         assert_eq!(norm_va.y, val.y);
         assert_eq!(norm_va.z, val.z);
@@ -98,9 +98,8 @@ mod tests {
 
         let norm_va = v_a.normalize();
         let val = Vector::new(0.26726, 0.53452, 0.80178);
-        assert_eq!(are_almost_equal(norm_va.x, val.x), true);
-        assert_eq!(are_almost_equal(norm_va.y, val.y), true);
-        assert_eq!(are_almost_equal(norm_va.z, val.z), true);
+        
+        assert_eq!(norm_va, val);
     }
 
     #[test]

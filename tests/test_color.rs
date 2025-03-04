@@ -1,6 +1,5 @@
 #[cfg(test)]
 mod tests {
-    use rt::utils::are_almost_equal;
     use rt::Color;
 
     #[test]
@@ -10,9 +9,9 @@ mod tests {
 
         let c_c = c_a + c_b;
 
-        assert_eq!(are_almost_equal(c_c.r, 1.6), true);
-        assert_eq!(are_almost_equal(c_c.g, 0.7), true);
-        assert_eq!(c_c.b, 1.0);
+        let r = Color::new(1.6, 0.7, 1.0);
+
+        assert_eq!(r, c_c);
     }
 
     #[test]
@@ -22,9 +21,9 @@ mod tests {
 
         let c_c = c_a - c_b;
 
-        assert_eq!(are_almost_equal(c_c.r, 0.2), true);
-        assert_eq!(c_c.g, 0.5);
-        assert_eq!(c_c.b, 0.5);
+        let r = Color::new(0.2, 0.5, 0.5);
+
+        assert_eq!(r, c_c);
     }
 
     #[test]
@@ -34,20 +33,19 @@ mod tests {
 
         let c_b = c_zero - c_a;
 
-        assert_eq!(c_b.r, -1.0);
-        assert_eq!(c_b.g, -1.0);
-        assert_eq!(c_b.b, -1.0);
+        let r = Color::new(-1., -1., -1.);
+
+        assert_eq!(r, c_b);
     }
 
     #[test]
     fn test_mult_color_by_scalar() {
         let c_a = Color::new(0.2, 0.3, 0.4);
-
         let c_b = c_a * 2.0;
 
-        assert_eq!(c_b.r, 0.4);
-        assert_eq!(c_b.g, 0.6);
-        assert_eq!(c_b.b, 0.8);
+        let r = Color::new(0.4, 0.6, 0.8);
+
+        assert_eq!(r, c_b);
     }
 
     #[test]
@@ -57,8 +55,8 @@ mod tests {
 
         let c_b = c_a * c_b;
 
-        assert_eq!(c_b.r, 0.9);
-        assert_eq!(c_b.g, 0.2);
-        assert_eq!(are_almost_equal(c_b.b, 0.04), true);
+        let r = Color::new(0.9, 0.2, 0.04);
+
+        assert_eq!(r, c_b);
     }
 }

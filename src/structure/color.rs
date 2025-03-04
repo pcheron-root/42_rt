@@ -1,5 +1,8 @@
 use std::convert::Into;
+use std::cmp::PartialEq;
 use std::ops::{Add, Mul, Sub};
+
+use crate::constants::EPSILON;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Color {
@@ -75,5 +78,13 @@ impl Mul for Color {
 
     fn mul(self, rhs: Self) -> Self::Output {
         Color::new(self.r * rhs.r, self.g * rhs.g, self.b * rhs.b)
+    }
+}
+
+impl PartialEq for Color {
+    fn eq(&self, other: &Self) -> bool {
+        (self.r - other.r).abs() < EPSILON
+            && (self.g - other.g).abs() < EPSILON
+            && (self.b - other.b).abs() < EPSILON
     }
 }
