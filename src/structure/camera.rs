@@ -60,14 +60,22 @@ impl Camera {
     }
 
     pub fn translate(&mut self, direction: Direction) {
+        let speed = 1.;
         let movement = match direction {
             Direction::Forward => self.direction(),
             Direction::Backward => -self.direction(),
-            Direction::Left => -self.direction().cross(&Vector::new(0.0, 1.0, 0.0)).normalize(),
-            Direction::Right => self.direction().cross(&Vector::new(0.0, 1.0, 0.0)).normalize(),
-        }.normalize() * 1.;
+            Direction::Left => -self
+                .direction()
+                .cross(&Vector::new(0.0, 1.0, 0.0))
+                .normalize(),
+            Direction::Right => self
+                .direction()
+                .cross(&Vector::new(0.0, 1.0, 0.0))
+                .normalize(),
+        }
+        .normalize();
 
-        self.target = self.position + movement;
+        self.target = self.position + movement * speed;
     }
 
     pub fn update(&mut self) {

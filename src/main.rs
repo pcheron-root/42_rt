@@ -45,13 +45,7 @@ pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
             let hit = world.intersect(ray);
             if hit.is_some() {
                 let hit = hit.unwrap();
-                let color = canvas.lighting(
-                    &hit.object.material,
-                    &world.light,
-                    &hit.point,
-                    &(-ray.direction),
-                    &hit.normal,
-                );
+                let color = world.light.compute(&hit);
 
                 canvas.write(x, y, color);
             } else {

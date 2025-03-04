@@ -99,7 +99,7 @@ impl Object {
             let world_normal: Vector = self.local_to_world.clone() * local_hit.normal;
 
             Some(Intersection {
-                hit_normal: -(ray.direction),
+                eye: -(ray.direction),
                 object: (*self).clone(),
                 point: world_point,
                 normal: world_normal.normalize(),

@@ -12,5 +12,5 @@ pub struct Intersection {
     pub t: f32,
     pub point: Point,
     pub normal: Vector,
-    pub hit_normal: Vector,
+    pub eye: Vector,
 }

@@ -2,10 +2,6 @@ use std::fs::File;
 use std::io::{self, Write};
 
 use crate::Color;
-use crate::Light;
-use crate::Material;
-use crate::Point;
-use crate::Vector;
 
 pub struct Canvas {
     pub width: usize,
@@ -87,72 +83,5 @@ impl Canvas {
         file.write_all(content.as_bytes())?;
 
         Ok(())
-    }
-
-    pub fn lighting(
-        &self,
-        material: &Material,
-        light: &Light,
-        point: &Point,
-        eyev: &Vector,
-        normalv: &Vector,
-    ) -> Color {
-        let effective_color = material.color * light.intensity;
-        let lightv = (light.position - *point).normalize();
-
-        let ambient = effective_color * material.ambient;
-        let light_dot_normal = lightv.dot(normalv);
-
-        if light_dot_normal < 0. {
-            return ambient;
-        }
-
-        let specular;
-        let diffuse = effective_color * material.diffuse * light_dot_normal;
-
-        let reflectv = (-lightv).reflect(normalv);
-        let reflect_dot_eye = reflectv.dot(eyev);
-
-        if reflect_dot_eye <= 0. {
-            specular = Color::new(0., 0., 0.);
-        } else {
-            let factor = reflect_dot_eye.powf(material.shininess);
-            specular = light.intensity * material.specular * factor;
-        }
-
-        ambient + diffuse + specular
-    }
-
-    pub fn lighting_ext(
-        material: &Material,
-        light: &Light,
-        point: &Point,
-        eyev: &Vector,
-        normalv: &Vector,
-    ) -> Color {
-        let effective_color = material.color * light.intensity;
-        let lightv = (light.position - *point).normalize();
-
-        let ambient = effective_color * material.ambient;
-        let light_dot_normal = lightv.dot(normalv);
-
-        if light_dot_normal < 0. {
-            return ambient;
-        }
-
-        let specular;
-        let diffuse = effective_color * material.diffuse * light_dot_normal;
-
-        let reflectv = (-lightv).reflect(normalv);
-        let reflect_dot_eye = reflectv.dot(eyev);
-
-        if reflect_dot_eye <= 0. {
-            specular = Color::new(0., 0., 0.);
-        } else {
-            let factor = reflect_dot_eye.powf(material.shininess);
-            specular = light.intensity * material.specular * factor;
-        }
-
-        ambient + diffuse + specular
     }
 }
