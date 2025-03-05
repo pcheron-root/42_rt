@@ -1,5 +1,5 @@
-use std::convert::Into;
 use std::cmp::PartialEq;
+use std::convert::Into;
 use std::ops::{Add, Mul, Sub};
 
 use crate::constants::EPSILON;

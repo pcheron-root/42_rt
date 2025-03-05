@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use rt::{Color, Intersection, Light, Object, Point, Shape, Sphere, Vector};
+    use rt::{Color, Intersection, Light, Material, Object, Point, Shape, Sphere, Vector};
 
     #[test]
     fn test_light_pos_and_intensity() {
@@ -28,7 +28,7 @@ mod tests {
     // p 106
     #[test]
     fn test_light_0() {
-        let object = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let object = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
 
         let position = Point::new(0., 0., 0.);
 
@@ -58,7 +58,7 @@ mod tests {
 
     #[test]
     fn test_light_1() {
-        let object = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let object = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., (2.0_f32).sqrt() / 2.0, (2.0_f32).sqrt() / 2.0);
@@ -87,7 +87,7 @@ mod tests {
 
     #[test]
     fn test_light_2() {
-        let object = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let object = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., 0., -1.);
@@ -116,7 +116,7 @@ mod tests {
 
     #[test]
     fn test_light_3() {
-        let object = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let object = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., -(2.0_f32.sqrt() / 2.0), -(2.0_f32.sqrt() / 2.0));
@@ -145,7 +145,7 @@ mod tests {
 
     #[test]
     fn test_light_4() {
-        let object = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let object = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., 0., -1.);

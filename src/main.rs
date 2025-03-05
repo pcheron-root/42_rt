@@ -2,9 +2,9 @@ use rt::Camera;
 use rt::Canvas;
 use rt::Color;
 use rt::Light;
+use rt::Material;
 use rt::Matrix;
 use rt::Object;
-use rt::Plane;
 use rt::Point;
 use rt::Ray;
 use rt::Renderer;
@@ -72,25 +72,32 @@ fn main() {
     let canvas = Canvas::new(size.0, size.1);
 
     let camera = Camera::new(
-        Point::new(0., 5., 5.),
+        Point::new(0., 0., 5.),
         size.0 as f32 / size.1 as f32,
         45f32.to_radians(),
         0.1,
         100.,
     );
 
-    let mut sphere1 = Object::new(Shape::Sphere(Sphere::new(1.)));
-    sphere1.translate(Vector::new(0., 5., 0.));
+    let mut m1 = Material::default();
+    m1.color = Color::new(1., 0., 0.);
+    let mut sphere1 = Object::new(Shape::Sphere(Sphere::new(0.1)), m1);
+    sphere1.translate(Vector::new(1., 0., 0.));
 
-    let mut sphere2 = Object::new(Shape::Sphere(Sphere::new(1.)));
-    sphere2.translate(Vector::new(1., 5., 0.));
+    let mut m2 = Material::default();
+    m2.color = Color::new(0., 1., 0.);
+    let mut sphere2: Object = Object::new(Shape::Sphere(Sphere::new(0.1)), m2);
+    sphere2.translate(Vector::new(0., 1., 0.));
 
-    let plane = Object::new(Shape::Plane(Plane::new()));
+    let mut m3 = Material::default();
+    m3.color = Color::new(0., 0., 1.);
+    let mut sphere3 = Object::new(Shape::Sphere(Sphere::new(0.1)), m3);
+    sphere3.translate(Vector::new(0., 0., 1.));
 
     let mut world = World::new();
     world.add_object(sphere1);
     world.add_object(sphere2);
-    world.add_object(plane);
+    world.add_object(sphere3);
 
     let light = Light::new(Point::new(0., 100., 0.), Color::new(1., 1., 1.));
     world.add_light(light);

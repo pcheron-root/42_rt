@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod tests {
-    use rt::{Intersect, Object, Plane, Point, Ray, Shape, Vector};
+    use rt::{Intersect, Material, Object, Plane, Point, Ray, Shape, Vector};
 
     #[test]
     fn test_plane_intersection_from_above() {
-        let plane = Object::new(Shape::Plane(Plane::new()));
+        let plane = Object::new(Shape::Plane(Plane::new()), Material::default());
         let ray = Ray::new(Point::new(0., 1., 0.), Vector::new(0., -1., 0.));
 
         let hit = plane.intersect(ray);
@@ -17,7 +17,7 @@ mod tests {
 
     #[test]
     fn test_plane_intersection_from_below() {
-        let plane = Object::new(Shape::Plane(Plane::new()));
+        let plane = Object::new(Shape::Plane(Plane::new()), Material::default());
         let ray = Ray::new(Point::new(0., -1., 0.), Vector::new(0., 1., 0.));
 
         let hit = plane.intersect(ray);
@@ -30,7 +30,7 @@ mod tests {
 
     #[test]
     fn test_plane_no_intersection() {
-        let plane = Object::new(Shape::Plane(Plane::new()));
+        let plane = Object::new(Shape::Plane(Plane::new()), Material::default());
         let ray = Ray::new(Point::new(0., 10., 0.), Vector::new(0., 0., 1.));
 
         let hit = plane.intersect(ray);

@@ -220,7 +220,7 @@ impl Matrix {
     }
 
     pub fn view(from: Point, to: Point, up: Vector) -> Matrix {
-        let forward = (from.clone() - to).normalize();
+        let forward = (from - to).normalize();
         let up = up.normalize();
         let right = up.cross(&forward).normalize();
         let up = forward.cross(&right).normalize();

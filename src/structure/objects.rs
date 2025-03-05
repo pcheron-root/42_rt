@@ -2,16 +2,28 @@ use crate::{Color, Intersection, Matrix, Point, Ray, Shape, Vector};
 
 #[derive(Debug, Clone)]
 pub struct Material {
-    pub shininess: f32, // between 10 and 200
-
     pub color: Color,
-    pub ambient: f32,  // between 0 and 1
-    pub diffuse: f32,  // between 0 and 1
-    pub specular: f32, // between 0 and 1
+
+    pub shininess: f32, // between 10 and 200
+    pub ambient: f32,   // between 0 and 1
+    pub diffuse: f32,   // between 0 and 1
+    pub specular: f32,  // between 0 and 1
 }
 
 impl Material {
-    pub fn new() -> Self {
+    pub fn new(color: Color, shininess: f32, ambient: f32, diffuse: f32, specular: f32) -> Self {
+        Self {
+            shininess,
+            specular,
+            color,
+            ambient,
+            diffuse,
+        }
+    }
+}
+
+impl Default for Material {
+    fn default() -> Material {
         let shininess = 200.;
         let color = Color::new(1., 1., 1.);
         let ambient = 0.1;
@@ -43,9 +55,9 @@ pub struct Object {
 }
 
 impl Object {
-    pub fn new(shape: Shape) -> Object {
+    pub fn new(shape: Shape, material: Material) -> Object {
         Object {
-            material: Material::new(),
+            material,
             position: Point::new(0., 0., 0.),
             pitch: 0.,
             yaw: 0.,

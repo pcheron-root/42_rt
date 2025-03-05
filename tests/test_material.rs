@@ -23,7 +23,7 @@ mod tests {
 
     #[test]
     fn test_default_material() {
-        let material = Material::new();
+        let material = Material::default();
 
         assert_eq!(material.ambient, 0.1);
         assert_eq!(material.color.red(), 1.0);
@@ -36,7 +36,7 @@ mod tests {
 
     #[test]
     fn test_default_material_of_sphere() {
-        let sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let sphere = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
 
         assert_eq!(sphere.material.ambient, 0.1);
         assert_eq!(sphere.material.color.red(), 1.0);

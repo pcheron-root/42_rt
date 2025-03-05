@@ -1,5 +1,6 @@
 #[cfg(test)]
 mod tests {
+    use rt::Material;
     use rt::Object;
     use rt::Point;
     use rt::Ray;
@@ -9,7 +10,7 @@ mod tests {
 
     #[test]
     fn test_sphere_intersection() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
 
         let ray = Ray::new(Point::new(0., 0., 5.), Vector::new(0., 0., -1.));
 
@@ -20,7 +21,7 @@ mod tests {
 
     #[test]
     fn test_sphere_no_intersection() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
 
         let ray = Ray::new(Point::new(0., 0., 5.), Vector::new(0., 0., 1.));
 
@@ -31,7 +32,7 @@ mod tests {
 
     #[test]
     fn test_sphere_intersection_with_translation() {
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
         obj.translate(Vector::new(2., 0., 2.));
 
         let ray = Ray::new(Point::new(0., 0., 0.), Vector::new(1., 0., 1.).normalize());
@@ -43,7 +44,7 @@ mod tests {
 
     #[test]
     fn test_sphere_intersection_0() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
 
         let ray = Ray::new(Point::new(0., 0., -5.), Vector::new(0., 0., 1.).normalize());
         let result = obj.intersect(ray).unwrap();
@@ -52,7 +53,7 @@ mod tests {
 
     #[test]
     fn test_sphere_intersection_1() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
 
         let ray = Ray::new(Point::new(0., 1., -5.), Vector::new(0., 0., 1.).normalize());
         let result = obj.intersect(ray).unwrap();
@@ -61,7 +62,7 @@ mod tests {
 
     #[test]
     fn test_ray_miss_sphere() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
 
         let ray = Ray::new(Point::new(0., 2., -5.), Vector::new(0., 0., 1.).normalize());
         let result = obj.intersect(ray).is_none();
@@ -70,7 +71,7 @@ mod tests {
 
     #[test]
     fn test_ray_origin_in_sphere() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
 
         let ray = Ray::new(Point::new(0., 0., 0.), Vector::new(0., 0., 1.).normalize());
         let result = obj.intersect(ray).unwrap();
@@ -79,7 +80,7 @@ mod tests {
 
     #[test]
     fn test_ray_miss_sphere_2() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
 
         let ray = Ray::new(Point::new(0., 0., 5.), Vector::new(0., 0., 1.).normalize());
         let result = obj.intersect(ray).is_none();
@@ -88,7 +89,7 @@ mod tests {
 
     #[test]
     fn test_sphere_intersection_impact_point() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.)), Material::default());
 
         let ray = Ray::new(Point::new(0., 0., 5.), Vector::new(0., 0., 1.).normalize());
         let result = obj.intersect(ray).is_none();

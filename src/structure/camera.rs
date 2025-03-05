@@ -31,7 +31,7 @@ impl Camera {
             far,
 
             pitch: 0.,
-            yaw: 270.,
+            yaw: -90.,
         }
     }
 
