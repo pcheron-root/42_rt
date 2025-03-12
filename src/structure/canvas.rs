@@ -125,7 +125,7 @@ impl Canvas {
 
         let diffuse;
         let specular;
-        if light_dot_normal < 0. {
+        if light_dot_normal < 0. || shadowed == true {
             diffuse = Color::new([0., 0., 0.]);
             specular = Color::new([0., 0., 0.]);
         }

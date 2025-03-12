@@ -1,7 +1,7 @@
 
 #[cfg(test)]
 mod tests {
-    use rt::{light_utils::{is_shadowed, shade_it}, structure::point, Color, Light, Object, Point, Ray, Shape, Sphere, Vector, World};
+    use rt::{constants::EPSILON, light_utils::{is_shadowed, shade_it}, structure::point, Color, Light, Object, Point, Ray, Shape, Sphere, Vector, World};
 
     #[test]
     fn test_light_surface_in_shadow_0() {
@@ -102,16 +102,44 @@ mod tests {
         };
         let i = w.intersect(r);
 
-        let c;
         if i.is_some() {
             let comps = i.unwrap();
-            c = shade_it(&w, &comps);
+            let c = shade_it(&w, &comps);
 
             assert_eq!(c.red(), 0.1);
             assert_eq!(c.green(), 0.1);
             assert_eq!(c.blue(), 0.1);
         }
+        else {
+            assert_eq!(true, false);
+        }
+    }
 
+    #[test]
+    fn test_the_hit_should_offset_the_point() {
+        let r = Ray {
+            origin: Point::new([0., 0., -5.]),
+            direction: Vector::new([0., 0., 1.]),
+        };
+        let mut sphere1 = Object::new(
+            Shape::Sphere(Sphere::new(1.))
+        );
+        sphere1.translate(Vector::new([0., 0., 1.]));
+
+        let mut w = World::new();
+        w.add_object(sphere1);
+        let i = w.intersect(r);
+
+        if i.is_some() {
+            let comps = i.unwrap();
+
+            assert_eq!(comps.over_point.data.z < (-EPSILON / 2.0), true);
+            assert_eq!(comps.point.data.z > comps.over_point.data.z, true);
+
+        }
+        else {
+            assert_eq!(true, false);
+        }
     }
 
 }

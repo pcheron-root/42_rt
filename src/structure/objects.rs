@@ -1,3 +1,5 @@
+use std::f32::EPSILON;
+
 use crate::{Intersection, Matrix, Point, Ray, Shape, Vector, Color};
 
 #[derive(Debug, Clone)]
@@ -95,14 +97,17 @@ impl Object {
             // Transform hit data back to WORLD space
             let world_point: Point = self.local_to_world.clone() * local_hit.point;
             let world_normal: Vector = self.local_to_world.clone() * local_hit.normal;
-
-            Some(Intersection {
-                hit_normal: -(ray.direction),
-                object: (*self).clone(),
-                point: world_point,
-                normal: world_normal.normalize(),
-                t: local_hit.t,
-            })
+            
+            let mut over_point = world_point.clone();
+            over_point.data.z -= EPSILON / 2.0;
+            Some(Intersection::new(
+                (*self).clone(),
+                local_hit.t,
+                world_point,
+                world_normal.normalize(),
+                -(ray.direction),
+                world_point,
+            ))
         } else {
             None
         }
