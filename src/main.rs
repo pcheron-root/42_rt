@@ -77,8 +77,8 @@ fn main() {
     let canvas = Canvas::new(size.0, size.1);
 
     let camera = Camera::new(
-        Point::new([0., 0., 7.]),
-        Vector::new([0., 0., -1.]),
+        Point::new(0., 0., 7.),
+        // Vector::new(0., 0., -1.),
 
         size.0 as f32 / size.1 as f32,
         45f32.to_radians(),
@@ -95,12 +95,12 @@ fn main() {
     let plane = Object::new(Shape::Plane(Plane::new()));
 
     let mut s3 = Object::new(Shape::Sphere(Sphere::new(3.)));
-    s3.translate(Vector::new([0., -4., 0.]));
+    s3.translate(Vector::new(0., -4., 0.));
 
     let mut world = World::new();
 
-    world.add_object(s1);
-    world.add_object(s2);
+    world.add_object(sphere1);
+    world.add_object(sphere2);
     world.add_object(s3);
     world.add_object(plane);
 

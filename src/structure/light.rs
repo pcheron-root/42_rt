@@ -10,7 +10,7 @@ impl Light {
         Light {
             position,
 
-            color,
+            // color,
             intensity: Color::new(1., 1., 1.),
 
         }

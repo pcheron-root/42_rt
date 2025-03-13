@@ -12,12 +12,12 @@ mod tests {
         );
         w.add_object(sphere);
         let light = Light {
-            position: Point::new([0., 0., -10.]),
-            intensity: Color::new([1., 1., 1.]),
+            position: Point::new(0., 0., -10.),
+            intensity: Color::new(1., 1., 1.),
 
         };
         w.add_light(light);
-        let p = Point::new([0., 10., 0.]);
+        let p = Point::new(0., 10., 0.);
         assert_eq!(is_shadowed(&w, &p), false);
     }
     
@@ -30,13 +30,13 @@ mod tests {
         );
         w.add_object(sphere);
         let light = Light {
-            position: Point::new([-10., 10., -10.]),
-            intensity: Color::new([1., 1., 1.]),
+            position: Point::new(-10., 10., -10.),
+            intensity: Color::new(1., 1., 1.),
             
         };
         w.add_light(light);
         
-        let p = Point::new([10., -10., 10.]);
+        let p = Point::new(10., -10., 10.);
         assert_eq!(is_shadowed(&w, &p), true);
         
     }
@@ -49,13 +49,13 @@ mod tests {
         );
         w.add_object(sphere);
         let light = Light {
-            position: Point::new([10., -10., 10.]),
-            intensity: Color::new([1., 1., 1.]),
+            position: Point::new(10., -10., 10.),
+            intensity: Color::new(1., 1., 1.),
 
         };
         w.add_light(light);
 
-        let p = Point::new([20., -20., 20.]);
+        let p = Point::new(20., -20., 20.);
         assert_eq!(is_shadowed(&w, &p), false);
     }
 
@@ -67,13 +67,13 @@ mod tests {
         );
         w.add_object(sphere);
         let light = Light {
-            position: Point::new([10., -10., 10.]),
-            intensity: Color::new([1., 1., 1.]),
+            position: Point::new(10., -10., 10.),
+            intensity: Color::new(1., 1., 1.),
 
         };
         w.add_light(light);
 
-        let p = Point::new([2., -2., 2.]);
+        let p = Point::new(2., -2., 2.);
         assert_eq!(is_shadowed(&w, &p), false);
     }
 
@@ -87,19 +87,19 @@ mod tests {
         let mut sphere2 = Object::new(
             Shape::Sphere(Sphere::new(1.))
         );
-        sphere2.translate(Vector::new([0., 0., 10.]));
+        sphere2.translate(Vector::new(0., 0., 10.));
         w.add_object(sphere1);
         w.add_object(sphere2);
         let light = Light {
-            position: Point::new([0., 0., -10.]),
-            intensity: Color::new([1., 1., 1.]),
+            position: Point::new(0., 0., -10.),
+            intensity: Color::new(1., 1., 1.),
 
         };
         w.add_light(light);
 
         let r = Ray {
-            origin: Point::new([0., 0., 5.]),
-            direction: Vector::new([0., 0., 1.]),
+            origin: Point::new(0., 0., 5.),
+            direction: Vector::new(0., 0., 1.),
         };
         let i = w.intersect(r);
 
@@ -119,13 +119,13 @@ mod tests {
     #[test]
     fn test_the_hit_should_offset_the_point() {
         let r = Ray {
-            origin: Point::new([0., 0., -5.]),
-            direction: Vector::new([0., 0., 1.]),
+            origin: Point::new(0., 0., -5.),
+            direction: Vector::new(0., 0., 1.),
         };
         let mut sphere1 = Object::new(
             Shape::Sphere(Sphere::new(1.))
         );
-        sphere1.translate(Vector::new([0., 0., 1.]));
+        sphere1.translate(Vector::new(0., 0., 1.));
 
         let mut w = World::new();
         w.add_object(sphere1);
@@ -134,10 +134,10 @@ mod tests {
         if i.is_some() {
             let comps = i.unwrap();
 
-            assert_eq!(comps.over_point.data.x, 0.);
-            assert_eq!(comps.over_point.data.y, 0.);
-            assert_eq!(comps.over_point.data.z < -EPSILON / 2.0, true);
-            assert_eq!(comps.point.data.z > comps.over_point.data.z, true);
+            assert_eq!(comps.over_point.x, 0.);
+            assert_eq!(comps.over_point.y, 0.);
+            assert_eq!(comps.over_point.z < -EPSILON / 2.0, true);
+            assert_eq!(comps.point.z > comps.over_point.z, true);
 
         }
         else {
