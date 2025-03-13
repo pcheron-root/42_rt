@@ -89,6 +89,7 @@ impl Canvas {
         Ok(())
     }
 
+
     pub fn lighting(
         &self,
         material: &Material,
@@ -96,6 +97,7 @@ impl Canvas {
         point: &Point,
         eyev: &Vector,
         normalv: &Vector,
+        shadowed: bool,
     ) -> Color {
         let effective_color = material.color * light.intensity;
         let lightv = (light.position - *point).normalize();
@@ -123,12 +125,14 @@ impl Canvas {
         ambient + diffuse + specular
     }
 
+
     pub fn lighting_ext(
         material: &Material,
         light: &Light,
         point: &Point,
         eyev: &Vector,
         normalv: &Vector,
+        shadowed: bool,
     ) -> Color {
         let effective_color = material.color * light.intensity;
         let lightv = (light.position - *point).normalize();
@@ -136,8 +140,13 @@ impl Canvas {
         let ambient = effective_color * material.ambient;
         let light_dot_normal = lightv.dot(normalv);
 
-        if light_dot_normal < 0. {
-            return ambient;
+
+        let diffuse;
+        let specular;
+        if light_dot_normal < 0. || shadowed == true {
+            diffuse = Color::new([0., 0., 0.]);
+            specular = Color::new([0., 0., 0.]);
+
         }
 
         let specular;

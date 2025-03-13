@@ -1,4 +1,7 @@
-use crate::{Color, Intersection, Matrix, Point, Ray, Shape, Vector};
+
+use std::f32::EPSILON;
+
+use crate::{Intersection, Matrix, Point, Ray, Shape, Vector, Color};
 
 #[derive(Debug, Clone)]
 pub struct Material {
@@ -96,15 +99,20 @@ impl Object {
         if let Some(local_hit) = self.shape.intersect(local_ray) {
             // Transform hit data back to WORLD space
             let world_point: Point = self.local_to_world.clone() * local_hit.point;
-            let world_normal: Vector = self.local_to_world.clone() * local_hit.normal;
+            let world_normal: Vector = (self.local_to_world.clone() * local_hit.normal).normalize();
 
-            Some(Intersection {
-                hit_normal: -(ray.direction),
-                object: (*self).clone(),
-                point: world_point,
-                normal: world_normal.normalize(),
-                t: local_hit.t,
-            })
+            // let test = world_normal * EPSILON;
+            // eprintln!("wp x:{} y:{} z:{}", world_point.data.x, world_point.data.y, world_point.data.z);
+            // eprintln!("x:{} y:{} z:{}", test.data.x, test.data.y, world_normal.data.z);
+            let over_point = world_point + world_normal * EPSILON * 64.;
+            Some(Intersection::new(
+                (*self).clone(),
+                local_hit.t,
+                world_point,
+                world_normal,
+                -(ray.direction),
+                over_point,
+            ))
         } else {
             None
         }

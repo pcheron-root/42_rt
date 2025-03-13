@@ -12,8 +12,10 @@ use rt::Shape;
 use rt::Sphere;
 use rt::Vector;
 use rt::World;
+use rt::light_utils::shade_it;
 
 use minifb::{Window, WindowOptions};
+
 
 pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
     let sky = Color::new(0., 0., 0.);
@@ -45,13 +47,9 @@ pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
             let hit = world.intersect(ray);
             if hit.is_some() {
                 let hit = hit.unwrap();
-                let color = canvas.lighting(
-                    &hit.object.material,
-                    &world.light,
-                    &hit.point,
-                    &(-ray.direction),
-                    &hit.normal,
-                );
+              
+                let color = shade_it(&world, &hit);
+
 
                 canvas.write(x, y, color);
             } else {
@@ -59,6 +57,7 @@ pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
             }
         }
     }
+
 }
 
 fn main() {
@@ -78,7 +77,9 @@ fn main() {
     let canvas = Canvas::new(size.0, size.1);
 
     let camera = Camera::new(
-        Point::new(0., 5., 5.),
+        Point::new([0., 0., 7.]),
+        Vector::new([0., 0., -1.]),
+
         size.0 as f32 / size.1 as f32,
         45f32.to_radians(),
         0.1,
@@ -93,10 +94,16 @@ fn main() {
 
     let plane = Object::new(Shape::Plane(Plane::new()));
 
+    let mut s3 = Object::new(Shape::Sphere(Sphere::new(3.)));
+    s3.translate(Vector::new([0., -4., 0.]));
+
     let mut world = World::new();
-    world.add_object(sphere1);
-    world.add_object(sphere2);
+
+    world.add_object(s1);
+    world.add_object(s2);
+    world.add_object(s3);
     world.add_object(plane);
+
 
     let light = Light::new(Point::new(0., 100., 0.), Color::new(1., 1., 1.));
     world.add_light(light);

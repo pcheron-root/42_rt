@@ -13,4 +13,18 @@ pub struct Intersection {
     pub point: Point,
     pub normal: Vector,
     pub hit_normal: Vector,
+    pub over_point: Point,
+}
+
+impl Intersection {
+    pub fn new(object: Object, t: f32, point: Point, normal: Vector, hit_normal: Vector, over_point: Point) -> Self {
+        Intersection {
+            object,
+            t,
+            point,
+            normal,
+            hit_normal,
+            over_point,
+        }
+    }
 }

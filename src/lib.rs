@@ -2,6 +2,7 @@ pub mod constants;
 pub mod structure;
 pub mod traits;
 pub mod utils;
+pub mod light_utils;
 
 pub use structure::camera::Camera;
 pub use structure::camera::Direction;
