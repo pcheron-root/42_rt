@@ -25,7 +25,7 @@ pub fn is_shadowed(world: &World, point: &Point) -> bool {
 
 pub fn shade_it(world: &World, comps: &Intersection) -> Color {
 
-    let shadowed = is_shadowed(world, &comps.point);
+    let shadowed = is_shadowed(world, &comps.over_point);
 
     Canvas::lighting_ext(
         &comps.object.material,

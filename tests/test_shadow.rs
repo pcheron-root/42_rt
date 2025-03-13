@@ -1,7 +1,8 @@
 
 #[cfg(test)]
 mod tests {
-    use rt::{constants::EPSILON, light_utils::{is_shadowed, shade_it}, structure::point, Color, Light, Object, Point, Ray, Shape, Sphere, Vector, World};
+    use rt::{light_utils::{is_shadowed, shade_it}, structure::point, Color, Light, Object, Point, Ray, Shape, Sphere, Vector, World};
+    use std::f32::EPSILON;
 
     #[test]
     fn test_light_surface_in_shadow_0() {
@@ -133,7 +134,9 @@ mod tests {
         if i.is_some() {
             let comps = i.unwrap();
 
-            assert_eq!(comps.over_point.data.z < (-EPSILON / 2.0), true);
+            assert_eq!(comps.over_point.data.x, 0.);
+            assert_eq!(comps.over_point.data.y, 0.);
+            assert_eq!(comps.over_point.data.z < -EPSILON / 2.0, true);
             assert_eq!(comps.point.data.z > comps.over_point.data.z, true);
 
         }

@@ -96,17 +96,19 @@ impl Object {
         if let Some(local_hit) = self.shape.intersect(local_ray) {
             // Transform hit data back to WORLD space
             let world_point: Point = self.local_to_world.clone() * local_hit.point;
-            let world_normal: Vector = self.local_to_world.clone() * local_hit.normal;
-            
-            let mut over_point = world_point.clone();
-            over_point.data.z -= EPSILON / 2.0;
+            let world_normal: Vector = (self.local_to_world.clone() * local_hit.normal).normalize();
+
+            // let test = world_normal * EPSILON;
+            // eprintln!("wp x:{} y:{} z:{}", world_point.data.x, world_point.data.y, world_point.data.z);
+            // eprintln!("x:{} y:{} z:{}", test.data.x, test.data.y, world_normal.data.z);
+            let over_point = world_point + world_normal * EPSILON * 64.;
             Some(Intersection::new(
                 (*self).clone(),
                 local_hit.t,
                 world_point,
-                world_normal.normalize(),
+                world_normal,
                 -(ray.direction),
-                world_point,
+                over_point,
             ))
         } else {
             None
