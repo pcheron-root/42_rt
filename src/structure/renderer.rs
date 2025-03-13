@@ -1,6 +1,6 @@
 use minifb::{Key, Window};
 
-use crate::{Camera, Canvas, Vector, World};
+use crate::{Camera, Canvas, Direction, World};
 
 pub struct Renderer {
     pub window: Window,
@@ -41,16 +41,30 @@ impl Renderer {
             }
 
             if self.window.is_key_down(Key::A) {
-                self.camera.translate(Vector::new([-1., 0., 0.]));
+                self.camera.translate(Direction::Left);
             }
             if self.window.is_key_down(Key::D) {
-                self.camera.translate(Vector::new([1., 0., 0.]));
+                self.camera.translate(Direction::Right);
             }
             if self.window.is_key_down(Key::W) {
-                self.camera.translate(Vector::new([0., 0., -1.]));
+                self.camera.translate(Direction::Forward);
             }
             if self.window.is_key_down(Key::S) {
-                self.camera.translate(Vector::new([0., 0., 1.]));
+                self.camera.translate(Direction::Backward);
+            }
+
+            if self.window.is_key_down(Key::Up) {
+                self.camera.rotate_x(1.);
+            }
+            if self.window.is_key_down(Key::Down) {
+                self.camera.rotate_x(-1.);
+            }
+
+            if self.window.is_key_down(Key::Right) {
+                self.camera.rotate_y(1.);
+            }
+            if self.window.is_key_down(Key::Left) {
+                self.camera.rotate_y(-1.);
             }
 
             self.camera.update();

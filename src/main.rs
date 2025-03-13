@@ -4,6 +4,7 @@ use rt::Color;
 use rt::Light;
 use rt::Matrix;
 use rt::Object;
+use rt::Plane;
 use rt::Point;
 use rt::Ray;
 use rt::Renderer;
@@ -17,12 +18,12 @@ use minifb::{Window, WindowOptions};
 
 
 pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
-    let sky = Color::new([0., 0., 0.]);
+    let sky = Color::new(0., 0., 0.);
 
     let view = Matrix::view(
-        camera.position.clone(),
-        camera.position.clone() + camera.direction.clone(),
-        Vector::new([0., 1., 0.]),
+        camera.position,
+        camera.position + camera.direction(),
+        Vector::new(0., 1., 0.),
     );
 
     let projection = Matrix::projection(camera.fov, camera.aspect, camera.near, camera.far);
@@ -31,26 +32,24 @@ pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
     let inv_view_proj = view_proj.inverse().unwrap();
 
     for y in 0..canvas.height {
-        let ndc_y = -1.0 + 2.0 * (y as f32 + 0.5) / canvas.height as f32;
+        let ndc_y = 1.0 - 2.0 * ((canvas.height - y) as f32 + 0.5) / canvas.height as f32;
 
         for x in 0..canvas.width {
             let ndc_x = 2.0 * (x as f32 + 0.5) / canvas.width as f32 - 1.0;
 
-            let origin = inv_view_proj.clone() * Point::new([ndc_x, ndc_y, -1.0]);
-            let target = inv_view_proj.clone() * Point::new([ndc_x, ndc_y, 1.0]);
+            let origin = inv_view_proj.clone() * Point::new(ndc_x, ndc_y, -1.0);
+            let target = inv_view_proj.clone() * Point::new(ndc_x, ndc_y, 1.0);
 
-            let direction = (target - origin.clone()).normalize();
+            let direction = (target - origin).normalize();
 
-            let ray = Ray::new(
-                Point::new([origin.data.x, origin.data.y, origin.data.z]),
-                direction,
-            );
+            let ray = Ray::new(Point::new(origin.x, origin.y, origin.z), direction);
 
             let hit = world.intersect(ray);
             if hit.is_some() {
                 let hit = hit.unwrap();
+              
                 let color = shade_it(&world, &hit);
-                // let color = canvas.lighting(&hit.object.material, &world.light, &hit.point, &(ray.direction * -1.), &hit.normal, false);
+
 
                 canvas.write(x, y, color);
             } else {
@@ -80,27 +79,33 @@ fn main() {
     let camera = Camera::new(
         Point::new([0., 0., 7.]),
         Vector::new([0., 0., -1.]),
+
         size.0 as f32 / size.1 as f32,
         45f32.to_radians(),
         0.1,
         100.,
     );
 
-    let mut s1 = Object::new(Shape::Sphere(Sphere::new(1.)));
-    s1.translate(Vector::new([-1., 0., 0.]));
+    let mut sphere1 = Object::new(Shape::Sphere(Sphere::new(1.)));
+    sphere1.translate(Vector::new(0., 5., 0.));
 
-    let mut s2 = Object::new(Shape::Sphere(Sphere::new(1.)));
-    s2.translate(Vector::new([1., 0., 0.]));
+    let mut sphere2 = Object::new(Shape::Sphere(Sphere::new(1.)));
+    sphere2.translate(Vector::new(1., 5., 0.));
+
+    let plane = Object::new(Shape::Plane(Plane::new()));
 
     let mut s3 = Object::new(Shape::Sphere(Sphere::new(3.)));
     s3.translate(Vector::new([0., -4., 0.]));
 
     let mut world = World::new();
+
     world.add_object(s1);
     world.add_object(s2);
     world.add_object(s3);
+    world.add_object(plane);
 
-    let light = Light::new(Point::new([0., 2., 0.]), Color::new([1., 1., 1.]));
+
+    let light = Light::new(Point::new(0., 100., 0.), Color::new(1., 1., 1.));
     world.add_light(light);
 
     let mut renderer = Renderer::new(window, canvas, world, camera);

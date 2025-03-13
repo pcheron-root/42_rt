@@ -1,18 +1,18 @@
 use crate::constants::EPSILON;
-use crate::Tuple;
 
 use std::ops::{Add, Div, Mul, Neg, Sub};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Vector {
-    pub data: Tuple,
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+    pub w: f32,
 }
 
 impl Vector {
-    pub fn new(data: [f32; 3]) -> Self {
-        let data = Tuple::new(data[0], data[1], data[2], 0.0);
-
-        Self { data }
+    pub fn new(x: f32, y: f32, z: f32) -> Self {
+        Self { x, y, z, w: 0.0 }
     }
 
     pub fn magnitude(&self) -> f32 {
@@ -22,22 +22,22 @@ impl Vector {
     pub fn normalize(&self) -> Vector {
         let len = self.magnitude();
         if len > 0. {
-            return Vector::new([self.data.x / len, self.data.y / len, self.data.z / len]);
+            return Vector::new(self.x, self.y, self.z) / len;
         }
 
         self.clone()
     }
 
     pub fn dot(&self, other: &Self) -> f32 {
-        self.data.x * other.data.x + self.data.y * other.data.y + self.data.z * other.data.z
+        self.x * other.x + self.y * other.y + self.z * other.z
     }
 
     pub fn cross(&self, other: &Self) -> Self {
-        Vector::new([
-            self.data.y * other.data.z - self.data.z * other.data.y,
-            self.data.z * other.data.x - self.data.x * other.data.z,
-            self.data.x * other.data.y - self.data.y * other.data.x,
-        ])
+        Vector::new(
+            self.y * other.z - self.z * other.y,
+            self.z * other.x - self.x * other.z,
+            self.x * other.y - self.y * other.x,
+        )
     }
 
     pub fn reflect(&self, normal: &Vector) -> Vector {
@@ -51,9 +51,9 @@ impl Vector {
 
 impl PartialEq for Vector {
     fn eq(&self, other: &Self) -> bool {
-        (self.data.x - other.data.x).abs() < EPSILON
-            && (self.data.y - other.data.y).abs() < EPSILON
-            && (self.data.z - other.data.z).abs() < EPSILON
+        (self.x - other.x).abs() < EPSILON
+            && (self.y - other.y).abs() < EPSILON
+            && (self.z - other.z).abs() < EPSILON
     }
 }
 
@@ -61,11 +61,7 @@ impl Add for Vector {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self::Output {
-        Vector::new([
-            self.data.x + rhs.data.x,
-            self.data.y + rhs.data.y,
-            self.data.z + rhs.data.z,
-        ])
+        Vector::new(self.x + rhs.x, self.y + rhs.y, self.z + rhs.z)
     }
 }
 
@@ -73,11 +69,7 @@ impl Sub for Vector {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self::Output {
-        Vector::new([
-            self.data.x - rhs.data.x,
-            self.data.y - rhs.data.y,
-            self.data.z - rhs.data.z,
-        ])
+        Vector::new(self.x - rhs.x, self.y - rhs.y, self.z - rhs.z)
     }
 }
 
@@ -85,7 +77,7 @@ impl Mul<f32> for Vector {
     type Output = Vector;
 
     fn mul(self, rhs: f32) -> Self::Output {
-        Vector::new([self.data.x * rhs, self.data.y * rhs, self.data.z * rhs])
+        Vector::new(self.x * rhs, self.y * rhs, self.z * rhs)
     }
 }
 
@@ -93,7 +85,7 @@ impl Div<f32> for Vector {
     type Output = Vector;
 
     fn div(self, rhs: f32) -> Self::Output {
-        Vector::new([self.data.x / rhs, self.data.y / rhs, self.data.z / rhs])
+        Vector::new(self.x / rhs, self.y / rhs, self.z / rhs)
     }
 }
 
@@ -101,6 +93,6 @@ impl Neg for Vector {
     type Output = Vector;
 
     fn neg(self) -> Self::Output {
-        Vector::new([-self.data.x, -self.data.y, -self.data.z])
+        Vector::new(-self.x, -self.y, -self.z)
     }
 }
