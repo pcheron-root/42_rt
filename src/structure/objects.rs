@@ -11,6 +11,8 @@ pub struct Material {
     pub ambient: f32,  // between 0 and 1
     pub diffuse: f32,  // between 0 and 1
     pub specular: f32, // between 0 and 1
+
+    pub pattern: Option<Pattern>,
 }
 
 impl Material {
@@ -20,6 +22,9 @@ impl Material {
         let ambient = 0.1;
         let diffuse = 0.9;
         let specular = 0.9;
+        let pattern = Some(Pattern::new(Color::new(1.0, 1.0, 1.0), Color::new(0., 0., 0.), true, false, false));
+        // let pattern: Option<Pattern> = None;
+
 
         Self {
             shininess,
@@ -27,6 +32,7 @@ impl Material {
             color,
             ambient,
             diffuse,
+            pattern,
         }
     }
 }
@@ -116,5 +122,42 @@ impl Object {
         } else {
             None
         }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct Pattern {
+    pub a: Color,
+    pub b: Color,
+    pub x_mod: bool,
+    pub y_mod: bool,
+    pub z_mod: bool,
+}
+
+impl Pattern {
+    pub fn new(color_a: Color, color_b: Color, x_mod: bool, y_mod: bool, z_mod: bool) -> Pattern {
+
+        Pattern {
+            a : color_a,
+            b : color_b,
+            x_mod: x_mod,
+            y_mod: y_mod,
+            z_mod: z_mod,
+        }
+    }
+
+    pub fn stripe_at(&self, point: &Point) -> Color {
+        let x;
+        if point.x < 0. {
+            x = (point.x.abs() + 1.) % 2.;
+        
+        }
+        else {
+            x = point.x % 2.0;
+        }
+        if x < 1. {
+            return self.a.clone(); // a verifier 
+        }
+        self.b.clone()
     }
 }
