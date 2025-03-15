@@ -4,11 +4,9 @@ mod tests {
 
     #[test]
     fn test_light_pos_and_intensity() {
-
         let intensity = Color::new(1., 1., 1.);
         // let color = Color::new(1., 1., 1.);
         let position = Point::new(0., 0., 0.);
-
 
         let light = Light {
             position: position,
@@ -24,7 +22,6 @@ mod tests {
         // assert_eq!(light.color.r, 1.);
         // assert_eq!(light.color.g, 1.);
         // assert_eq!(light.color.b, 1.);
-
     }
 
     // p 106
@@ -40,7 +37,6 @@ mod tests {
             position: Point::new(0., 0., -10.),
             // color: Color::new(1., 1., 1.),
             intensity: Color::new(1., 1., 1.),
-
         };
 
         let result = Canvas::lighting_ext(&m, &light, &position, &eyev, &normalv, false);
@@ -59,11 +55,9 @@ mod tests {
         let normalv = Vector::new(0., 0., -1.);
 
         let light = Light {
-
             position: Point::new(0., 0., -10.),
             // color: Color::new(1., 1., 1.),
             intensity: Color::new(1., 1., 1.),
-
         };
 
         let result = Canvas::lighting_ext(&m, &light, &position, &eyev, &normalv, false);
@@ -82,11 +76,9 @@ mod tests {
         let normalv = Vector::new(0., 0., -1.);
 
         let light = Light {
-
             position: Point::new(0., 10., -10.),
             // color: Color::new(1., 1., 1.),
             intensity: Color::new(1., 1., 1.),
-
         };
 
         let result = Canvas::lighting_ext(&m, &light, &position, &eyev, &normalv, false);
@@ -105,11 +97,9 @@ mod tests {
         let normalv = Vector::new(0., 0., -1.);
 
         let light = Light {
-
             position: Point::new(0., 10., -10.),
             // color: Color::new(1., 1., 1.),
             intensity: Color::new(1., 1., 1.),
-
         };
 
         let result = Canvas::lighting_ext(&m, &light, &position, &eyev, &normalv, false);
@@ -128,11 +118,9 @@ mod tests {
         let normalv = Vector::new(0., 0., -1.);
 
         let light = Light {
-
             position: Point::new(0., 0., 10.),
             // color: Color::new(1., 1., 1.),
             intensity: Color::new(1., 1., 1.),
-
         };
 
         let result = Canvas::lighting_ext(&m, &light, &position, &eyev, &normalv, false);

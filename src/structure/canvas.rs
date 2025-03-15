@@ -89,7 +89,6 @@ impl Canvas {
         Ok(())
     }
 
-
     pub fn lighting(
         &self,
         material: &Material,
@@ -105,7 +104,7 @@ impl Canvas {
         let ambient = effective_color * material.ambient;
         let light_dot_normal = lightv.dot(normalv);
 
-        if light_dot_normal < 0. {
+        if light_dot_normal < 0. || shadowed == true {
             return ambient;
         }
 
@@ -125,7 +124,6 @@ impl Canvas {
         ambient + diffuse + specular
     }
 
-
     pub fn lighting_ext(
         material: &Material,
         light: &Light,
@@ -140,18 +138,15 @@ impl Canvas {
         let ambient = effective_color * material.ambient;
         let light_dot_normal = lightv.dot(normalv);
 
-
         if light_dot_normal < 0. || shadowed == true {
-            
             return ambient;
-
         }
 
         let diffuse = effective_color * material.diffuse * light_dot_normal;
-        
+
         let reflectv = (-lightv).reflect(normalv);
         let reflect_dot_eye = reflectv.dot(eyev);
-        
+
         if reflect_dot_eye <= 0. {
             return ambient + diffuse;
         } else {
@@ -159,6 +154,5 @@ impl Canvas {
             let specular = light.intensity * material.specular * factor;
             return ambient + diffuse + specular;
         }
-
     }
 }

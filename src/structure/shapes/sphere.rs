@@ -1,5 +1,5 @@
 use crate::Intersect;
-use crate::LocalHit;
+use crate::LocalIntersection;
 use crate::Point;
 use crate::Ray;
 use crate::Vector;
@@ -16,7 +16,7 @@ impl Sphere {
 }
 
 impl Intersect for Sphere {
-    fn intersect(&self, ray: Ray) -> Option<LocalHit> {
+    fn intersect(&self, ray: Ray) -> Option<LocalIntersection> {
         let center = Point::new(0., 0., 0.);
 
         let o = ray.origin - center;
@@ -50,7 +50,7 @@ impl Intersect for Sphere {
         let point = ray.position(t);
         let normal = self.normal_at(point);
 
-        Some(LocalHit { point, normal, t })
+        Some(LocalIntersection { point, normal, t })
     }
 
     fn normal_at(&self, point: Point) -> Vector {

@@ -1,5 +1,5 @@
 use crate::Intersect;
-use crate::LocalHit;
+use crate::LocalIntersection;
 use crate::Plane;
 use crate::Ray;
 use crate::Sphere;
@@ -11,7 +11,7 @@ pub enum Shape {
 }
 
 impl Shape {
-    pub fn intersect(&self, ray: Ray) -> Option<LocalHit> {
+    pub fn intersect(&self, ray: Ray) -> Option<LocalIntersection> {
         match self {
             Shape::Sphere(s) => s.intersect(ray),
             Shape::Plane(s) => s.intersect(ray),

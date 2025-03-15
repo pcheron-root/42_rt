@@ -1,7 +1,6 @@
+use crate::constants::EPSILON;
 
-use std::f32::EPSILON;
-
-use crate::{Intersection, Matrix, Point, Ray, Shape, Vector, Color};
+use crate::{Color, Intersection, Matrix, Point, Ray, Shape, Vector};
 
 #[derive(Debug, Clone)]
 pub struct Material {
@@ -104,7 +103,7 @@ impl Object {
             // let test = world_normal * EPSILON;
             // eprintln!("wp x:{} y:{} z:{}", world_point.data.x, world_point.data.y, world_point.data.z);
             // eprintln!("x:{} y:{} z:{}", test.data.x, test.data.y, world_normal.data.z);
-            let over_point = world_point + world_normal * EPSILON * 64.;
+            let over_point = world_point + world_normal * EPSILON;
             Some(Intersection::new(
                 (*self).clone(),
                 local_hit.t,
