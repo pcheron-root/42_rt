@@ -2,7 +2,6 @@
 mod tests {
     use rt::constants::EPSILON;
     use rt::{
-        light_utils::{is_shadowed, shade_it},
         Color, Light, Object, Point, Ray, Shape, Sphere, Vector, World,
     };
 
@@ -17,7 +16,7 @@ mod tests {
         };
         w.add_light(light);
         let p = Point::new(0., 10., 0.);
-        assert_eq!(is_shadowed(&w, &p), false);
+        assert_eq!(w.is_shadowed(&p), false);
     }
 
     #[test]
@@ -32,7 +31,7 @@ mod tests {
         w.add_light(light);
 
         let p = Point::new(10., -10., 10.);
-        assert_eq!(is_shadowed(&w, &p), true);
+        assert_eq!(w.is_shadowed(&p), true);
     }
 
     #[test]
@@ -47,7 +46,7 @@ mod tests {
         w.add_light(light);
 
         let p = Point::new(20., -20., 20.);
-        assert_eq!(is_shadowed(&w, &p), false);
+        assert_eq!(w.is_shadowed(&p), false);
     }
 
     #[test]
@@ -62,7 +61,7 @@ mod tests {
         w.add_light(light);
 
         let p = Point::new(2., -2., 2.);
-        assert_eq!(is_shadowed(&w, &p), false);
+        assert_eq!(w.is_shadowed(&p), false);
     }
 
     // p133
@@ -88,7 +87,7 @@ mod tests {
 
         if i.is_some() {
             let comps = i.unwrap();
-            let c = shade_it(&w, &comps);
+            let c = w.shade_it(&comps);
 
             assert_eq!(c.red(), 0.1);
             assert_eq!(c.green(), 0.1);

@@ -1,4 +1,4 @@
-use crate::{Color, Intersection, Light, Object, Point, Ray};
+use crate::{Color, Intersection, Light, Object, Point, Ray, Canvas};
 
 pub struct World {
     pub objects: Vec<Object>,
@@ -39,5 +39,37 @@ impl World {
         }
 
         closest_intersection
+    }
+
+    pub fn is_shadowed(&self, point: &Point) -> bool {
+        let v = self.light.position - *point;
+        let distance = v.magnitude();
+        let direction = v.normalize();
+    
+        let r = Ray::new(*point, direction);
+    
+        let intersection = self.intersect(r);
+    
+        if intersection.is_some() {
+            let h = intersection.unwrap();
+            if h.t < distance {
+                return true;
+            }
+        }
+    
+        false
+    }
+    
+    pub fn shade_it(&self, comps: &Intersection) -> Color {
+        let shadowed = self.is_shadowed(&comps.over_point);
+    
+        Canvas::lighting_ext(
+            &comps.object.material,
+            &self.light,
+            &comps.point,
+            &comps.hit_normal,
+            &comps.normal,
+            shadowed,
+        )
     }
 }

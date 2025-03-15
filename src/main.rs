@@ -1,4 +1,3 @@
-use rt::light_utils::shade_it;
 use rt::Camera;
 use rt::Canvas;
 use rt::Color;
@@ -47,7 +46,7 @@ pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
             if hit.is_some() {
                 let hit = hit.unwrap();
 
-                let color = shade_it(&world, &hit);
+                let color = world.shade_it(&hit);
 
                 canvas.write(x, y, color);
             } else {
