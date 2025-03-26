@@ -26,7 +26,11 @@ impl Intersect for Plane {
         }
 
         let point = ray.position(t);
-        let normal = self.normal_at(point);
+        let normal = if ray.origin.y > 0.0 {
+            self.normal_at(point)
+        } else {
+            -self.normal_at(point)
+        };
 
         Some(LocalIntersection { t, point, normal })
     }
