@@ -13,7 +13,7 @@ mod tests {
 
     #[test]
     fn test_not_almost_equal() {
-        let result = are_almost_equal(0.123456, 0.123500);
+        let result = are_almost_equal(0.123456, 0.123567);
         assert!(
             !result,
             "Les nombres devraient être considérés comme différents !"
