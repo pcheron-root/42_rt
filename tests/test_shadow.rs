@@ -1,7 +1,7 @@
 
 #[cfg(test)]
 mod tests {
-    use rt::{light_utils::{is_shadowed, shade_it}, structure::point, Color, Light, Object, Point, Ray, Shape, Sphere, Vector, World};
+    use rt::{light_utils::{is_shadowed, shade_it}, Color, Light, Object, Point, Ray, Shape, Sphere, Vector, World};
     use std::f32::EPSILON;
 
     #[test]

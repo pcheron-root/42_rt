@@ -160,4 +160,11 @@ impl Pattern {
         }
         self.b.clone()
     }
+
+    pub fn stripe_at_object(&self, obj: &Object, world_point: &Point) -> Color {
+        let obj_point = obj.world_to_local.inverse().unwrap() * *world_point; // transform
+        let pattern_point =  self.local_to_world.inverse() * obj_point;
+        
+        self.stripe_at(pattern_point)
+    }
 }

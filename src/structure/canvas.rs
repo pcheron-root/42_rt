@@ -99,7 +99,13 @@ impl Canvas {
         normalv: &Vector,
         shadowed: bool,
     ) -> Color {
-        let effective_color = material.color * light.intensity;
+        let effective_color;
+        if material.pattern.is_some() {
+            effective_color = material.pattern.clone().unwrap().stripe_at(point);
+        }
+        else {
+            effective_color = material.color * light.intensity;
+        }
         let lightv = (light.position - *point).normalize();
 
         let ambient = effective_color * material.ambient;
@@ -134,7 +140,13 @@ impl Canvas {
         normalv: &Vector,
         shadowed: bool,
     ) -> Color {
-        let effective_color = material.color * light.intensity;
+        let effective_color;
+        if material.pattern.is_some() {
+            effective_color = material.pattern.clone().unwrap().stripe_at(point);
+        }
+        else {
+            effective_color = material.color * light.intensity;
+        }
         let lightv = (light.position - *point).normalize();
 
         let ambient = effective_color * material.ambient;
