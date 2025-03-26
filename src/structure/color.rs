@@ -1,5 +1,5 @@
 use std::convert::Into;
-use std::ops::{Add, Mul, Sub};
+use std::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Color {
@@ -54,11 +54,27 @@ impl Add for Color {
     }
 }
 
+impl AddAssign for Color {
+    fn add_assign(&mut self, rhs: Self) {
+        self.r += rhs.r;
+        self.g += rhs.g;
+        self.b += rhs.b;
+    }
+}
+
 impl Sub for Color {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self::Output {
         Color::new(self.r - rhs.r, self.g - rhs.g, self.b - rhs.b)
+    }
+}
+
+impl SubAssign for Color {
+    fn sub_assign(&mut self, rhs: Self) {
+        self.r -= rhs.r;
+        self.g -= rhs.g;
+        self.b -= rhs.b;
     }
 }
 
@@ -70,10 +86,26 @@ impl Mul<f32> for Color {
     }
 }
 
+impl MulAssign<f32> for Color {
+    fn mul_assign(&mut self, rhs: f32) {
+        self.r *= rhs;
+        self.g *= rhs;
+        self.b *= rhs;
+    }
+}
+
 impl Mul for Color {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
         Color::new(self.r * rhs.r, self.g * rhs.g, self.b * rhs.b)
+    }
+}
+
+impl MulAssign for Color {
+    fn mul_assign(&mut self, rhs: Self) {
+        self.r *= rhs.r;
+        self.g *= rhs.g;
+        self.b *= rhs.b;
     }
 }
