@@ -1,6 +1,7 @@
 use crate::constants::EPSILON;
 use crate::Vector;
-use std::ops::{Add, Div, Neg, Sub};
+
+use std::ops::{Add, AddAssign, Div, DivAssign, Neg, Sub, SubAssign};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Point {
@@ -28,6 +29,14 @@ impl Add<Vector> for Point {
     }
 }
 
+impl AddAssign<Vector> for Point {
+    fn add_assign(&mut self, rhs: Vector) {
+        self.x += rhs.x;
+        self.y += rhs.y;
+        self.z += rhs.z;
+    }
+}
+
 impl Sub for Point {
     type Output = Vector;
 
@@ -44,11 +53,27 @@ impl Sub<Vector> for Point {
     }
 }
 
+impl SubAssign<Vector> for Point {
+    fn sub_assign(&mut self, rhs: Vector) {
+        self.x -= rhs.x;
+        self.y -= rhs.y;
+        self.z -= rhs.z;
+    }
+}
+
 impl Div<f32> for Point {
     type Output = Point;
 
     fn div(self, rhs: f32) -> Self::Output {
         Point::new(self.x / rhs, self.y / rhs, self.z / rhs)
+    }
+}
+
+impl DivAssign<f32> for Point {
+    fn div_assign(&mut self, rhs: f32) {
+        self.x /= rhs;
+        self.y /= rhs;
+        self.z /= rhs;
     }
 }
 

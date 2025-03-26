@@ -88,16 +88,16 @@ fn main() {
     let mut sphere2 = Object::new(Shape::Sphere(Sphere::new(1.)));
     sphere2.translate(Vector::new(1., 3., 0.));
 
+    let mut sphere3 = Object::new(Shape::Sphere(Sphere::new(3.)));
+    sphere3.translate(Vector::new(0., -4., 0.));
+    
     let plane = Object::new(Shape::Plane(Plane::new()));
-
-    let mut s3 = Object::new(Shape::Sphere(Sphere::new(3.)));
-    s3.translate(Vector::new(0., -4., 0.));
 
     let mut world = World::new();
 
     world.add_object(sphere1);
     world.add_object(sphere2);
-    world.add_object(s3);
+    world.add_object(sphere3);
     world.add_object(plane);
 
     let light = Light::new(Point::new(0., 10., 0.), Color::new(1., 1., 1.));
