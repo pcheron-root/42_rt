@@ -18,6 +18,7 @@ pub fn is_shadowed(world: &World, point: &Point) -> bool {
             return true;
         }
     }
+
     false
 }
 
@@ -28,12 +29,13 @@ pub fn shade_it(world: &World, comps: &Intersection) -> Color {
     let shadowed = is_shadowed(world, &comps.over_point);
 
     Canvas::lighting_ext(
-        &comps.object.material,
+        &comps.object,
         &world.light,
-        &comps.point,
+        &comps.over_point,
         &comps.hit_normal,
         &comps.normal,
-        shadowed)
+        shadowed
+    )
 
     // difference entre hit et hit normal ?
 }

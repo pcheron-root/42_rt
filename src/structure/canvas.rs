@@ -3,7 +3,7 @@ use std::io::{self, Write};
 
 use crate::Color;
 use crate::Light;
-use crate::Material;
+use crate::Object;
 use crate::Point;
 use crate::Vector;
 
@@ -92,7 +92,7 @@ impl Canvas {
 
     pub fn lighting(
         &self,
-        material: &Material,
+        obj: &Object,
         light: &Light,
         point: &Point,
         eyev: &Vector,
@@ -100,23 +100,22 @@ impl Canvas {
         shadowed: bool,
     ) -> Color {
         let effective_color;
-        if material.pattern.is_some() {
-            effective_color = material.pattern.clone().unwrap().stripe_at(point);
-        }
-        else {
-            effective_color = material.color * light.intensity;
+        if obj.material.pattern.is_some() {
+            effective_color = obj.material.pattern.clone().unwrap().stripe_at_object(obj, point);
+        } else {
+            effective_color = obj.material.color * light.intensity;
         }
         let lightv = (light.position - *point).normalize();
 
-        let ambient = effective_color * material.ambient;
+        let ambient = effective_color * obj.material.ambient;
         let light_dot_normal = lightv.dot(normalv);
 
-        if light_dot_normal < 0. {
+        if light_dot_normal < 0. || shadowed == true {
             return ambient;
         }
 
         let specular;
-        let diffuse = effective_color * material.diffuse * light_dot_normal;
+        let diffuse = effective_color * obj.material.diffuse * light_dot_normal;
 
         let reflectv = (-lightv).reflect(normalv);
         let reflect_dot_eye = reflectv.dot(eyev);
@@ -124,8 +123,8 @@ impl Canvas {
         if reflect_dot_eye <= 0. {
             specular = Color::new(0., 0., 0.);
         } else {
-            let factor = reflect_dot_eye.powf(material.shininess);
-            specular = light.intensity * material.specular * factor;
+            let factor = reflect_dot_eye.powf(obj.material.shininess);
+            specular = light.intensity * obj.material.specular * factor;
         }
 
         ambient + diffuse + specular
@@ -133,7 +132,7 @@ impl Canvas {
 
 
     pub fn lighting_ext(
-        material: &Material,
+        obj: &Object,
         light: &Light,
         point: &Point,
         eyev: &Vector,
@@ -141,25 +140,22 @@ impl Canvas {
         shadowed: bool,
     ) -> Color {
         let effective_color;
-        if material.pattern.is_some() {
-            effective_color = material.pattern.clone().unwrap().stripe_at(point);
-        }
-        else {
-            effective_color = material.color * light.intensity;
+        if obj.material.pattern.is_some() {
+            effective_color = obj.material.pattern.clone().unwrap().stripe_at_object(obj, point);
+        } else {
+            effective_color = obj.material.color * light.intensity;
         }
         let lightv = (light.position - *point).normalize();
 
-        let ambient = effective_color * material.ambient;
+        let ambient = effective_color * obj.material.ambient;
         let light_dot_normal = lightv.dot(normalv);
 
 
         if light_dot_normal < 0. || shadowed == true {
-            
             return ambient;
-
         }
 
-        let diffuse = effective_color * material.diffuse * light_dot_normal;
+        let diffuse = effective_color * obj.material.diffuse * light_dot_normal;
         
         let reflectv = (-lightv).reflect(normalv);
         let reflect_dot_eye = reflectv.dot(eyev);
@@ -167,8 +163,8 @@ impl Canvas {
         if reflect_dot_eye <= 0. {
             return ambient + diffuse;
         } else {
-            let factor = reflect_dot_eye.powf(material.shininess);
-            let specular = light.intensity * material.specular * factor;
+            let factor = reflect_dot_eye.powf(obj.material.shininess);
+            let specular = light.intensity * obj.material.specular * factor;
             return ambient + diffuse + specular;
         }
 

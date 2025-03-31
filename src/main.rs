@@ -1,18 +1,5 @@
-use rt::Camera;
-use rt::Canvas;
-use rt::Color;
-use rt::Light;
-use rt::Matrix;
-use rt::Object;
-use rt::Plane;
-use rt::Point;
-use rt::Ray;
-use rt::Renderer;
-use rt::Shape;
-use rt::Sphere;
-use rt::Vector;
-use rt::World;
-use rt::light_utils::shade_it;
+use rt::structure::shapes::sphere;
+use rt::{Camera, Canvas, Color, Light, Matrix, Object, Pattern, Plane, Point, Ray, Renderer, Shape, Sphere, Vector, World, light_utils::shade_it, Transform};
 
 use minifb::{Window, WindowOptions};
 
@@ -86,23 +73,35 @@ fn main() {
         100.,
     );
 
-    let mut sphere1 = Object::new(Shape::Sphere(Sphere::new(1.)));
-    sphere1.translate(Vector::new(0., 5., 0.));
+    let mut sphere1 = Object::new(Shape::Sphere(Sphere::new(3.)));
+    sphere1.translate(Vector::new(0., -1., 0.));
+
+    let mut p = Pattern::new(Color::new(0.0, 0.0, 0.0, ), Color::new(1.0, 0.0, 1.0), true, false, false, true);
+    let t = Matrix::translation(Vector::new(0.5, 0.0, 0.0));
+    // translate + rotate + scale
+    p.local_to_world = t.clone();
+    p.world_to_local = t.inverse().unwrap();
+
+    // p.scale(Vector::new(3., 3., 3.));
+
+    sphere1.material.pattern = Some(p);
 
     let mut sphere2 = Object::new(Shape::Sphere(Sphere::new(1.)));
-    sphere2.translate(Vector::new(1., 5., 0.));
+    // sphere2.translate(Vector::new(1., 5., 0.));
 
-    let plane = Object::new(Shape::Plane(Plane::new()));
+    let mut plane = Object::new(Shape::Plane(Plane::new()));
+
+    plane.position = Point::new(-5., 0., 0.);
 
     let mut s3 = Object::new(Shape::Sphere(Sphere::new(3.)));
-    s3.translate(Vector::new(0., -4., 0.));
+    // s3.translate(Vector::new(0., -4., 0.));
 
     let mut world = World::new();
 
     world.add_object(sphere1);
-    world.add_object(sphere2);
-    world.add_object(s3);
-    world.add_object(plane);
+    // world.add_object(sphere2);
+    // world.add_object(s3);
+    // world.add_object(plane);
 
 
     let light = Light::new(Point::new(0., 100., 0.), Color::new(1., 1., 1.));
