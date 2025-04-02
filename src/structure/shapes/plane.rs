@@ -24,8 +24,8 @@ impl Intersect for Plane {
         if t < 0. {
             return None;
         }
-
         let point = ray.position(t);
+
         let normal = if ray.origin.y > 0.0 {
             self.normal_at(point)
         } else {

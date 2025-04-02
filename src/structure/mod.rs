@@ -11,3 +11,5 @@ pub mod renderer;
 pub mod shapes;
 pub mod vector;
 pub mod world;
+pub mod material;
+pub mod pattern;

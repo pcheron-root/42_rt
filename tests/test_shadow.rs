@@ -9,12 +9,18 @@ mod tests {
     #[test]
     fn test_light_surface_in_shadow_0() {
         let mut w = World::new();
-        let sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let sphere = Object::new(
+            Shape::Sphere(Sphere::new(1.))
+        );
+
+
         w.add_object(sphere);
+        
         let light = Light {
             position: Point::new(0., 0., -10.),
             intensity: Color::new(1., 1., 1.),
         };
+
         w.add_light(light);
         let p = Point::new(0., 10., 0.);
         assert_eq!(is_shadowed(&w, &p), false);
@@ -69,9 +75,16 @@ mod tests {
     #[test]
     fn test_rendering_shadow() {
         let mut w = World::new();
-        let sphere1 = Object::new(Shape::Sphere(Sphere::new(1.)));
-        let mut sphere2 = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let mut sphere1 = Object::new(
+            Shape::Sphere(Sphere::new(1.))
+        );
+        let mut sphere2 = Object::new(
+            Shape::Sphere(Sphere::new(1.))
+        );
+
         sphere2.translate(Vector::new(0., 0., 10.));
+        sphere1.material.pattern = None;
+        sphere2.material.pattern = None;
         w.add_object(sphere1);
         w.add_object(sphere2);
         let light = Light {
@@ -94,7 +107,7 @@ mod tests {
             assert_eq!(c.green(), 0.1);
             assert_eq!(c.blue(), 0.1);
         } else {
-            assert_eq!(true, false);
+            assert!(false, "Should intersect");
         }
     }
 
@@ -118,6 +131,7 @@ mod tests {
             assert_eq!(comps.over_point.y, 0.);
             assert_eq!(comps.over_point.z < -EPSILON / 2.0, true);
             assert_eq!(comps.point.z > comps.over_point.z, true);
+
         } else {
             assert_eq!(true, false);
         }
