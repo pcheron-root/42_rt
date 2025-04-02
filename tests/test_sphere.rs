@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use rt::{Object, Point, Ray, Shape, Sphere, Vector, Transform};
+    use rt::{Object, Point, Ray, Shape, Sphere, Transform, Vector};
 
     #[test]
     fn test_sphere_intersection() {

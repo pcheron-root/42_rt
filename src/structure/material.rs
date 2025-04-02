@@ -1,5 +1,4 @@
-
-use crate::{Pattern, Color};
+use crate::{Color, Pattern};
 
 #[derive(Debug, Clone)]
 pub struct Material {
@@ -20,9 +19,15 @@ impl Material {
         let ambient = 0.1;
         let diffuse = 0.9;
         let specular = 0.9;
-        let pattern = Some(Pattern::new(Color::new(0.8, 0.8, 0.8), Color::new(0.4, 0., 0.4), true, false, false, false));
+        let pattern = Some(Pattern::new(
+            Color::new(0.8, 0.8, 0.8),
+            Color::new(0.4, 0., 0.4),
+            true,
+            false,
+            false,
+            false,
+        ));
         // let pattern: Option<Pattern> = None;
-
 
         Self {
             shininess,

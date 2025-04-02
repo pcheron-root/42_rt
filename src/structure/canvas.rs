@@ -2,10 +2,6 @@ use std::fs::File;
 use std::io::{self, Write};
 
 use crate::Color;
-use crate::Light;
-use crate::Object;
-use crate::Point;
-use crate::Vector;
 
 pub struct Canvas {
     pub width: usize,
@@ -87,82 +83,5 @@ impl Canvas {
         file.write_all(content.as_bytes())?;
 
         Ok(())
-    }
-
-    pub fn lighting(
-        &self,
-        obj: &Object,
-        light: &Light,
-        point: &Point,
-        eyev: &Vector,
-        normalv: &Vector,
-        shadowed: bool,
-    ) -> Color {
-        let effective_color;
-        if obj.material.pattern.is_some() {
-            effective_color = obj.material.pattern.clone().unwrap().stripe_at_object(obj, point);
-        } else {
-            effective_color = obj.material.color * light.intensity;
-        }
-        let lightv = (light.position - *point).normalize();
-
-        let ambient = effective_color * obj.material.ambient;
-        let light_dot_normal = lightv.dot(normalv);
-
-        if light_dot_normal < 0. || shadowed == true {
-            return ambient;
-        }
-
-        let specular;
-        let diffuse = effective_color * obj.material.diffuse * light_dot_normal;
-
-        let reflectv = (-lightv).reflect(normalv);
-        let reflect_dot_eye = reflectv.dot(eyev);
-
-        if reflect_dot_eye <= 0. {
-            specular = Color::new(0., 0., 0.);
-        } else {
-            let factor = reflect_dot_eye.powf(obj.material.shininess);
-            specular = light.intensity * obj.material.specular * factor;
-        }
-
-        ambient + diffuse + specular
-    }
-
-    pub fn lighting_ext(
-        obj: &Object,
-        light: &Light,
-        point: &Point,
-        eyev: &Vector,
-        normalv: &Vector,
-        shadowed: bool,
-    ) -> Color {
-        let effective_color;
-        if obj.material.pattern.is_some() {
-            effective_color = obj.material.pattern.clone().unwrap().stripe_at_object(obj, point);
-        } else {
-            effective_color = obj.material.color * light.intensity;
-        }
-        let lightv = (light.position - *point).normalize();
-
-        let ambient = effective_color * obj.material.ambient;
-        let light_dot_normal = lightv.dot(normalv);
-
-        if light_dot_normal < 0. || shadowed == true {
-            return ambient;
-        }
-
-        let diffuse = effective_color * obj.material.diffuse * light_dot_normal;
-        
-        let reflectv = (-lightv).reflect(normalv);
-        let reflect_dot_eye = reflectv.dot(eyev);
-
-        if reflect_dot_eye <= 0. {
-            return ambient + diffuse;
-        } else {
-            let factor = reflect_dot_eye.powf(obj.material.shininess);
-            let specular = light.intensity * obj.material.specular * factor;
-            return ambient + diffuse + specular;
-        }
     }
 }
