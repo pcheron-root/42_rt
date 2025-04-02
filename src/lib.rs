@@ -15,6 +15,7 @@ pub use structure::light::Light;
 pub use structure::material::Material;
 pub use structure::matrix::Matrix;
 pub use structure::objects::Object;
+pub use structure::pattern::Axis;
 pub use structure::pattern::Pattern;
 pub use structure::point::Point;
 pub use structure::ray::Ray;

@@ -1,8 +1,7 @@
 #[cfg(test)]
 mod tests {
-
     use rt::{
-        Color, Light, Material, Matrix, Object, Pattern, Point, Shape, Sphere, Transform,
+        Axis, Color, Light, Material, Matrix, Object, Pattern, Point, Shape, Sphere, Transform,
         Vector, World,
     };
 
@@ -11,7 +10,7 @@ mod tests {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(white, black, true, false, false, false);
+        let pattern = Pattern::new(white, black, Axis::X, false);
 
         assert_eq!(white.r, pattern.a.r);
         assert_eq!(white.g, pattern.a.g);
@@ -27,7 +26,7 @@ mod tests {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(white, black, true, false, false, false);
+        let pattern = Pattern::new(white, black, Axis::X, false);
 
         let point = Point::new(0.0, 0.0, 0.0);
         let color1 = pattern.stripe_at(&point);
@@ -65,7 +64,7 @@ mod tests {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(white, black, true, false, false, false);
+        let pattern = Pattern::new(white, black, Axis::X, false);
 
         let mut material = Material::new();
         material.pattern = Some(pattern);
@@ -102,7 +101,7 @@ mod tests {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(white, black, true, false, false, false);
+        let pattern = Pattern::new(white, black, Axis::X, false);
         let mut material = Material::new();
         material.pattern = Some(pattern);
 
@@ -126,7 +125,7 @@ mod tests {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(white, black, true, false, false, false);
+        let pattern = Pattern::new(white, black, Axis::X, false);
         let mut material = Material::new();
         material.pattern = Some(pattern);
         material.ambient = 1.;
@@ -153,7 +152,7 @@ mod tests {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(white, black, true, false, false, false);
+        let pattern = Pattern::new(white, black, Axis::X, false);
         let mut material = Material::new();
         material.pattern = Some(pattern);
         material.ambient = 1.;
@@ -180,7 +179,7 @@ mod tests {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
 
-        let mut pattern = Pattern::new(white, black, true, false, false, false);
+        let mut pattern = Pattern::new(white, black, Axis::X, false);
         pattern.translate(Vector::new(1., 2., 3.));
 
         assert_eq!(
@@ -198,7 +197,7 @@ mod tests {
         let white = Color::new(1., 1.5, 2.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(black, white, true, false, false, false);
+        let pattern = Pattern::new(black, white, Axis::X, false);
         sphere.material.pattern = Some(pattern);
         let color = sphere
             .material
@@ -218,7 +217,7 @@ mod tests {
         let white = Color::new(1., 1.5, 2.);
         let black = Color::new(0., 0., 0.);
 
-        let mut pattern = Pattern::new(black, white, true, false, false, false);
+        let mut pattern = Pattern::new(black, white, Axis::X, false);
         pattern.scale(Vector::new(2., 2., 2.));
         sphere.material.pattern = Some(pattern);
         let color = sphere
@@ -241,7 +240,7 @@ mod tests {
         let white = Color::new(1., 1.5, 2.);
         let black = Color::new(0.75, 0.5, 0.25);
 
-        let mut pattern = Pattern::new(black, white, true, false, false, false);
+        let mut pattern = Pattern::new(black, white, Axis::X, false);
         pattern.translate(Vector::new(0.5, 1., 1.5));
         sphere.material.pattern = Some(pattern);
         let color = sphere
@@ -260,7 +259,7 @@ mod tests {
         let white = Color::new(1., 1.0, 1.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(white, black, true, false, false, true);
+        let pattern = Pattern::new(white, black, Axis::X, true);
 
         let mut color = pattern.pattern_at(&Point::new(0.25, 0., 0.));
         assert_eq!(color.r, 0.75);
@@ -283,7 +282,7 @@ mod tests {
         let white = Color::new(1., 1.0, 1.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(white, black, true, false, true, false);
+        let pattern = Pattern::new(white, black, Axis::XZ, false);
 
         let mut color = pattern.stripe_at(&Point::new(0., 0., 0.));
         assert_eq!(color.r, 1.);
@@ -306,7 +305,7 @@ mod tests {
         let white = Color::new(1., 1.0, 1.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(white, black, true, true, true, false);
+        let pattern = Pattern::new(white, black, Axis::XYZ, false);
 
         let mut color = pattern.stripe_at(&Point::new(0., 0., 0.));
         assert_eq!(color.r, 1.);
@@ -329,7 +328,7 @@ mod tests {
         let white = Color::new(1., 1.0, 1.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(white, black, true, true, true, false);
+        let pattern = Pattern::new(white, black, Axis::XYZ, false);
 
         let mut color = pattern.stripe_at(&Point::new(0., 0., 0.));
         assert_eq!(color.r, 1.);
@@ -352,7 +351,7 @@ mod tests {
         let white = Color::new(1., 1.0, 1.);
         let black = Color::new(0., 0., 0.);
 
-        let pattern = Pattern::new(white, black, true, true, true, false);
+        let pattern = Pattern::new(white, black, Axis::XYZ, false);
 
         let mut color = pattern.stripe_at(&Point::new(0., 0., 0.));
         assert_eq!(color.r, 1.);

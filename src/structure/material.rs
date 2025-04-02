@@ -1,4 +1,4 @@
-use crate::{Color, Pattern};
+use crate::{Axis, Color, Pattern};
 
 #[derive(Debug, Clone)]
 pub struct Material {
@@ -22,12 +22,9 @@ impl Material {
         let pattern = Some(Pattern::new(
             Color::new(0.8, 0.8, 0.8),
             Color::new(0.4, 0., 0.4),
-            true,
-            false,
-            false,
+            Axis::X,
             false,
         ));
-        // let pattern: Option<Pattern> = None;
 
         Self {
             shininess,

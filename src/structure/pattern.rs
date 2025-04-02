@@ -1,13 +1,23 @@
 use crate::{Color, Matrix, Object, Point, Transform, Vector};
 
+#[derive(Debug, Clone, PartialEq)]
+pub enum Axis {
+    X,
+    Y,
+    Z,
+    XY,
+    XZ,
+    YZ,
+    XYZ,
+}
+
 #[derive(Debug, Clone)]
 pub struct Pattern {
     pub a: Color,
     pub b: Color,
-    pub x_mod: bool,
-    pub y_mod: bool,
-    pub z_mod: bool,
+    pub axis: Axis,
     pub blending: bool,
+
     pub local_to_world: Matrix,
     pub world_to_local: Matrix,
     pub scale: Vector,
@@ -18,20 +28,11 @@ pub struct Pattern {
 }
 
 impl Pattern {
-    pub fn new(
-        color_a: Color,
-        color_b: Color,
-        x_mod: bool,
-        y_mod: bool,
-        z_mod: bool,
-        blending: bool,
-    ) -> Pattern {
+    pub fn new(color_a: Color, color_b: Color, axis: Axis, blending: bool) -> Pattern {
         Pattern {
             a: color_a,
             b: color_b,
-            x_mod,
-            y_mod,
-            z_mod,
+            axis,
             blending,
             local_to_world: Matrix::identity(),
             world_to_local: Matrix::identity(),
@@ -57,17 +58,16 @@ impl Pattern {
         } else {
             self.b.clone()
         }
-
     }
 
     pub fn stripe_at(&self, point: &Point) -> Color {
-        if self.x_mod && self.y_mod && self.z_mod {
+        if self.axis == Axis::XYZ {
             return self.stripe_three_colors(point);
-        } else if self.x_mod && self.y_mod {
+        } else if self.axis == Axis::XY {
             return self.stripe_two_colors(&point.x, &point.y);
-        } else if self.x_mod && self.z_mod {
+        } else if self.axis == Axis::XZ {
             return self.stripe_two_colors(&point.x, &point.z);
-        } else if self.z_mod && self.y_mod {
+        } else if self.axis == Axis::YZ {
             return self.stripe_two_colors(&point.z, &point.y);
         }
 
@@ -96,6 +96,10 @@ impl Pattern {
         }
     }
 
+    pub fn pattern_at(&self, point: &Point) -> Color {
+        self.a + (self.b - self.a) * (point.x - point.x.floor())
+    }
+
     fn update(&mut self) {
         let vt = Vector::new(self.position.x, self.position.y, self.position.z);
 
@@ -105,10 +109,6 @@ impl Pattern {
 
         self.local_to_world = translation * rotation * scaling;
         self.world_to_local = self.local_to_world.inverse().unwrap();
-    }
-
-    pub fn pattern_at(&self, point: &Point) -> Color {
-        self.a + (self.b - self.a) * (point.x - point.x.floor())
     }
 }
 

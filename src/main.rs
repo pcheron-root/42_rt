@@ -1,6 +1,6 @@
 use rt::{
-    light_utils::shade_it, Camera, Canvas, Color, Light, Matrix, Object, Pattern, Plane, Point,
-    Ray, Renderer, Shape, Sphere, Transform, Vector, World,
+    light_utils::shade_it, Axis, Camera, Canvas, Color, Light, Matrix, Object, Pattern, Plane,
+    Point, Ray, Renderer, Shape, Sphere, Transform, Vector, World,
 };
 
 use minifb::{Window, WindowOptions};
@@ -77,9 +77,7 @@ fn main() {
     let mut p = Pattern::new(
         Color::new(0.0, 0.0, 0.0),
         Color::new(1.0, 0.0, 1.0),
-        true,
-        false,
-        false,
+        Axis::X,
         true,
     );
     p.translate(Vector::new(0.5, 0.0, 0.0));

@@ -1,4 +1,4 @@
-use crate::{Color, Intersection, Light, Object, Point, Vector, Ray};
+use crate::{Color, Intersection, Light, Object, Point, Ray, Vector};
 
 pub struct World {
     pub objects: Vec<Object>,
