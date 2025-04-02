@@ -1,6 +1,6 @@
 use crate::constants::EPSILON;
 use crate::Intersect;
-use crate::LocalHit;
+use crate::LocalIntersection;
 use crate::Point;
 use crate::Ray;
 use crate::Vector;
@@ -15,7 +15,7 @@ impl Plane {
 }
 
 impl Intersect for Plane {
-    fn intersect(&self, ray: Ray) -> Option<LocalHit> {
+    fn intersect(&self, ray: Ray) -> Option<LocalIntersection> {
         if (ray.direction.y).abs() < EPSILON {
             return None;
         }
@@ -25,12 +25,14 @@ impl Intersect for Plane {
             return None;
         }
         let point = ray.position(t);
-        let mut normal = self.normal_at(point);
-        if ray.origin.y < 0.0 {
-            normal = normal * -1.;
-        }
 
-        Some(LocalHit { t, point, normal })
+        let normal = if ray.origin.y > 0.0 {
+            self.normal_at(point)
+        } else {
+            -self.normal_at(point)
+        };
+
+        Some(LocalIntersection { t, point, normal })
     }
 
     fn normal_at(&self, _point: Point) -> Vector {

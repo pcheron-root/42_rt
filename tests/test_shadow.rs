@@ -1,8 +1,10 @@
-
 #[cfg(test)]
 mod tests {
-    use rt::{light_utils::{is_shadowed, shade_it}, Color, Light, Object, Point, Ray, Shape, Sphere, Vector, World, Transform};
-    use std::f32::EPSILON;
+    use rt::constants::EPSILON;
+    use rt::{
+        light_utils::{is_shadowed, shade_it},
+        Color, Light, Object, Point, Ray, Shape, Sphere, Vector, World,
+    };
 
     #[test]
     fn test_light_surface_in_shadow_0() {
@@ -10,6 +12,7 @@ mod tests {
         let sphere = Object::new(
             Shape::Sphere(Sphere::new(1.))
         );
+
 
         w.add_object(sphere);
         
@@ -22,37 +25,30 @@ mod tests {
         let p = Point::new(0., 10., 0.);
         assert_eq!(is_shadowed(&w, &p), false);
     }
-    
+
     #[test]
     fn test_light_surface_in_shadow_1() {
-        
         let mut w = World::new();
-        let sphere = Object::new(
-            Shape::Sphere(Sphere::new(1.))
-        );
+        let sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
         w.add_object(sphere);
         let light = Light {
             position: Point::new(-10., 10., -10.),
             intensity: Color::new(1., 1., 1.),
         };
         w.add_light(light);
-        
+
         let p = Point::new(10., -10., 10.);
         assert_eq!(is_shadowed(&w, &p), true);
-        
     }
-    
+
     #[test]
     fn test_light_surface_in_shadow_2() {
         let mut w = World::new();
-        let sphere = Object::new(
-            Shape::Sphere(Sphere::new(1.))
-        );
+        let sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
         w.add_object(sphere);
         let light = Light {
             position: Point::new(10., -10., 10.),
             intensity: Color::new(1., 1., 1.),
-
         };
         w.add_light(light);
 
@@ -63,14 +59,11 @@ mod tests {
     #[test]
     fn test_light_surface_in_shadow_3() {
         let mut w = World::new();
-        let sphere = Object::new(
-            Shape::Sphere(Sphere::new(1.))
-        );
+        let sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
         w.add_object(sphere);
         let light = Light {
             position: Point::new(10., -10., 10.),
             intensity: Color::new(1., 1., 1.),
-
         };
         w.add_light(light);
 
@@ -88,6 +81,7 @@ mod tests {
         let mut sphere2 = Object::new(
             Shape::Sphere(Sphere::new(1.))
         );
+
         sphere2.translate(Vector::new(0., 0., 10.));
         sphere1.material.pattern = None;
         sphere2.material.pattern = None;
@@ -123,9 +117,7 @@ mod tests {
             origin: Point::new(0., 0., -5.),
             direction: Vector::new(0., 0., 1.),
         };
-        let mut sphere1 = Object::new(
-            Shape::Sphere(Sphere::new(1.))
-        );
+        let mut sphere1 = Object::new(Shape::Sphere(Sphere::new(1.)));
         sphere1.translate(Vector::new(0., 0., 1.));
 
         let mut w = World::new();
@@ -144,12 +136,4 @@ mod tests {
             assert_eq!(true, false);
         }
     }
-
 }
-
-
-
-
-
-
-

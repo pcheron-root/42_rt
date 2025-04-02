@@ -21,7 +21,18 @@ pub struct Camera {
 }
 
 impl Camera {
-    pub fn new(position: Point, aspect: f32, fov: f32, near: f32, far: f32) -> Camera {
+    pub fn new(
+        position: Point,
+        direction: Vector,
+        aspect: f32,
+        fov: f32,
+        near: f32,
+        far: f32,
+    ) -> Camera {
+        let direction = direction.normalize();
+        let pitch = direction.y.asin().to_degrees();
+        let yaw = direction.z.atan2(direction.x).to_degrees();
+
         Camera {
             target: position.clone(),
             position,
@@ -29,9 +40,8 @@ impl Camera {
             fov,
             near,
             far,
-
-            pitch: 0.,
-            yaw: 270.,
+            pitch,
+            yaw,
         }
     }
 
@@ -63,9 +73,17 @@ impl Camera {
         let movement = match direction {
             Direction::Forward => self.direction(),
             Direction::Backward => -self.direction(),
-            Direction::Left => -self.direction().cross(&Vector::new(0.0, 1.0, 0.0)).normalize(),
-            Direction::Right => self.direction().cross(&Vector::new(0.0, 1.0, 0.0)).normalize(),
-        }.normalize() * 1.;
+            Direction::Left => -self
+                .direction()
+                .cross(&Vector::new(0.0, 1.0, 0.0))
+                .normalize(),
+            Direction::Right => self
+                .direction()
+                .cross(&Vector::new(0.0, 1.0, 0.0))
+                .normalize(),
+        }
+        .normalize()
+            * 1.;
 
         self.target = self.position + movement;
     }

@@ -1,6 +1,6 @@
 use crate::{Object, Point, Vector};
 
-pub struct LocalHit {
+pub struct LocalIntersection {
     pub point: Point,
     pub normal: Vector,
     pub t: f32,
@@ -17,7 +17,14 @@ pub struct Intersection {
 }
 
 impl Intersection {
-    pub fn new(object: Object, t: f32, point: Point, normal: Vector, hit_normal: Vector, over_point: Point) -> Self {
+    pub fn new(
+        object: Object,
+        t: f32,
+        point: Point,
+        normal: Vector,
+        hit_normal: Vector,
+        over_point: Point,
+    ) -> Self {
         Intersection {
             object,
             t,

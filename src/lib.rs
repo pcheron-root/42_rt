@@ -1,8 +1,8 @@
 pub mod constants;
+pub mod light_utils;
 pub mod structure;
 pub mod traits;
 pub mod utils;
-pub mod light_utils;
 
 pub use structure::camera::Camera;
 pub use structure::camera::Direction;
@@ -10,7 +10,7 @@ pub use structure::camera::Direction;
 pub use structure::canvas::Canvas;
 pub use structure::color::Color;
 pub use structure::intersection::Intersection;
-pub use structure::intersection::LocalHit;
+pub use structure::intersection::LocalIntersection;
 pub use structure::light::Light;
 pub use structure::matrix::Matrix;
 pub use structure::material::Material;

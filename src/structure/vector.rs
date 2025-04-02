@@ -1,6 +1,6 @@
 use crate::constants::EPSILON;
 
-use std::ops::{Add, Div, Mul, Neg, Sub};
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Vector {
@@ -65,11 +65,27 @@ impl Add for Vector {
     }
 }
 
+impl AddAssign for Vector {
+    fn add_assign(&mut self, rhs: Self) {
+        self.x += rhs.x;
+        self.y += rhs.y;
+        self.z += rhs.z;
+    }
+}
+
 impl Sub for Vector {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self::Output {
         Vector::new(self.x - rhs.x, self.y - rhs.y, self.z - rhs.z)
+    }
+}
+
+impl SubAssign for Vector {
+    fn sub_assign(&mut self, rhs: Self) {
+        self.x -= rhs.x;
+        self.y -= rhs.y;
+        self.z -= rhs.z;
     }
 }
 
@@ -81,11 +97,27 @@ impl Mul<f32> for Vector {
     }
 }
 
+impl MulAssign<f32> for Vector {
+    fn mul_assign(&mut self, rhs: f32) {
+        self.x *= rhs;
+        self.y *= rhs;
+        self.z *= rhs;
+    }
+}
+
 impl Div<f32> for Vector {
     type Output = Vector;
 
     fn div(self, rhs: f32) -> Self::Output {
         Vector::new(self.x / rhs, self.y / rhs, self.z / rhs)
+    }
+}
+
+impl DivAssign<f32> for Vector {
+    fn div_assign(&mut self, rhs: f32) {
+        self.x /= rhs;
+        self.y /= rhs;
+        self.z /= rhs;
     }
 }
 

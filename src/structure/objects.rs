@@ -1,7 +1,6 @@
-
-use std::f32::EPSILON;
-
+use crate::constants::EPSILON;
 use crate::{Intersection, Matrix, Point, Ray, Shape, Vector, Transform, Material};
+
 
 #[derive(Debug, Clone)]
 pub struct Object {
@@ -54,11 +53,9 @@ impl Object {
             // Transform hit data back to WORLD space
             let world_point: Point = self.local_to_world.clone() * local_hit.point;
             let world_normal: Vector = (self.local_to_world.clone() * local_hit.normal).normalize();
+
+            let over_point = world_point + world_normal * EPSILON;
             
-            // let test = world_normal * EPSILON;
-            // eprintln!("wp x:{} y:{} z:{}", world_point.data.x, world_point.data.y, world_point.data.z);
-            // eprintln!("x:{} y:{} z:{}", test.data.x, test.data.y, world_normal.data.z);
-            let over_point = world_point + world_normal * EPSILON * 2048.;
             Some(Intersection::new(
                 (*self).clone(),
                 local_hit.t,
