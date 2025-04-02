@@ -13,6 +13,7 @@ mod tests {
             ambient: 1.,
             diffuse: 1.,
             pattern: None,
+            reflective: 0.,
         };
 
         assert_eq!(material.color.red(), 1.);
