@@ -71,7 +71,7 @@ mod tests {
     #[test]
     fn test_rendering_shadow() {
         let mut w = World::new();
-        let mut sphere1 = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let sphere1 = Object::new(Shape::Sphere(Sphere::new(1.)));
         let mut sphere2 = Object::new(Shape::Sphere(Sphere::new(1.)));
 
         sphere2.translate(Vector::new(0., 0., 10.));

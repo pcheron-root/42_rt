@@ -9,7 +9,7 @@ use crate::Vector;
 pub struct Plane {}
 
 impl Plane {
-    pub fn new() -> Plane {
+    pub fn new() -> Self {
         Plane {}
     }
 }
