@@ -60,6 +60,7 @@ impl World {
         } else {
             effective_color = obj.material.color * light.intensity;
         }
+
         let lightv = (light.position - *point).normalize();
 
         let ambient = effective_color * obj.material.ambient;

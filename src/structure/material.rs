@@ -1,16 +1,16 @@
-use std::default::Default;
 use crate::{Color, Pattern};
+use std::default::Default;
 
 #[derive(Debug, Clone)]
 pub struct Material {
     pub color: Color,
     pub pattern: Option<Pattern>,
-    
-    pub shininess: f32,     // between 10 and 200
-    pub ambient: f32,       // between 0 and 1
-    pub diffuse: f32,       // between 0 and 1
-    pub specular: f32,      // between 0 and 1
-    pub reflective: f32,    // between 0 and 1
+
+    pub shininess: f32,  // between 10 and 200
+    pub ambient: f32,    // between 0 and 1
+    pub diffuse: f32,    // between 0 and 1
+    pub specular: f32,   // between 0 and 1
+    pub reflective: f32, // between 0 and 1
 }
 
 impl Default for Material {

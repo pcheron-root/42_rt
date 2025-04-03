@@ -1,5 +1,6 @@
 use rt::{
-    light_utils::shade_it, Camera, Canvas, Color, Light, Matrix, Object, Point, Ray, Renderer, Shape, Sphere, Vector, World
+    light_utils::shade_it, Camera, Canvas, Color, Light, Matrix, Object, Point, Ray, Renderer,
+    Shape, Sphere, Vector, World,
 };
 
 use minifb::{Window, WindowOptions};
