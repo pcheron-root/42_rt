@@ -1,6 +1,6 @@
 use std::mem::swap;
 
-use crate::{constants::EPSILON, Intersect, Point, Vector, LocalIntersection, Ray};
+use crate::{constants::EPSILON, Intersect, LocalIntersection, Point, Ray, Vector};
 
 #[derive(Debug, Clone)]
 pub struct Cube {
@@ -18,16 +18,17 @@ impl Intersect for Cube {
         let check_axis = |o: f32, d: f32| -> (f32, f32) {
             let hs = self.size / 2.0;
             let tmin_num = -hs - o;
-            let tmax_num =  hs - o;
+            let tmax_num = hs - o;
 
-            let (mut tmin, mut tmax) =
-                if d.abs() >= EPSILON {
-                    (tmin_num / d, tmax_num / d)
-                } else {
-                    (tmin_num * f32::INFINITY, tmax_num * f32::INFINITY)
-                };
+            let (mut tmin, mut tmax) = if d.abs() >= EPSILON {
+                (tmin_num / d, tmax_num / d)
+            } else {
+                (tmin_num * f32::INFINITY, tmax_num * f32::INFINITY)
+            };
 
-            if tmin > tmax { swap(&mut tmin, &mut tmax); }
+            if tmin > tmax {
+                swap(&mut tmin, &mut tmax);
+            }
 
             (tmin, tmax)
         };
@@ -51,11 +52,7 @@ impl Intersect for Cube {
         let point = ray.position(t);
         let normal = self.normal_at(point);
 
-        Some(LocalIntersection {
-            point,
-            normal,
-            t
-        })
+        Some(LocalIntersection { point, normal, t })
     }
 
     fn normal_at(&self, point: Point) -> Vector {
