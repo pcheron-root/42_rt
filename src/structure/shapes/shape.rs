@@ -1,4 +1,5 @@
 use crate::Cube;
+use crate::Cylinder;
 use crate::Intersect;
 use crate::LocalIntersection;
 use crate::Plane;
@@ -10,6 +11,7 @@ pub enum Shape {
     Sphere(Sphere),
     Plane(Plane),
     Cube(Cube),
+    Cylinder(Cylinder),
 }
 
 impl Shape {
@@ -18,6 +20,7 @@ impl Shape {
             Shape::Sphere(s) => s.intersect(ray),
             Shape::Plane(s) => s.intersect(ray),
             Shape::Cube(s) => s.intersect(ray),
+            Shape::Cylinder(s) => s.intersect(ray),
         }
     }
 }

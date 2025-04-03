@@ -1,6 +1,6 @@
 use rt::{
-    light_utils::shade_it, Camera, Canvas, Color, Cube, Light, Matrix, Object, Point, Ray,
-    Renderer, Shape, Sphere, Vector, World,
+    light_utils::shade_it, Camera, Canvas, Color, Cylinder, Light, Matrix, Object, Point, Ray,
+    Renderer, Shape, Vector, World,
 };
 
 use minifb::{Window, WindowOptions};
@@ -73,13 +73,10 @@ fn main() {
 
     let mut world = World::new();
 
-    let cube = Object::new(Shape::Cube(Cube::new(2.0)));
-    world.add_object(cube);
+    let cylinder = Object::new(Shape::Cylinder(Cylinder::new(2.0, 3.0)));
+    world.add_object(cylinder);
 
-    let sphere = Object::new(Shape::Sphere(Sphere::new(1.2)));
-    world.add_object(sphere);
-
-    let light = Light::new(Point::new(0., 10., 10.), Color::new(1., 1., 1.));
+    let light = Light::new(Point::new(0., 0., 10.), Color::new(1., 1., 1.));
     world.add_light(light);
 
     let mut renderer = Renderer::new(window, canvas, world, camera);
