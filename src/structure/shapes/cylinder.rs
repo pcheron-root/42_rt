@@ -113,9 +113,10 @@ impl Intersect for Cylinder {
     fn normal_at(&self, point: Point) -> Vector {
         let hh = self.height / 2.0;
         let distance = (point.x).powf(2.0) + (point.z).powf(2.0);
-        if distance < (self.radius).powf(2.0) && point.y >= hh - EPSILON {
+        
+        if distance < (self.radius).powf(2.0) && (point.y >= hh - EPSILON) {
             Vector::new(0.0, 1.0, 0.0)
-        } else if distance < (self.radius).powf(2.0) && point.y <= hh + EPSILON {
+        } else if distance < (self.radius).powf(2.0) && (point.y <= -hh + EPSILON) {
             Vector::new(0.0, -1.0, 0.0)
         } else {
             Vector::new(point.x, 0.0, point.z).normalize()
