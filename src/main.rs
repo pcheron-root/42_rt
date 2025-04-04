@@ -1,5 +1,5 @@
 use rt::{
-    light_utils::shade_it, Camera, Canvas, Color, Cone, Light, Matrix, Object, Point, Ray,
+    light_utils::shade_it, Camera, Canvas, Color, Cone, Disk, Light, Matrix, Object, Point, Ray,
     Renderer, Shape, Sphere, Transform, Triangle, Tube, Vector, World,
 };
 
@@ -92,6 +92,12 @@ fn main() {
         Point::new(3.5, 1.0, 0.0),
     )));
     world.add_object(triangle);
+
+    let mut disk = Object::new(Shape::Disk(Disk::new(1.0)));
+    disk.rotate(-90.0f32.to_radians(), 0.0, 0.0);
+    disk.translate(Vector::new(-3.0, 0.0, 0.0));
+
+    world.add_object(disk);
 
     let light = Light::new(Point::new(0., 10., 10.), Color::new(1., 1., 1.));
     world.add_light(light);

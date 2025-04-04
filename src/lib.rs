@@ -23,6 +23,7 @@ pub use structure::renderer::Renderer;
 pub use structure::shapes::cone::Cone;
 pub use structure::shapes::cube::Cube;
 pub use structure::shapes::cylinder::Cylinder;
+pub use structure::shapes::disk::Disk;
 pub use structure::shapes::plane::Plane;
 pub use structure::shapes::shape::Shape;
 pub use structure::shapes::sphere::Sphere;

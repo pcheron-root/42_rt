@@ -1,6 +1,7 @@
 use crate::Cone;
 use crate::Cube;
 use crate::Cylinder;
+use crate::Disk;
 use crate::Intersect;
 use crate::LocalIntersection;
 use crate::Plane;
@@ -18,6 +19,7 @@ pub enum Shape {
     Cone(Cone),
     Triangle(Triangle),
     Tube(Tube),
+    Disk(Disk),
 }
 
 impl Shape {
@@ -30,6 +32,7 @@ impl Shape {
             Shape::Cone(s) => s.intersect(ray),
             Shape::Triangle(s) => s.intersect(ray),
             Shape::Tube(s) => s.intersect(ray),
+            Shape::Disk(s) => s.intersect(ray),
         }
     }
 }
