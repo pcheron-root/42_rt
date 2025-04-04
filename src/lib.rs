@@ -27,6 +27,7 @@ pub use structure::shapes::disk::Disk;
 pub use structure::shapes::plane::Plane;
 pub use structure::shapes::shape::Shape;
 pub use structure::shapes::sphere::Sphere;
+pub use structure::shapes::torus::Torus;
 pub use structure::shapes::triangle::Triangle;
 pub use structure::shapes::tube::Tube;
 pub use structure::vector::Vector;
