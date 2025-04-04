@@ -1,6 +1,6 @@
 use rt::{
-    light_utils::shade_it, Camera, Canvas, Color, Cone, Cylinder, Light, Matrix, Object, Point,
-    Ray, Renderer, Shape, Sphere, Transform, Triangle, Vector, World,
+    light_utils::shade_it, Camera, Canvas, Color, Cone, Light, Matrix, Object, Point, Ray,
+    Renderer, Shape, Sphere, Transform, Triangle, Tube, Vector, World,
 };
 
 use minifb::{Window, WindowOptions};
@@ -77,10 +77,10 @@ fn main() {
     sphere.translate(Vector::new(2.0, 0.0, 0.0));
     world.add_object(sphere);
 
-    let mut cylinder = Object::new(Shape::Cylinder(Cylinder::new(1.0, 3.0)));
-    cylinder.translate(Vector::new(-2.0, 0.0, -1.5));
-    cylinder.rotate(-90.0f32.to_radians(), 0.0, 0.0);
-    world.add_object(cylinder);
+    let mut tube = Object::new(Shape::Tube(Tube::new(1.0, 3.0)));
+    tube.translate(Vector::new(-2.0, 0.0, -1.5));
+    tube.rotate(-90.0f32.to_radians(), 0.0, 0.0);
+    world.add_object(tube);
 
     let mut cone = Object::new(Shape::Cone(Cone::new(1.0, 3.0)));
     cone.rotate(-90.0f32.to_radians(), 0.0, 0.0);

@@ -43,21 +43,21 @@ impl Intersect for Cone {
                     None
                 }
             } else if discriminant > 0.0 {
-                let t1 = (-b - discriminant.sqrt()) / (2.0 * a);
-                let t2 = (-b + discriminant.sqrt()) / (2.0 * a);
+                let t0 = (-b - discriminant.sqrt()) / (2.0 * a);
+                let t1 = (-b + discriminant.sqrt()) / (2.0 * a);
 
-                let p1 = ray.position(t1);
-                let p2 = ray.position(t2);
+                let p1 = ray.position(t0);
+                let p2 = ray.position(t1);
 
-                let valid_t1 = t1 > EPSILON && p1.y >= 0.0 && p1.y <= self.height;
-                let valid_t2 = t2 > EPSILON && p2.y >= 0.0 && p2.y <= self.height;
+                let valid_t0 = t0 > EPSILON && p1.y >= 0.0 && p1.y <= self.height;
+                let valid_t1 = t1 > EPSILON && p2.y >= 0.0 && p2.y <= self.height;
 
-                if valid_t1 && valid_t2 {
-                    Some(t1.min(t2))
+                if valid_t0 && valid_t1 {
+                    Some(t0.min(t1))
+                } else if valid_t0 {
+                    Some(t0)
                 } else if valid_t1 {
                     Some(t1)
-                } else if valid_t2 {
-                    Some(t2)
                 } else {
                     None
                 }
