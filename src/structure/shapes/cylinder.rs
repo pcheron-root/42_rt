@@ -2,8 +2,8 @@ use crate::{constants::EPSILON, Intersect, LocalIntersection, Point, Ray, Vector
 
 #[derive(Debug, Clone)]
 pub struct Cylinder {
-    radius: f32,
-    height: f32,
+    pub radius: f32,
+    pub height: f32,
 }
 
 impl Cylinder {
@@ -14,7 +14,7 @@ impl Cylinder {
 
 impl Intersect for Cylinder {
     fn intersect(&self, ray: Ray) -> Option<LocalIntersection> {
-        let intersect_tube = || -> Option<LocalIntersection> {
+        let intersect_tube = || -> Option<f32> {
             let a = (ray.direction.x).powf(2.0) + (ray.direction.z).powf(2.0);
 
             if a < EPSILON {
@@ -38,11 +38,10 @@ impl Intersect for Cylinder {
             }
 
             let point = ray.position(t);
-            let normal = self.normal_at(point);
-
             let hh = self.height / 2.0;
+
             if point.y >= -hh && point.y <= hh {
-                Some(LocalIntersection { point, normal, t })
+                Some(t)
             } else {
                 None
             }
@@ -52,14 +51,18 @@ impl Intersect for Cylinder {
             if t < 0.0 {
                 return false;
             }
-            
+
             let x = ray.origin.x + t * ray.direction.x;
             let z = ray.origin.z + t * ray.direction.z;
 
             (x.powf(2.0) + z.powf(2.0)) <= self.radius.powf(2.0)
         };
 
-        let intersect_caps = || -> Option<LocalIntersection> {
+        let intersect_caps = || -> Option<f32> {
+            if ray.direction.y.abs() < EPSILON {
+                return None;
+            }
+
             let hh = self.height / 2.0;
             let mut t0 = None;
             let mut t1 = None;
@@ -87,25 +90,41 @@ impl Intersect for Cylinder {
                 return None;
             };
 
-            let point = ray.position(t);
-            let normal = self.normal_at(point);
+            if t < EPSILON {
+                return None;
+            }
 
-            Some(LocalIntersection { point, normal, t })
+            Some(t)
         };
 
-        let tube_intersection = intersect_tube();
-        let caps_intersection = intersect_caps();
+        let t_tube = intersect_tube();
+        let t_caps = intersect_caps();
 
-        match (tube_intersection, caps_intersection) {
-            (Some(tube), Some(caps)) => {
-                if tube.t < caps.t {
-                    Some(tube)
-                } else {
-                    Some(caps)
-                }
+        match (t_tube, t_caps) {
+            (Some(t_t), Some(t_c)) => {
+                let t = t_t.min(t_c);
+                let point = ray.position(t);
+                let normal = self.normal_at(point);
+                Some(LocalIntersection { point, normal, t })
             }
-            (Some(tube), None) => Some(tube),
-            (None, Some(caps)) => Some(caps),
+            (Some(t_t), None) => {
+                let point = ray.position(t_t);
+                let normal = self.normal_at(point);
+                Some(LocalIntersection {
+                    point,
+                    normal,
+                    t: t_t,
+                })
+            }
+            (None, Some(t_c)) => {
+                let point = ray.position(t_c);
+                let normal = self.normal_at(point);
+                Some(LocalIntersection {
+                    point,
+                    normal,
+                    t: t_c,
+                })
+            }
             (None, None) => None,
         }
     }
@@ -113,10 +132,10 @@ impl Intersect for Cylinder {
     fn normal_at(&self, point: Point) -> Vector {
         let hh = self.height / 2.0;
         let distance = (point.x).powf(2.0) + (point.z).powf(2.0);
-        
-        if distance < (self.radius).powf(2.0) && (point.y >= hh - EPSILON) {
+
+        if distance < (self.radius).powf(2.0) && point.y >= hh - EPSILON {
             Vector::new(0.0, 1.0, 0.0)
-        } else if distance < (self.radius).powf(2.0) && (point.y <= -hh + EPSILON) {
+        } else if distance < (self.radius).powf(2.0) && point.y <= -hh + EPSILON {
             Vector::new(0.0, -1.0, 0.0)
         } else {
             Vector::new(point.x, 0.0, point.z).normalize()

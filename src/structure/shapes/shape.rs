@@ -1,3 +1,4 @@
+use crate::Cone;
 use crate::Cube;
 use crate::Cylinder;
 use crate::Intersect;
@@ -12,6 +13,7 @@ pub enum Shape {
     Plane(Plane),
     Cube(Cube),
     Cylinder(Cylinder),
+    Cone(Cone),
 }
 
 impl Shape {
@@ -21,6 +23,7 @@ impl Shape {
             Shape::Plane(s) => s.intersect(ray),
             Shape::Cube(s) => s.intersect(ray),
             Shape::Cylinder(s) => s.intersect(ray),
+            Shape::Cone(s) => s.intersect(ray),
         }
     }
 }

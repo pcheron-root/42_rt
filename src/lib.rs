@@ -20,6 +20,7 @@ pub use structure::pattern::Pattern;
 pub use structure::point::Point;
 pub use structure::ray::Ray;
 pub use structure::renderer::Renderer;
+pub use structure::shapes::cone::Cone;
 pub use structure::shapes::cube::Cube;
 pub use structure::shapes::cylinder::Cylinder;
 pub use structure::shapes::plane::Plane;
