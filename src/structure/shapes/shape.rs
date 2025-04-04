@@ -6,6 +6,7 @@ use crate::LocalIntersection;
 use crate::Plane;
 use crate::Ray;
 use crate::Sphere;
+use crate::Triangle;
 
 #[derive(Debug, Clone)]
 pub enum Shape {
@@ -14,6 +15,7 @@ pub enum Shape {
     Cube(Cube),
     Cylinder(Cylinder),
     Cone(Cone),
+    Triangle(Triangle),
 }
 
 impl Shape {
@@ -24,6 +26,7 @@ impl Shape {
             Shape::Cube(s) => s.intersect(ray),
             Shape::Cylinder(s) => s.intersect(ray),
             Shape::Cone(s) => s.intersect(ray),
+            Shape::Triangle(s) => s.intersect(ray),
         }
     }
 }
