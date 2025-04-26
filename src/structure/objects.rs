@@ -60,6 +60,7 @@ impl Object {
                 world_normal,
                 -(ray.direction),
                 over_point,
+                (ray.direction).reflect(&world_normal),
             ))
         } else {
             None

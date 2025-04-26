@@ -14,6 +14,7 @@ pub struct Intersection {
     pub normal: Vector,
     pub hit_normal: Vector,
     pub over_point: Point,
+    pub reflectv: Vector,
 }
 
 impl Intersection {
@@ -24,6 +25,7 @@ impl Intersection {
         normal: Vector,
         hit_normal: Vector,
         over_point: Point,
+        reflectv: Vector,
     ) -> Self {
         Intersection {
             object,
@@ -32,6 +34,7 @@ impl Intersection {
             normal,
             hit_normal,
             over_point,
+            reflectv,
         }
     }
 }
