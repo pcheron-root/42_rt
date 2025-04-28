@@ -33,9 +33,23 @@ pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
 
             let hit = world.intersect(ray);
             if hit.is_some() {
-                let hit = hit.unwrap();
-
-                let color = shade_it(&world, &hit);
+                let intersect = hit.unwrap();
+                let reflected_color;
+                if intersect.object.material.reflective > 0. {
+                    let reflected_ray = Ray::new(intersect.point, intersect.reflectv);
+                    let reflected_hit = world.intersect(reflected_ray);
+                    if reflected_hit.is_some() {
+                        let reflected_inter = reflected_hit.unwrap();
+                        reflected_color = shade_it(&world, &reflected_inter) * intersect.object.material.reflective;
+                    }
+                    else {
+                        reflected_color = Color::new(0., 0., 0.);
+                    }
+                }
+                else {
+                    reflected_color = Color::new(0., 0., 0.);
+                }
+                let color = shade_it(&world, &intersect) + reflected_color;
 
                 canvas.write(x, y, color);
             } else {
