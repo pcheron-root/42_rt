@@ -36,17 +36,6 @@ impl Object {
         self
     }
 
-    fn update(&mut self) {
-        let vt = Vector::new(self.position.x, self.position.y, self.position.z);
-
-        let translation = Matrix::translation(vt);
-        let rotation = Matrix::rotation(self.pitch, self.yaw, self.roll);
-        let scaling = Matrix::scaling(self.scale.clone());
-
-        self.local_to_world = translation * rotation * scaling;
-        self.world_to_local = self.local_to_world.inverse().unwrap();
-    }
-
     pub fn intersect(&self, ray: Ray) -> Option<Intersection> {
         // Transform ray to local space
         let local_ray = self.world_to_local.clone() * ray.clone();
@@ -74,11 +63,10 @@ impl Object {
 }
 
 impl Transform for Object {
-    // move obj
     fn translate(&mut self, vec: Vector) {
         self.position = self.position.clone() + vec;
 
-        self.update();
+        self.update_transformation();
     }
 
     fn rotate(&mut self, pitch: f32, yaw: f32, roll: f32) {
@@ -86,13 +74,23 @@ impl Transform for Object {
         self.yaw = yaw;
         self.roll = roll;
 
-        self.update();
+        self.update_transformation();
     }
 
-    // grow, shrink the object
     fn scale(&mut self, vec: Vector) {
         self.scale = vec;
 
-        self.update();
+        self.update_transformation();
+    }
+
+    fn update_transformation(&mut self) {
+        let vt = Vector::new(self.position.x, self.position.y, self.position.z);
+
+        let translation = Matrix::translation(vt);
+        let rotation = Matrix::rotation(self.pitch, self.yaw, self.roll);
+        let scaling = Matrix::scaling(self.scale.clone());
+
+        self.local_to_world = translation * rotation * scaling;
+        self.world_to_local = self.local_to_world.inverse().unwrap();
     }
 }

@@ -78,7 +78,7 @@ impl Pattern {
         };
 
         if x < 1.0 {
-            self.a.clone() // a verifier
+            self.a.clone()
         } else {
             self.b.clone()
         }
@@ -99,8 +99,30 @@ impl Pattern {
     pub fn pattern_at(&self, point: &Point) -> Color {
         self.a + (self.b - self.a) * (point.x - point.x.floor())
     }
+}
 
-    fn update(&mut self) {
+impl Transform for Pattern {
+    fn translate(&mut self, vec: Vector) {
+        self.position = self.position.clone() + vec;
+
+        self.update_transformation();
+    }
+
+    fn rotate(&mut self, pitch: f32, yaw: f32, roll: f32) {
+        self.pitch = pitch;
+        self.yaw = yaw;
+        self.roll = roll;
+
+        self.update_transformation();
+    }
+
+    fn scale(&mut self, vec: Vector) {
+        self.scale = vec;
+
+        self.update_transformation();
+    }
+
+    fn update_transformation(&mut self) {
         let vt = Vector::new(self.position.x, self.position.y, self.position.z);
 
         let translation = Matrix::translation(vt);
@@ -109,27 +131,5 @@ impl Pattern {
 
         self.local_to_world = translation * rotation * scaling;
         self.world_to_local = self.local_to_world.inverse().unwrap();
-    }
-}
-
-impl Transform for Pattern {
-    fn translate(&mut self, vec: Vector) {
-        self.position = self.position.clone() + vec;
-
-        self.update();
-    }
-
-    fn rotate(&mut self, pitch: f32, yaw: f32, roll: f32) {
-        self.pitch = pitch;
-        self.yaw = yaw;
-        self.roll = roll;
-
-        self.update();
-    }
-
-    fn scale(&mut self, vec: Vector) {
-        self.scale = vec;
-
-        self.update();
     }
 }
