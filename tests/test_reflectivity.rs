@@ -1,7 +1,7 @@
 
 #[cfg(test)]
 mod tests {
-    use rt::{Material, Object, Plane, Point, Shape, Vector, Ray};
+    use rt::{light_utils::get_phong_color, Material, Object, Plane, Point, Ray, Shape, Sphere, Transform, Vector, World};
 
     #[test]
     fn test_reflective_material() {
@@ -23,6 +23,88 @@ mod tests {
         assert_eq!(impact.reflectv.x, 0.);
         assert_eq!(impact.reflectv.y, 2.0_f32.sqrt() / 2.0);
         assert_eq!(impact.reflectv.z, 2.0_f32.sqrt() / 2.0);
+    }
+
+    #[test]
+    fn test_reflected_color_nonreflective_material() {
+        let mut world = World::new();
+        let mut plane = Object::new(Shape::Sphere(Sphere::new(1.)));
+        plane.material = Material::new();
+        plane.material.ambient = 0.8;
+        world.add_object(plane);
+
+        let origin = Point::new(0., 0., 0.);
+        let dir = Vector::new(0., 0., 1.);
+        let ray = Ray::new(origin, dir);
+
+        let impact = world.intersect(ray).unwrap();
+        let final_color = get_phong_color(&world, impact);
+        assert_eq!(final_color.r, 0.8);
+        assert_eq!(final_color.g, 0.8);
+        assert_eq!(final_color.b, 0.8);
+        
+    }
+
+    #[test]
+    fn test_strike_reflective_surface() {
+        let mut world = World::new();
+        let mut plane = Object::new(Shape::Plane(Plane::new()));
+        plane.material = Material::new();
+        plane.material.ambient = 0.8;
+        plane.material.reflective = 0.1;
+        plane.rotate(90.0f32.to_radians(), 0.0, 0.0);
+        let mut plane_2 = Object::new(Shape::Plane(Plane::new()));
+        plane_2.material = Material::new();
+
+        // plane_2.rotate(pitch, yaw, roll);
+
+
+        world.add_object(plane);
+        world.add_object(plane_2);
+
+        let origin = Point::new(0., 2., -2.);
+        let dir = Vector::new(0., -(2.0_f32.sqrt() / 2.0), 2.0_f32.sqrt() / 2.0);
+        let ray = Ray::new(origin, dir);
+
+        let impact = world.intersect(ray).unwrap();
+        let final_color = get_phong_color(&world, impact);
+        assert!(final_color.r == 0.8737275, "Should be little higher than 0.8 and higher");
+        assert!(final_color.g == 0.8737275, "Should be little higher than 0.8 and higher");
+        assert!(final_color.b == 0.8737275, "Should be little higher than 0.8 and higher");
+        
+    }
+
+    #[test]
+    fn test_strike_reflective_surface_infinit() {
+        let mut world = World::new();
+        let mut plane = Object::new(Shape::Plane(Plane::new()));
+        plane.material = Material::new();
+        plane.material.ambient = 0.8;
+        plane.material.reflective = 0.1;
+        let vect = Vector::new(0.0, 3.0, 0.0);
+        plane.translate(vect);
+        let mut plane_2 = Object::new(Shape::Plane(Plane::new()));
+        plane_2.material = Material::new();
+        plane_2.material.ambient = 0.8;
+        plane_2.material.reflective = 0.1;
+
+
+        // plane_2.rotate(pitch, yaw, roll);
+
+
+        world.add_object(plane);
+        world.add_object(plane_2);
+
+        let origin = Point::new(0., 2., -2.);
+        let dir = Vector::new(0., -(2.0_f32.sqrt() / 2.0), 2.0_f32.sqrt() / 2.0);
+        let ray = Ray::new(origin, dir);
+
+        let impact = world.intersect(ray).unwrap();
+        let final_color = get_phong_color(&world, impact);
+        assert!(final_color.r == 0.88, "Should be little higher than 0.8 and higher than previous test");
+        assert!(final_color.g == 0.88, "Should be little higher than 0.8 and higher than previous test");
+        assert!(final_color.b == 0.88, "Should be little higher than 0.8 and higher than previous test");
+        
     }
 
     // ajouter la reflected color

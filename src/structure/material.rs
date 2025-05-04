@@ -11,6 +11,8 @@ pub struct Material {
     pub diffuse: f32,       // between 0 and 1
     pub specular: f32,      // between 0 and 1
     pub reflective: f32,    // between 0 and 1
+    pub refractive_index: f32,
+    pub transparency: f32,
 }
 
 impl Default for Material {
@@ -22,6 +24,8 @@ impl Default for Material {
         let specular = 0.9;
         let reflective = 0.0;
         let pattern = None;
+        let refractive_index = 1.0;
+        let transparency = 0.;
 
         Self {
             shininess,
@@ -31,6 +35,8 @@ impl Default for Material {
             diffuse,
             pattern,
             reflective,
+            refractive_index,
+            transparency,
         }
     }
 }

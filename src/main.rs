@@ -1,8 +1,10 @@
 use rt::{
-    light_utils::shade_it, Camera, Canvas, Color, Light, Matrix, Object, Point, Ray, Renderer, Shape, Sphere, Vector, World
+    light_utils::get_phong_color, Camera, Canvas, Color, Light, Matrix, Object, Point, Ray, Renderer, Shape, Sphere, Vector, World
 };
 
 use minifb::{Window, WindowOptions};
+
+
 
 pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
     let sky = Color::new(0., 0., 0.);
@@ -31,26 +33,9 @@ pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
 
             let ray = Ray::new(Point::new(origin.x, origin.y, origin.z), direction);
 
-            let hit = world.intersect(ray);
+            let hit: Option<rt::Intersection> = world.intersect(ray);
             if hit.is_some() {
-                let intersect = hit.unwrap();
-                let reflected_color;
-                if intersect.object.material.reflective > 0. {
-                    let reflected_ray = Ray::new(intersect.point, intersect.reflectv);
-                    let reflected_hit = world.intersect(reflected_ray);
-                    if reflected_hit.is_some() {
-                        let reflected_inter = reflected_hit.unwrap();
-                        reflected_color = shade_it(&world, &reflected_inter) * intersect.object.material.reflective;
-                    }
-                    else {
-                        reflected_color = Color::new(0., 0., 0.);
-                    }
-                }
-                else {
-                    reflected_color = Color::new(0., 0., 0.);
-                }
-                let color = shade_it(&world, &intersect) + reflected_color;
-
+                let color = get_phong_color(&world, hit.unwrap());
                 canvas.write(x, y, color);
             } else {
                 canvas.write(x, y, sky);
