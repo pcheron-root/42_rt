@@ -3,7 +3,7 @@ mod tests {
     use rt::constants::EPSILON;
     use rt::{
         light_utils::{is_shadowed, shade_it},
-        Color, Light, Object, Point, Ray, Shape, Sphere, Transform, Vector, World,
+        Color, Light, Object, Point, Ray, Shape, Sphere, Transformable, Vector, World,
     };
 
     #[test]

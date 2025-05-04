@@ -15,8 +15,6 @@ pub use structure::light::Light;
 pub use structure::material::Material;
 pub use structure::matrix::Matrix;
 pub use structure::objects::Object;
-pub use structure::pattern::Axis;
-pub use structure::pattern::Pattern;
 pub use structure::point::Point;
 pub use structure::ray::Ray;
 pub use structure::renderer::Renderer;
@@ -30,9 +28,14 @@ pub use structure::shapes::sphere::Sphere;
 pub use structure::shapes::torus::Torus;
 pub use structure::shapes::triangle::Triangle;
 pub use structure::shapes::tube::Tube;
+pub use structure::textures::gradient::Gradient;
+pub use structure::textures::solid::Solid;
+pub use structure::textures::stripe::Axis;
+pub use structure::textures::stripe::Stripe;
+pub use structure::textures::texture::Texture;
 pub use structure::vector::Vector;
 pub use structure::world::World;
 
 pub use traits::intersect::Intersect;
-
-pub use traits::transform::Transform;
+pub use traits::texture::Texturable;
+pub use traits::transform::Transformable;

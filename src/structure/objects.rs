@@ -1,5 +1,5 @@
 use crate::constants::EPSILON;
-use crate::{Intersection, Material, Matrix, Point, Ray, Shape, Transform, Vector};
+use crate::{Color, Intersection, Material, Matrix, Point, Ray, Shape, Transformable, Vector};
 
 #[derive(Debug, Clone)]
 pub struct Object {
@@ -36,6 +36,12 @@ impl Object {
         self
     }
 
+    pub fn color_at(&self, point: &Point) -> Color {
+        let point = self.world_to_local.clone() * point.clone();
+
+        self.material.color_at(&point)
+    }
+
     pub fn intersect(&self, ray: Ray) -> Option<Intersection> {
         // Transform ray to local space
         let local_ray = self.world_to_local.clone() * ray.clone();
@@ -62,7 +68,7 @@ impl Object {
     }
 }
 
-impl Transform for Object {
+impl Transformable for Object {
     fn translate(&mut self, vec: Vector) {
         self.position = self.position.clone() + vec;
 

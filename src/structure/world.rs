@@ -49,17 +49,7 @@ impl World {
         normalv: &Vector,
         shadowed: bool,
     ) -> Color {
-        let effective_color;
-        if obj.material.pattern.is_some() {
-            effective_color = obj
-                .material
-                .pattern
-                .clone()
-                .unwrap()
-                .stripe_at_object(obj, point);
-        } else {
-            effective_color = obj.material.color * light.intensity;
-        }
+        let effective_color = obj.material.color_at(point) * light.intensity;
 
         let lightv = (light.position - *point).normalize();
 
@@ -77,10 +67,11 @@ impl World {
 
         if reflect_dot_eye <= 0. {
             return ambient + diffuse;
-        } else {
-            let factor = reflect_dot_eye.powf(obj.material.shininess);
-            let specular = light.intensity * obj.material.specular * factor;
-            return ambient + diffuse + specular;
         }
+
+        let factor = reflect_dot_eye.powf(obj.material.shininess);
+        let specular = light.intensity * obj.material.specular * factor;
+
+        ambient + diffuse + specular
     }
 }

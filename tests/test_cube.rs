@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use rt::{Cube, Object, Point, Ray, Shape, Transform, Vector};
+    use rt::{Cube, Object, Point, Ray, Shape, Transformable, Vector};
 
     #[test]
     fn test_cube_intersection_0() {

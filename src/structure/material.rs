@@ -1,11 +1,9 @@
-use crate::{Color, Pattern};
+use crate::{Color, Point, Solid, Texture};
 use std::default::Default;
 
 #[derive(Debug, Clone)]
 pub struct Material {
-    pub color: Color,
-    pub pattern: Option<Pattern>,
-
+    pub texture: Texture,
     pub shininess: f32,  // between 10 and 200
     pub ambient: f32,    // between 0 and 1
     pub diffuse: f32,    // between 0 and 1
@@ -16,20 +14,18 @@ pub struct Material {
 impl Default for Material {
     fn default() -> Self {
         let shininess = 200.0;
-        let color = Color::new(1.0, 1.0, 1.0);
         let ambient = 0.1;
         let diffuse = 0.9;
         let specular = 0.9;
         let reflective = 0.0;
-        let pattern = None;
+        let texture = Texture::Solid(Solid::new(Color::new(1.0, 1.0, 1.0)));
 
         Self {
             shininess,
             specular,
-            color,
             ambient,
             diffuse,
-            pattern,
+            texture,
             reflective,
         }
     }
@@ -38,12 +34,6 @@ impl Default for Material {
 impl Material {
     pub fn new() -> Self {
         Material::default()
-    }
-
-    pub fn color(mut self, color: Color) -> Self {
-        self.color = color;
-
-        self
     }
 
     pub fn reflective(mut self, reflective: f32) -> Self {
@@ -76,9 +66,13 @@ impl Material {
         self
     }
 
-    pub fn pattern(mut self, pattern: Pattern) -> Self {
-        self.pattern = Some(pattern);
+    pub fn texture(mut self, texture: Texture) -> Self {
+        self.texture = texture;
 
         self
+    }
+
+    pub fn color_at(&self, point: &Point) -> Color {
+        self.texture.color_at(point)
     }
 }
