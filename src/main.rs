@@ -1,6 +1,6 @@
 use rt::{
     light_utils::shade_it, Camera, Canvas, Color, Cone, Disk, Light, Matrix, Object, Point, Ray,
-    Renderer, Sphere, Transformable, Triangle, Tube, Vector, World,
+    Renderer, Sphere, Transformable, Triangle, Tube, Vector, World, parser::parse
 };
 
 use minifb::{Window, WindowOptions};
@@ -70,6 +70,8 @@ fn main() {
         0.1,
         100.,
     );
+
+    let _ = parse("scenes/test.json");
 
     let mut world = World::new();
 

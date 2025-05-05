@@ -26,7 +26,7 @@ pub fn shade_it(world: &World, comps: &Intersection) -> Color {
         &comps.object,
         &world.light,
         &comps.over_point,
-        &comps.hit_normal,
+        &comps.eye_normal,
         &comps.normal,
         shadowed,
     )

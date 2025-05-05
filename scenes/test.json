@@ -1,0 +1,96 @@
+{
+    "world" : {
+        "objects" : [
+            {
+                "type" : "Sphere",
+                "radius" : 1.0,
+                "position" : {
+                    "x" : -1.0,
+                    "y" : 0.0,
+                    "z" : 0.0
+                }
+            },
+            {
+                "type" : "Disk",
+                "radius" : 1.0,
+                "position" : {
+                    "x" : -1.0,
+                    "y" : 0.0,
+                    "z" : 0.0
+                }
+            },
+            {
+                "type" : "Cylinder",
+                "radius" : 1.0,
+                "height" : 2.0,
+                "position" : {
+                    "x" : 1.0,
+                    "y" : 0.0,
+                    "z" : 0.0
+                }
+            },
+            {
+                "type" : "Tube",
+                "radius" : 1.0,
+                "height" : 2.0,
+                "position" : {
+                    "x" : 1.0,
+                    "y" : 0.0,
+                    "z" : 0.0
+                }
+            },
+            {
+                "type" : "Cube",
+                "size" : 1.0,
+                "position" : {
+                    "x" : 1.0,
+                    "y" : 0.0,
+                    "z" : 0.0
+                }
+            },
+            {
+                "type" : "Cone",
+                "radius" : 1.0,
+                "height" : 2.0,
+                "position" : {
+                    "x" : 1.0,
+                    "y" : 0.0,
+                    "z" : 0.0
+                }
+            },
+            {
+                "type" : "Plane",
+                "position" : {
+                    "x" : 1.0,
+                    "y" : 0.0,
+                    "z" : 0.0
+                }
+            },
+            {
+                "type": "Triangle",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "vertices": {
+                    "a": {
+                        "x": -1.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "b": {
+                        "x": 1.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "c": {
+                        "x": 0.0,
+                        "y": 2.0,
+                        "z": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

@@ -5,7 +5,7 @@ pub struct Triangle {
     pub p1: Point,
     pub p2: Point,
     pub p3: Point,
-    normal: Vector,
+    pub normal: Vector,
 }
 
 impl Triangle {

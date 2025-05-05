@@ -12,7 +12,7 @@ pub struct Intersection<'a> {
     pub t: f32,
     pub point: Point,
     pub normal: Vector,
-    pub hit_normal: Vector,
+    pub eye_normal: Vector,
     pub over_point: Point,
 }
 
@@ -22,7 +22,7 @@ impl<'a> Intersection<'a> {
         t: f32,
         point: Point,
         normal: Vector,
-        hit_normal: Vector,
+        eye_normal: Vector,
         over_point: Point,
     ) -> Self {
         Intersection {
@@ -30,7 +30,7 @@ impl<'a> Intersection<'a> {
             t,
             point,
             normal,
-            hit_normal,
+            eye_normal,
             over_point,
         }
     }

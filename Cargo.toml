@@ -11,6 +11,8 @@ criterion = "0.4"
 
 [dependencies]
 minifb = "0.25"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
 
 [[bench]]
 name = "tuple_bench"

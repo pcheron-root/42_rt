@@ -3,6 +3,7 @@ pub mod light_utils;
 pub mod structure;
 pub mod traits;
 pub mod utils;
+pub mod parser;
 
 pub use structure::camera::Camera;
 pub use structure::camera::Direction;
