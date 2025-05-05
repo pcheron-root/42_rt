@@ -85,8 +85,10 @@ impl Stripe {
 
 impl Texturable for Stripe {
     fn color_at(&self, point: &Point) -> Color {
+        let point = self.world_to_local.clone() * point.clone();
+
         if self.axis == Axis::XYZ {
-            self.stripe_three_axis(point)
+            self.stripe_three_axis(&point)
         } else if self.axis == Axis::XY {
             self.stripe_two_axis(point.x, point.y)
         } else if self.axis == Axis::XZ {

@@ -1,8 +1,7 @@
 #[cfg(test)]
 mod tests {
     use rt::{
-        Axis, Color, Gradient, Light, Material, Object, Point, Shape, Sphere, Stripe,
-        Texture, Transformable, Vector, World, Matrix
+        Axis, Color, Gradient, Light, Material, Object, Point, Shape, Sphere, Stripe, Transformable, Texturable, Vector, World, Matrix
     };
 
     #[test]
@@ -26,7 +25,7 @@ mod tests {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
 
-        let texture = Texture::Stripe(Stripe::new(white, black, Axis::X));
+        let texture = Box::new(Stripe::new(white, black, Axis::X));
 
         let point = Point::new(0.0, 0.0, 0.0);
         let color1 = texture.color_at(&point);
@@ -64,7 +63,7 @@ mod tests {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
 
-        let texture = Texture::Stripe(Stripe::new(white, black, Axis::X));
+        let texture = Box::new(Stripe::new(white, black, Axis::X));
 
         let mut material = Material::new();
         material.texture = texture;
@@ -73,7 +72,7 @@ mod tests {
         material.specular = 0.;
 
         let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
-        obj.material = material.clone();
+        obj.material = material;
 
         let eyev = Vector::new(0., 0., -1.);
         let normalv = Vector::new(0., 0., -1.);
@@ -84,7 +83,7 @@ mod tests {
         };
 
         let p1 = Point::new(0.9, 0., 0.);
-        let c1 = World::lighting(&obj.clone(), &light, &p1, &eyev, &normalv, false);
+        let c1 = World::lighting(&obj, &light, &p1, &eyev, &normalv, false);
         assert_eq!(c1.red(), 1.);
         assert_eq!(c1.green(), 1.);
         assert_eq!(c1.blue(), 1.);
@@ -101,11 +100,11 @@ mod tests {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
 
-        let texture = Texture::Stripe(Stripe::new(white, black, Axis::X));
+        let texture = Box::new(Stripe::new(white, black, Axis::X));
         let mut material = Material::new();
         material.texture = texture;
 
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material.clone());
+        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material);
 
         obj.scale(Vector::new(2., 2., 2.));
         let color = obj.color_at(&Point::new(1.5, 0., 0.));
@@ -121,14 +120,14 @@ mod tests {
 
         let mut pattern = Stripe::new(white, black, Axis::X);
         pattern.scale(Vector::new(2., 2., 2.));
-        let texture = Texture::Stripe(pattern);
+        let texture = Box::new(pattern);
         let mut material = Material::new();
         material.texture = texture;
         material.ambient = 1.;
         material.diffuse = 0.;
         material.specular = 0.;
 
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material.clone());
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material);
 
         let color = obj.color_at(&Point::new(1.5, 0., 0.));
         assert_eq!(color.r, 1.);
@@ -141,14 +140,14 @@ mod tests {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
 
-        let texture = Texture::Stripe(Stripe::new(white, black, Axis::X));
+        let texture = Box::new(Stripe::new(white, black, Axis::X));
         let mut material = Material::new();
         material.texture = texture;
         material.ambient = 1.;
         material.diffuse = 0.;
         material.specular = 0.;
 
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material.clone());
+        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material);
 
         obj.scale(Vector::new(2., 2., 2.));
         let color = obj.color_at(&Point::new(1.5, 0., 0.));
@@ -161,20 +160,15 @@ mod tests {
     fn test_assigning_transformation() {
         let white = Color::new(1., 1., 1.);
         let black = Color::new(0., 0., 0.);
-
-        let mut pattern = Stripe::new(white, black, Axis::X);
-        pattern.translate(Vector::new(1., 2., 3.));
-        let texture = Texture::Stripe(pattern);
-
-        if let Texture::Stripe(stripe) = &texture {
-            assert_eq!(
-                stripe.local_to_world,
-                Matrix::translation(Vector::new(1., 2., 3.))
-            );
-        } else {
-            panic!("Expected Texture::Stripe");
-        }
-    }
+    
+        let mut texture = Stripe::new(white, black, Axis::X);
+        texture.translate(Vector::new(1., 2., 3.));
+    
+        assert_eq!(
+            texture.local_to_world,
+            Matrix::translation(Vector::new(1., 2., 3.))
+        );
+    }    
 
     #[test]
     fn test_pattern_with_obj_transformation() {
@@ -185,7 +179,7 @@ mod tests {
         let white = Color::new(1., 1.5, 2.);
         let black = Color::new(0., 0., 0.);
 
-        let texture = Texture::Stripe(Stripe::new(black, white, Axis::X));
+        let texture = Box::new(Stripe::new(black, white, Axis::X));
         sphere.material.texture = texture;
         let color = sphere.color_at(&Point::new(2., 3., 4.));
         assert_eq!(color.r, 1.);
@@ -202,7 +196,7 @@ mod tests {
 
         let mut pattern = Stripe::new(black, white, Axis::X);
         pattern.scale(Vector::new(2., 2., 2.));
-        let texture = Texture::Stripe(pattern);
+        let texture = Box::new(pattern);
         sphere.material.texture = texture;
         let color = sphere.color_at(&Point::new(2., 3., 4.));
         assert_eq!(color.r, 1.);
@@ -221,7 +215,7 @@ mod tests {
 
         let mut pattern = Stripe::new(black, white, Axis::X);
         pattern.translate(Vector::new(0.5, 1., 1.5));
-        let texture = Texture::Stripe(pattern);
+        let texture = Box::new(pattern);
         sphere.material.texture = texture;
         let color = sphere.color_at(&Point::new(2.5, 3., 3.5));
         assert_eq!(color.r, 0.75);
@@ -234,7 +228,7 @@ mod tests {
         let white = Color::new(1., 1.0, 1.);
         let black = Color::new(0., 0., 0.);
 
-        let texture = Texture::Gradient(Gradient::new(white, black));
+        let texture = Box::new(Gradient::new(white, black));
 
         let mut color = texture.color_at(&Point::new(0.25, 0., 0.));
         assert_eq!(color.r, 0.75);
@@ -257,7 +251,7 @@ mod tests {
         let white = Color::new(1., 1.0, 1.);
         let black = Color::new(0., 0., 0.);
 
-        let texture = Texture::Stripe(Stripe::new(white, black, Axis::XZ));
+        let texture = Box::new(Stripe::new(white, black, Axis::XZ));
 
         let color = texture.color_at(&Point::new(0., 0., 0.));
         assert_eq!(color.r, 1.);
@@ -280,7 +274,7 @@ mod tests {
         let white = Color::new(1., 1.0, 1.);
         let black = Color::new(0., 0., 0.);
 
-        let texture = Texture::Stripe(Stripe::new(white, black, Axis::XYZ));
+        let texture = Box::new(Stripe::new(white, black, Axis::XYZ));
 
         let color = texture.color_at(&Point::new(0., 0., 0.));
         assert_eq!(color.r, 1.);
@@ -303,7 +297,7 @@ mod tests {
         let white = Color::new(1., 1.0, 1.);
         let black = Color::new(0., 0., 0.);
 
-        let texture = Texture::Stripe(Stripe::new(white, black, Axis::XYZ));
+        let texture = Box::new(Stripe::new(white, black, Axis::XYZ));
 
         let color = texture.color_at(&Point::new(0., 0., 0.));
         assert_eq!(color.r, 1.);
@@ -326,7 +320,7 @@ mod tests {
         let white = Color::new(1., 1.0, 1.);
         let black = Color::new(0., 0., 0.);
 
-        let texture = Texture::Stripe(Stripe::new(white, black, Axis::XYZ));
+        let texture = Box::new(Stripe::new(white, black, Axis::XYZ));
 
         let color = texture.color_at(&Point::new(0., 0., 0.));
         assert_eq!(color.r, 1.);

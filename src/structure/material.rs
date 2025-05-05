@@ -1,9 +1,9 @@
-use crate::{Color, Point, Solid, Texture};
+use crate::{Color, Point, Solid, Texturable};
 use std::default::Default;
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct Material {
-    pub texture: Texture,
+    pub texture: Box< dyn Texturable>,
     pub shininess: f32,  // between 10 and 200
     pub ambient: f32,    // between 0 and 1
     pub diffuse: f32,    // between 0 and 1
@@ -18,7 +18,7 @@ impl Default for Material {
         let diffuse = 0.9;
         let specular = 0.9;
         let reflective = 0.0;
-        let texture = Texture::Solid(Solid::new(Color::new(1.0, 1.0, 1.0)));
+        let texture = Box::new(Solid::new(Color::new(1.0, 1.0, 1.0)));
 
         Self {
             shininess,
@@ -66,7 +66,7 @@ impl Material {
         self
     }
 
-    pub fn texture(mut self, texture: Texture) -> Self {
+    pub fn texture(mut self, texture: Box<dyn Texturable>) -> Self {
         self.texture = texture;
 
         self

@@ -1,7 +1,7 @@
 use crate::constants::EPSILON;
 use crate::{Color, Intersection, Material, Matrix, Point, Ray, Shape, Transformable, Vector};
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct Object {
     pub material: Material,
     pub position: Point,
@@ -55,7 +55,7 @@ impl Object {
             let over_point = world_point + world_normal * EPSILON;
 
             Some(Intersection::new(
-                (*self).clone(),
+                self,
                 local_hit.t,
                 world_point,
                 world_normal,

@@ -40,6 +40,8 @@ impl Gradient {
 
 impl Texturable for Gradient {
     fn color_at(&self, point: &Point) -> Color {
+        let point = self.world_to_local.clone() * point.clone();
+        
         self.a + (self.b - self.a) * (point.x - point.x.floor())
     }
 }

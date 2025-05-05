@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use rt::{Color, Material, Object, Point, Shape, Solid, Sphere, Texture};
+    use rt::{Color, Material, Object, Point, Shape, Solid, Sphere};
 
     #[test]
     fn test_setup_material() {
@@ -9,7 +9,7 @@ mod tests {
             specular: 1.,
             ambient: 1.,
             diffuse: 1.,
-            texture: Texture::Solid(Solid::new(Color::new(1.0, 1.0, 1.0))),
+            texture: Box::new(Solid::new(Color::new(1.0, 1.0, 1.0))),
             reflective: 0.,
         };
 

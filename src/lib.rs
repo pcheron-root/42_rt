@@ -32,7 +32,6 @@ pub use structure::textures::gradient::Gradient;
 pub use structure::textures::solid::Solid;
 pub use structure::textures::stripe::Axis;
 pub use structure::textures::stripe::Stripe;
-pub use structure::textures::texture::Texture;
 pub use structure::vector::Vector;
 pub use structure::world::World;
 

@@ -7,8 +7,8 @@ pub struct LocalIntersection {
 }
 
 #[derive(Debug, Clone)]
-pub struct Intersection {
-    pub object: Object,
+pub struct Intersection<'a> {
+    pub object: &'a Object,
     pub t: f32,
     pub point: Point,
     pub normal: Vector,
@@ -16,9 +16,9 @@ pub struct Intersection {
     pub over_point: Point,
 }
 
-impl Intersection {
+impl<'a> Intersection<'a> {
     pub fn new(
-        object: Object,
+        object: &'a Object,
         t: f32,
         point: Point,
         normal: Vector,
