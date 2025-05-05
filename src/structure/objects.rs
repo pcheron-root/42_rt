@@ -1,5 +1,5 @@
 use crate::constants::EPSILON;
-use crate::{Color, Intersection, Material, Matrix, Point, Ray, Shape, Transformable, Vector};
+use crate::{Color, Intersection, Material, Matrix, Point, Ray, Intersect, Transformable, Vector};
 
 #[derive(Debug)]
 pub struct Object {
@@ -9,14 +9,14 @@ pub struct Object {
     pub yaw: f32,
     pub roll: f32,
     pub scale: Vector,
-    pub shape: Shape,
+    pub shape: Box<dyn Intersect>,
 
     pub world_to_local: Matrix,
     pub local_to_world: Matrix,
 }
 
 impl Object {
-    pub fn new(shape: Shape) -> Object {
+    pub fn new(shape: Box<dyn Intersect>) -> Object {
         Object {
             material: Material::new(),
             position: Point::new(0., 0., 0.),

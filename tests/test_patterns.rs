@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     use rt::{
-        Axis, Color, Gradient, Light, Material, Object, Point, Shape, Sphere, Stripe, Transformable, Texturable, Vector, World, Matrix
+        Axis, Color, Gradient, Light, Material, Object, Point, Sphere, Stripe, Transformable, Texturable, Vector, World, Matrix
     };
 
     #[test]
@@ -71,7 +71,7 @@ mod tests {
         material.diffuse = 0.;
         material.specular = 0.;
 
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let mut obj = Object::new(Box::new(Sphere::new(1.)));
         obj.material = material;
 
         let eyev = Vector::new(0., 0., -1.);
@@ -104,7 +104,7 @@ mod tests {
         let mut material = Material::new();
         material.texture = texture;
 
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material);
+        let mut obj = Object::new(Box::new(Sphere::new(1.))).material(material);
 
         obj.scale(Vector::new(2., 2., 2.));
         let color = obj.color_at(&Point::new(1.5, 0., 0.));
@@ -127,7 +127,7 @@ mod tests {
         material.diffuse = 0.;
         material.specular = 0.;
 
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material);
+        let obj = Object::new(Box::new(Sphere::new(1.))).material(material);
 
         let color = obj.color_at(&Point::new(1.5, 0., 0.));
         assert_eq!(color.r, 1.);
@@ -147,7 +147,7 @@ mod tests {
         material.diffuse = 0.;
         material.specular = 0.;
 
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material);
+        let mut obj = Object::new(Box::new(Sphere::new(1.))).material(material);
 
         obj.scale(Vector::new(2., 2., 2.));
         let color = obj.color_at(&Point::new(1.5, 0., 0.));
@@ -172,7 +172,7 @@ mod tests {
 
     #[test]
     fn test_pattern_with_obj_transformation() {
-        let mut sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let mut sphere = Object::new(Box::new(Sphere::new(1.)));
 
         sphere.scale(Vector::new(2., 2., 2.));
 
@@ -189,7 +189,7 @@ mod tests {
 
     #[test]
     fn test_pattern_with_pattern_transformation() {
-        let mut sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let mut sphere = Object::new(Box::new(Sphere::new(1.)));
 
         let white = Color::new(1., 1.5, 2.);
         let black = Color::new(0., 0., 0.);
@@ -206,7 +206,7 @@ mod tests {
 
     #[test]
     fn test_pattern_with_both_obj_pattern_transformation() {
-        let mut sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let mut sphere = Object::new(Box::new(Sphere::new(1.)));
 
         sphere.scale(Vector::new(2., 2., 2.));
 

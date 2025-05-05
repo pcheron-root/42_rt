@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use rt::{Color, Light, Material, Object, Point, Shape, Sphere, Vector, World};
+    use rt::{Color, Light, Material, Object, Point, Sphere, Vector, World};
 
     #[test]
     fn test_light_pos_and_intensity() {
@@ -22,7 +22,7 @@ mod tests {
 
     #[test]
     fn test_light_0() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
+        let obj = Object::new(Box::new(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., 0., -1.);
@@ -42,7 +42,7 @@ mod tests {
 
     #[test]
     fn test_light_1() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
+        let obj = Object::new(Box::new(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., (2.0_f32).sqrt() / 2.0, (2.0_f32).sqrt() / 2.0);
@@ -62,7 +62,7 @@ mod tests {
 
     #[test]
     fn test_light_2() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
+        let obj = Object::new(Box::new(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., 0., -1.);
@@ -82,7 +82,7 @@ mod tests {
 
     #[test]
     fn test_light_3() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
+        let obj = Object::new(Box::new(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., -(2.0_f32.sqrt() / 2.0), -(2.0_f32.sqrt() / 2.0));
@@ -102,7 +102,7 @@ mod tests {
 
     #[test]
     fn test_light_4() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
+        let obj = Object::new(Box::new(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., 0., -1.);

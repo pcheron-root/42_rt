@@ -23,7 +23,6 @@ pub use structure::shapes::cube::Cube;
 pub use structure::shapes::cylinder::Cylinder;
 pub use structure::shapes::disk::Disk;
 pub use structure::shapes::plane::Plane;
-pub use structure::shapes::shape::Shape;
 pub use structure::shapes::sphere::Sphere;
 pub use structure::shapes::torus::Torus;
 pub use structure::shapes::triangle::Triangle;

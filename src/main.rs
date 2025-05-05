@@ -1,6 +1,6 @@
 use rt::{
     light_utils::shade_it, Camera, Canvas, Color, Cone, Disk, Light, Matrix, Object, Point, Ray,
-    Renderer, Shape, Sphere, Transformable, Triangle, Tube, Vector, World,
+    Renderer, Sphere, Transformable, Triangle, Tube, Vector, World,
 };
 
 use minifb::{Window, WindowOptions};
@@ -73,27 +73,27 @@ fn main() {
 
     let mut world = World::new();
 
-    let mut sphere = Object::new(Shape::Sphere(Sphere::new(1.0)));
+    let mut sphere = Object::new(Box::new(Sphere::new(1.0)));
     sphere.translate(Vector::new(2.0, 0.0, 0.0));
     world.add_object(sphere);
 
-    let mut tube = Object::new(Shape::Tube(Tube::new(1.0, 3.0)));
+    let mut tube = Object::new(Box::new(Tube::new(1.0, 3.0)));
     tube.translate(Vector::new(-2.0, 0.0, -1.5));
     tube.rotate(-90.0f32.to_radians(), 0.0, 0.0);
     world.add_object(tube);
 
-    let mut cone = Object::new(Shape::Cone(Cone::new(1.0, 3.0)));
+    let mut cone = Object::new(Box::new(Cone::new(1.0, 3.0)));
     cone.rotate(-90.0f32.to_radians(), 0.0, 0.0);
     world.add_object(cone);
 
-    let triangle = Object::new(Shape::Triangle(Triangle::new(
+    let triangle = Object::new(Box::new(Triangle::new(
         Point::new(4.0, 0.0, 0.0),
         Point::new(3.0, 0.0, 0.0),
         Point::new(3.5, 1.0, 0.0),
     )));
     world.add_object(triangle);
 
-    let mut disk = Object::new(Shape::Disk(Disk::new(1.0)));
+    let mut disk = Object::new(Box::new(Disk::new(1.0)));
     disk.rotate(-90.0f32.to_radians(), 0.0, 0.0);
     disk.translate(Vector::new(-3.0, 0.0, 0.0));
 

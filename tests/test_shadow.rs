@@ -3,13 +3,13 @@ mod tests {
     use rt::constants::EPSILON;
     use rt::{
         light_utils::{is_shadowed, shade_it},
-        Color, Light, Object, Point, Ray, Shape, Sphere, Transformable, Vector, World,
+        Color, Light, Object, Point, Ray, Sphere, Transformable, Vector, World,
     };
 
     #[test]
     fn test_light_surface_in_shadow_0() {
         let mut w = World::new();
-        let sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let sphere = Object::new(Box::new(Sphere::new(1.)));
 
         w.add_object(sphere);
 
@@ -26,7 +26,7 @@ mod tests {
     #[test]
     fn test_light_surface_in_shadow_1() {
         let mut w = World::new();
-        let sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let sphere = Object::new(Box::new(Sphere::new(1.)));
         w.add_object(sphere);
         let light = Light {
             position: Point::new(-10., 10., -10.),
@@ -41,7 +41,7 @@ mod tests {
     #[test]
     fn test_light_surface_in_shadow_2() {
         let mut w = World::new();
-        let sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let sphere = Object::new(Box::new(Sphere::new(1.)));
         w.add_object(sphere);
         let light = Light {
             position: Point::new(10., -10., 10.),
@@ -56,7 +56,7 @@ mod tests {
     #[test]
     fn test_light_surface_in_shadow_3() {
         let mut w = World::new();
-        let sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let sphere = Object::new(Box::new(Sphere::new(1.)));
         w.add_object(sphere);
         let light = Light {
             position: Point::new(10., -10., 10.),
@@ -71,8 +71,8 @@ mod tests {
     #[test]
     fn test_rendering_shadow() {
         let mut w = World::new();
-        let sphere1 = Object::new(Shape::Sphere(Sphere::new(1.)));
-        let mut sphere2 = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let sphere1 = Object::new(Box::new(Sphere::new(1.)));
+        let mut sphere2 = Object::new(Box::new(Sphere::new(1.)));
 
         sphere2.translate(Vector::new(0., 0., 10.));
         w.add_object(sphere1);
@@ -107,7 +107,7 @@ mod tests {
             origin: Point::new(0., 0., -5.),
             direction: Vector::new(0., 0., 1.),
         };
-        let mut sphere1 = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let mut sphere1 = Object::new(Box::new(Sphere::new(1.)));
         sphere1.translate(Vector::new(0., 0., 1.));
 
         let mut w = World::new();

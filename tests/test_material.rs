@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use rt::{Color, Material, Object, Point, Shape, Solid, Sphere};
+    use rt::{Color, Material, Object, Point, Solid, Sphere};
 
     #[test]
     fn test_setup_material() {
@@ -39,7 +39,7 @@ mod tests {
 
     #[test]
     fn test_default_material_of_sphere() {
-        let sphere = Object::new(Shape::Sphere(Sphere::new(1.)));
+        let sphere = Object::new(Box::new(Sphere::new(1.)));
 
         let color = sphere.material.color_at(&Point::new(0.0, 0.0, 0.0));
 
