@@ -33,7 +33,7 @@ pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
 
             let ray = Ray::new(Point::new(origin.x, origin.y, origin.z), direction);
 
-            let hit: Option<rt::Intersection> = world.intersect(ray);
+            let hit: Option<rt::Intersection> = world.intersect(ray, 1.);
             if hit.is_some() {
                 let color = get_phong_color(&world, hit.unwrap());
                 canvas.write(x, y, color);

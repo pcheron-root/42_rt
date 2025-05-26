@@ -7,7 +7,7 @@ mod tests {
         let plane = Object::new(Shape::Plane(Plane::new()));
         let ray = Ray::new(Point::new(0., 1., 0.), Vector::new(0., -1., 0.));
 
-        let hit = plane.intersect(ray);
+        let hit = plane.intersect(ray, 1.);
 
         assert!(hit.is_some(), "Ray must hit plane");
 
@@ -20,7 +20,7 @@ mod tests {
         let plane = Object::new(Shape::Plane(Plane::new()));
         let ray = Ray::new(Point::new(0., -1., 0.), Vector::new(0., 1., 0.));
 
-        let hit = plane.intersect(ray);
+        let hit = plane.intersect(ray, 1.);
 
         assert!(hit.is_some(), "Ray must hit plane");
 
@@ -33,7 +33,7 @@ mod tests {
         let plane = Object::new(Shape::Plane(Plane::new()));
         let ray = Ray::new(Point::new(0., 10., 0.), Vector::new(0., 0., 1.));
 
-        let hit = plane.intersect(ray);
+        let hit = plane.intersect(ray, 1.);
 
         assert!(hit.is_none(), "Ray must not hit plane");
     }
