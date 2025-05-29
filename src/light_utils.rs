@@ -1,6 +1,6 @@
 use std::f32::EPSILON;
 
-use crate::{Color, Intersection, Point, Ray, World, Light};
+use crate::{Color, Intersection, Light, Point, Ray, World};
 
 pub fn is_shadowed(world: &World, point: &Point, light: &Light) -> bool {
     let v = light.position - *point;
@@ -21,13 +21,13 @@ pub fn is_shadowed(world: &World, point: &Point, light: &Light) -> bool {
     false
 }
 
-pub fn shade_it(world: &World, comps: &Intersection) -> Color {    
+pub fn shade_it(world: &World, comps: &Intersection) -> Color {
     let mut color = Color::new(0.0, 0.0, 0.0);
     let light_number = world.lights.len();
 
     for light in &world.lights {
         let shadowed = is_shadowed(world, &comps.over_point, light);
-        
+
         let temporary_color = World::lighting(
             &comps.object,
             light,

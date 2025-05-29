@@ -1,8 +1,7 @@
 use minifb::{Window, WindowOptions};
 use rt::{
-    light_utils::{get_phong_color},
-    Camera, Canvas, Color, Cone, Disk, Light, Matrix, Object, Point, Ray, Renderer, Shape, Sphere,
-    Transform, Triangle, Tube, Vector, World,
+    light_utils::get_phong_color, Camera, Canvas, Color, Light, Matrix, Object, Point, Ray,
+    Renderer, Shape, Sphere, Vector, World,
 };
 
 pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
