@@ -87,7 +87,7 @@ mod tests {
             origin: Point::new(0., 0., 5.),
             direction: Vector::new(0., 0., 1.),
         };
-        let i = w.intersect(r);
+        let i = w.intersect(r, 1.);
 
         if i.is_some() {
             let comps = i.unwrap();
@@ -112,7 +112,7 @@ mod tests {
 
         let mut w = World::new();
         w.add_object(sphere1);
-        let i = w.intersect(r);
+        let i = w.intersect(r, 1.);
 
         if i.is_some() {
             let comps = i.unwrap();

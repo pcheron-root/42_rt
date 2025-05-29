@@ -1,9 +1,9 @@
+use minifb::{Window, WindowOptions};
 use rt::{
-    light_utils::shade_it, Camera, Canvas, Color, Cone, Disk, Light, Matrix, Object, Point, Ray,
+    light_utils::{shade_it, get_phong_color}, Camera, Canvas, Color, Cone, Disk, Light, Matrix, Object, Point, Ray,
     Renderer, Shape, Sphere, Transform, Triangle, Tube, Vector, World,
 };
 
-use minifb::{Window, WindowOptions};
 
 pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
     let sky = Color::new(0., 0., 0.);
@@ -32,12 +32,9 @@ pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
 
             let ray = Ray::new(Point::new(origin.x, origin.y, origin.z), direction);
 
-            let hit = world.intersect(ray);
+            let hit: Option<rt::Intersection> = world.intersect(ray, 1.);
             if hit.is_some() {
-                let hit = hit.unwrap();
-
-                let color = shade_it(&world, &hit);
-
+                let color = get_phong_color(&world, hit.unwrap());
                 canvas.write(x, y, color);
             } else {
                 canvas.write(x, y, sky);
