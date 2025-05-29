@@ -1,9 +1,9 @@
 use std::f32::EPSILON;
 
-use crate::{Color, Intersection, Point, Ray, World};
+use crate::{Color, Intersection, Point, Ray, World, Light};
 
-pub fn is_shadowed(world: &World, point: &Point) -> bool {
-    let v = world.light.position - *point;
+pub fn is_shadowed(world: &World, point: &Point, light: &Light) -> bool {
+    let v = light.position - *point;
     let distance = v.magnitude();
     let direction = v.normalize();
 
@@ -21,21 +21,30 @@ pub fn is_shadowed(world: &World, point: &Point) -> bool {
     false
 }
 
-pub fn shade_it(world: &World, comps: &Intersection) -> Color {
-    let shadowed = is_shadowed(world, &comps.over_point);
+pub fn shade_it(world: &World, comps: &Intersection) -> Color {    
+    let mut color = Color::new(0.0, 0.0, 0.0);
+    let light_number = world.lights.len();
 
-    World::lighting(
-        &comps.object,
-        &world.light,
-        &comps.over_point,
-        &comps.hit_normal,
-        &comps.normal,
-        shadowed,
-    )
+    for light in &world.lights {
+        let shadowed = is_shadowed(world, &comps.over_point, light);
+        
+        let temporary_color = World::lighting(
+            &comps.object,
+            light,
+            &comps.over_point,
+            &comps.hit_normal,
+            &comps.normal,
+            shadowed,
+        );
+
+        color += temporary_color * (1.0 / light_number as f32);
+    }
+
+    color
 }
 
 pub fn get_phong_color(world: &World, initial_hit: Intersection) -> Color {
-    let mut reflected_color= Color::new(0.0, 0.0, 0.0);
+    let mut reflected_color = Color::new(0.0, 0.0, 0.0);
     let mut first_hit = initial_hit.clone();
     let mut factor = 1.0;
     if first_hit.object.material.reflective > 0. {
@@ -45,14 +54,14 @@ pub fn get_phong_color(world: &World, initial_hit: Intersection) -> Color {
             let reflected_hit = world.intersect(reflected_ray, 1.);
             if reflected_hit.is_some() {
                 let reflected_inter = reflected_hit.unwrap();
-                reflected_color += shade_it(&world, &reflected_inter) * first_hit.object.material.reflective * factor;
+                reflected_color += shade_it(&world, &reflected_inter)
+                    * first_hit.object.material.reflective
+                    * factor;
                 factor = factor * 0.20;
                 first_hit = reflected_inter;
-            }
-            else {
+            } else {
                 break;
             }
-            
         }
     }
     //
@@ -69,25 +78,24 @@ pub fn get_over_point(inter: &Intersection) -> Point {
 }
 
 pub fn get_refracted_color(inter: &Intersection, remaining: u32) -> Color {
-
     if remaining == 0 || inter.object.material.transparency == 0. {
         return Color::new(0., 0., 0.);
     };
     let eta = inter.n1 / inter.object.material.refractive_index;
-    
+
     let cos_i = -inter.hit_normal.dot(&inter.normal);
     let sin2_t = eta * eta * (1.0 - cos_i * cos_i);
-    
+
     if sin2_t > 1.0 {
         return Color::new(0., 0., 0.); // Réflexion totale interne, pas de rayon réfracté
     }
-    
+
     let cos_t = (1.0 - sin2_t).sqrt();
     let refracted = -inter.hit_normal * eta + inter.normal * (eta * cos_i - cos_t);
     Some(refracted.normalize());
-    
+
     let _over_point = get_over_point(inter);
-    
+
     Color::new(1., 0., 0.)
 }
 

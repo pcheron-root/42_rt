@@ -1,9 +1,9 @@
 use minifb::{Window, WindowOptions};
 use rt::{
-    light_utils::{shade_it, get_phong_color}, Camera, Canvas, Color, Cone, Disk, Light, Matrix, Object, Point, Ray,
-    Renderer, Shape, Sphere, Transform, Triangle, Tube, Vector, World,
+    light_utils::{get_phong_color},
+    Camera, Canvas, Color, Cone, Disk, Light, Matrix, Object, Point, Ray, Renderer, Shape, Sphere,
+    Transform, Triangle, Tube, Vector, World,
 };
-
 
 pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
     let sky = Color::new(0., 0., 0.);
@@ -70,34 +70,14 @@ fn main() {
 
     let mut world = World::new();
 
-    let mut sphere = Object::new(Shape::Sphere(Sphere::new(1.0)));
-    sphere.translate(Vector::new(2.0, 0.0, 0.0));
+    let sphere = Object::new(Shape::Sphere(Sphere::new(1.0)));
     world.add_object(sphere);
 
-    let mut tube = Object::new(Shape::Tube(Tube::new(1.0, 3.0)));
-    tube.translate(Vector::new(-2.0, 0.0, -1.5));
-    tube.rotate(-90.0f32.to_radians(), 0.0, 0.0);
-    world.add_object(tube);
+    let light1 = Light::new(Point::new(-2., 10., 0.), Color::new(1., 0., 0.));
+    world.add_light(light1);
 
-    let mut cone = Object::new(Shape::Cone(Cone::new(1.0, 3.0)));
-    cone.rotate(-90.0f32.to_radians(), 0.0, 0.0);
-    world.add_object(cone);
-
-    let triangle = Object::new(Shape::Triangle(Triangle::new(
-        Point::new(4.0, 0.0, 0.0),
-        Point::new(3.0, 0.0, 0.0),
-        Point::new(3.5, 1.0, 0.0),
-    )));
-    world.add_object(triangle);
-
-    let mut disk = Object::new(Shape::Disk(Disk::new(1.0)));
-    disk.rotate(-90.0f32.to_radians(), 0.0, 0.0);
-    disk.translate(Vector::new(-3.0, 0.0, 0.0));
-
-    world.add_object(disk);
-
-    let light = Light::new(Point::new(0., 10., 10.), Color::new(1., 1., 1.));
-    world.add_light(light);
+    let light2 = Light::new(Point::new(2., 10., 0.), Color::new(0., 0., 1.));
+    world.add_light(light2);
 
     let mut renderer = Renderer::new(window, canvas, world, camera);
     renderer.render(draw);

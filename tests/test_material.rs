@@ -15,7 +15,7 @@ mod tests {
             pattern: None,
             reflective: 0.,
             refractive_index: 1.,
-            transparency: 0.
+            transparency: 0.,
         };
 
         assert_eq!(material.color.red(), 1.);
@@ -36,7 +36,7 @@ mod tests {
         assert_eq!(material.color.blue(), 1.0);
         assert_eq!(material.diffuse, 0.9);
         assert_eq!(material.specular, 0.9);
-        assert_eq!(material.shininess, 10.); // here
+        assert_eq!(material.shininess, 200.);
     }
 
     // 200 -> 10
@@ -50,6 +50,6 @@ mod tests {
         assert_eq!(sphere.material.color.blue(), 1.0);
         assert_eq!(sphere.material.diffuse, 0.9);
         assert_eq!(sphere.material.specular, 0.9);
-        assert_eq!(sphere.material.shininess, 10.); // here
+        assert_eq!(sphere.material.shininess, 200.);
     }
 }

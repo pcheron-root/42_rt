@@ -5,12 +5,12 @@ use std::default::Default;
 pub struct Material {
     pub color: Color,
     pub pattern: Option<Pattern>,
-    
-    pub shininess: f32,     // between 10 and 200
-    pub ambient: f32,       // between 0 and 1
-    pub diffuse: f32,       // between 0 and 1
-    pub specular: f32,      // between 0 and 1
-    pub reflective: f32,    // between 0 and 1
+
+    pub shininess: f32,  // between 10 and 200
+    pub ambient: f32,    // between 0 and 1
+    pub diffuse: f32,    // between 0 and 1
+    pub specular: f32,   // between 0 and 1
+    pub reflective: f32, // between 0 and 1
     pub refractive_index: f32,
     pub transparency: f32,
 }

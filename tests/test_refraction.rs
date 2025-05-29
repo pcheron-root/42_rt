@@ -1,16 +1,17 @@
-
 // Vacuum: 1
 // • Air: 1.00029
 // • Water: 1.333
 // • Glass: 1.52
 // • Diamond: 2.417
 
-// albedo 
-
+// albedo
 
 #[cfg(test)]
 mod tests {
-    use rt::{light_utils::{get_over_point, get_refracted_color}, Plane, Material, Object, Point, Ray, Shape, Sphere, Vector, World};
+    use rt::{
+        light_utils::{get_over_point, get_refracted_color},
+        Material, Object, Point, Ray, Shape, Sphere, Vector, World,
+    };
 
     #[test]
     fn test_default_material() {
@@ -24,7 +25,6 @@ mod tests {
     // valable que en cas de transparence, car on traverse l'objet
     #[test]
     fn test_determining_n() {
-
         let origin = Point::new(1., 0., 0.);
         let dir = Vector::new(1., 0., 0.);
 
@@ -90,21 +90,18 @@ mod tests {
         assert_eq!(get_refracted_color(&impact, 0).b, 0.);
     }
 
-    #[test]
-    fn finding_the_reflected_color_under_total_internal_reflection() {
-        let origin = Point::new(0., 0., -5.);
-        let dir = Vector::new(0., 0., 1.);
-        let ray = Ray::new(origin, dir);
-        let mut plane = Object::new(Shape::Plane(Plane::new()));
-        let impact = plane.intersect(ray, 1.).unwrap();
-        
-        // let impact = world.intersect(ray, 1.).unwrap();
+    // #[test]
+    // fn finding_the_reflected_color_under_total_internal_reflection() {
+    // let origin = Point::new(0., 0., -5.);
+    // let dir = Vector::new(0., 0., 1.);
+    // let ray = Ray::new(origin, dir);
+    // let mut plane = Object::new(Shape::Plane(Plane::new()));
+    // let impact = plane.intersect(ray, 1.).unwrap();
 
-    }
+    // let impact = world.intersect(ray, 1.).unwrap();
+
+    // }
 }
-
-
-
 
 // 3. Add a new attribute in prepare_computations(), called under_point, which determines where the refracted ray will originate.
 

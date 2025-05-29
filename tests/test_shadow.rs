@@ -18,9 +18,8 @@ mod tests {
             intensity: Color::new(1., 1., 1.),
         };
 
-        w.add_light(light);
         let p = Point::new(0., 10., 0.);
-        assert_eq!(is_shadowed(&w, &p), false);
+        assert_eq!(is_shadowed(&w, &p, &light), false);
     }
 
     #[test]
@@ -32,10 +31,9 @@ mod tests {
             position: Point::new(-10., 10., -10.),
             intensity: Color::new(1., 1., 1.),
         };
-        w.add_light(light);
 
         let p = Point::new(10., -10., 10.);
-        assert_eq!(is_shadowed(&w, &p), true);
+        assert_eq!(is_shadowed(&w, &p, &light), true);
     }
 
     #[test]
@@ -47,10 +45,9 @@ mod tests {
             position: Point::new(10., -10., 10.),
             intensity: Color::new(1., 1., 1.),
         };
-        w.add_light(light);
 
         let p = Point::new(20., -20., 20.);
-        assert_eq!(is_shadowed(&w, &p), false);
+        assert_eq!(is_shadowed(&w, &p, &light), false);
     }
 
     #[test]
@@ -62,10 +59,9 @@ mod tests {
             position: Point::new(10., -10., 10.),
             intensity: Color::new(1., 1., 1.),
         };
-        w.add_light(light);
 
         let p = Point::new(2., -2., 2.);
-        assert_eq!(is_shadowed(&w, &p), false);
+        assert_eq!(is_shadowed(&w, &p, &light), false);
     }
 
     #[test]
