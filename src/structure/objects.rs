@@ -30,6 +30,12 @@ impl Object {
         }
     }
 
+    pub fn material(mut self, material: Material) -> Self {
+        self.material = material;
+
+        self
+    }
+
     fn update(&mut self) {
         let vt = Vector::new(self.position.x, self.position.y, self.position.z);
 

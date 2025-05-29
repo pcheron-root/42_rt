@@ -105,8 +105,7 @@ mod tests {
         let mut material = Material::new();
         material.pattern = Some(pattern);
 
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
-        obj.material = material.clone();
+        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material.clone());
 
         obj.scale(Vector::new(2., 2., 2.));
         let color = obj
@@ -132,8 +131,7 @@ mod tests {
         material.diffuse = 0.;
         material.specular = 0.;
 
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
-        obj.material = material.clone();
+        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material.clone());
 
         obj.scale(Vector::new(2., 2., 2.));
         let color = obj
@@ -159,8 +157,7 @@ mod tests {
         material.diffuse = 0.;
         material.specular = 0.;
 
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
-        obj.material = material.clone();
+        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(material.clone());
 
         obj.scale(Vector::new(2., 2., 2.));
         let color = obj

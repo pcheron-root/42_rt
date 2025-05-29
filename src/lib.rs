@@ -20,9 +20,16 @@ pub use structure::pattern::Pattern;
 pub use structure::point::Point;
 pub use structure::ray::Ray;
 pub use structure::renderer::Renderer;
+pub use structure::shapes::cone::Cone;
+pub use structure::shapes::cube::Cube;
+pub use structure::shapes::cylinder::Cylinder;
+pub use structure::shapes::disk::Disk;
 pub use structure::shapes::plane::Plane;
 pub use structure::shapes::shape::Shape;
 pub use structure::shapes::sphere::Sphere;
+pub use structure::shapes::torus::Torus;
+pub use structure::shapes::triangle::Triangle;
+pub use structure::shapes::tube::Tube;
 pub use structure::vector::Vector;
 pub use structure::world::World;
 

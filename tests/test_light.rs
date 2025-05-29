@@ -20,12 +20,9 @@ mod tests {
         assert_eq!(light.intensity.b, 1.);
     }
 
-    // p 106
     #[test]
     fn test_light_0() {
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
-        obj.material = Material::new();
-        obj.material.pattern = None;
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., 0., -1.);
@@ -45,9 +42,7 @@ mod tests {
 
     #[test]
     fn test_light_1() {
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
-        obj.material = Material::new();
-        obj.material.pattern = None;
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., (2.0_f32).sqrt() / 2.0, (2.0_f32).sqrt() / 2.0);
@@ -68,9 +63,7 @@ mod tests {
     // 0.7363961 -> 0.76452106
     #[test]
     fn test_light_2() {
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
-        obj.material = Material::new();
-        obj.material.pattern = None;
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., 0., -1.);
@@ -91,9 +84,7 @@ mod tests {
     // 1.6363853 -> 1.6363955
     #[test]
     fn test_light_3() {
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
-        obj.material = Material::new();
-        obj.material.pattern = None;
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., -(2.0_f32.sqrt() / 2.0), -(2.0_f32.sqrt() / 2.0));
@@ -113,9 +104,7 @@ mod tests {
 
     #[test]
     fn test_light_4() {
-        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.)));
-        obj.material = Material::new();
-        obj.material.pattern = None;
+        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., 0., -1.);

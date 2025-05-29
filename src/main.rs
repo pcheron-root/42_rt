@@ -1,9 +1,8 @@
-use rt::{
-    light_utils::get_phong_color, Camera, Canvas, Color, Light, Matrix, Object, Point, Ray, Renderer, Shape, Sphere, Vector, World
-};
-
 use minifb::{Window, WindowOptions};
-
+use rt::{
+    light_utils::{shade_it, get_phong_color}, Camera, Canvas, Color, Cone, Disk, Light, Matrix, Object, Point, Ray,
+    Renderer, Shape, Sphere, Transform, Triangle, Tube, Vector, World,
+};
 
 
 pub fn draw(canvas: &mut Canvas, world: &World, camera: &Camera) {
@@ -61,7 +60,7 @@ fn main() {
     let canvas = Canvas::new(size.0, size.1);
 
     let camera = Camera::new(
-        Point::new(0., 0., 7.),
+        Point::new(0., 0., 10.),
         Vector::new(0., 0., -1.),
         size.0 as f32 / size.1 as f32,
         45f32.to_radians(),
@@ -71,10 +70,33 @@ fn main() {
 
     let mut world = World::new();
 
-    let sphere1 = Object::new(Shape::Sphere(Sphere::new(3.)));
-    world.add_object(sphere1);
+    let mut sphere = Object::new(Shape::Sphere(Sphere::new(1.0)));
+    sphere.translate(Vector::new(2.0, 0.0, 0.0));
+    world.add_object(sphere);
 
-    let light = Light::new(Point::new(0., 10., 0.), Color::new(1., 1., 1.));
+    let mut tube = Object::new(Shape::Tube(Tube::new(1.0, 3.0)));
+    tube.translate(Vector::new(-2.0, 0.0, -1.5));
+    tube.rotate(-90.0f32.to_radians(), 0.0, 0.0);
+    world.add_object(tube);
+
+    let mut cone = Object::new(Shape::Cone(Cone::new(1.0, 3.0)));
+    cone.rotate(-90.0f32.to_radians(), 0.0, 0.0);
+    world.add_object(cone);
+
+    let triangle = Object::new(Shape::Triangle(Triangle::new(
+        Point::new(4.0, 0.0, 0.0),
+        Point::new(3.0, 0.0, 0.0),
+        Point::new(3.5, 1.0, 0.0),
+    )));
+    world.add_object(triangle);
+
+    let mut disk = Object::new(Shape::Disk(Disk::new(1.0)));
+    disk.rotate(-90.0f32.to_radians(), 0.0, 0.0);
+    disk.translate(Vector::new(-3.0, 0.0, 0.0));
+
+    world.add_object(disk);
+
+    let light = Light::new(Point::new(0., 10., 10.), Color::new(1., 1., 1.));
     world.add_light(light);
 
     let mut renderer = Renderer::new(window, canvas, world, camera);

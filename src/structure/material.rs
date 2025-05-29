@@ -1,5 +1,5 @@
-use std::default::Default;
 use crate::{Color, Pattern};
+use std::default::Default;
 
 #[derive(Debug, Clone)]
 pub struct Material {
@@ -17,7 +17,7 @@ pub struct Material {
 
 impl Default for Material {
     fn default() -> Self {
-        let shininess = 10.0;
+        let shininess = 200.0;
         let color = Color::new(1.0, 1.0, 1.0);
         let ambient = 0.1;
         let diffuse = 0.9;
