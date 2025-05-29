@@ -1,5 +1,5 @@
 use std::f32::EPSILON;
-
+use log::{info, error};
 use crate::{Color, Intersection, Point, Ray, World};
 
 pub fn is_shadowed(world: &World, point: &Point) -> bool {
@@ -74,9 +74,11 @@ pub fn get_refracted_color(inter: &Intersection, remaining: u32) -> Color {
         return Color::new(0., 0., 0.);
     };
     let eta = inter.n1 / inter.object.material.refractive_index;
-    
-    let cos_i = -inter.hit_normal.dot(&inter.normal);
+    println!("eta: {:?}", eta);
+    let cos_i = (-inter.hit_normal).dot(&inter.normal);
+    println!("cos_i: {:?}", cos_i);
     let sin2_t = eta * eta * (1.0 - cos_i * cos_i);
+    println!("sin2_t: {:?}", sin2_t);
     
     if sin2_t > 1.0 {
         return Color::new(0., 0., 0.); // Réflexion totale interne, pas de rayon réfracté

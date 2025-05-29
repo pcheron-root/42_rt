@@ -92,15 +92,24 @@ mod tests {
 
     #[test]
     fn finding_the_reflected_color_under_total_internal_reflection() {
-        let origin = Point::new(0., 0., -5.);
-        let dir = Vector::new(0., 0., 1.);
-        let ray = Ray::new(origin, dir);
-        let mut plane = Object::new(Shape::Plane(Plane::new()));
-        let impact = plane.intersect(ray, 1.).unwrap();
-        
-        // let impact = world.intersect(ray, 1.).unwrap();
+        // let origin = Point::new(0., 1., 0.);
+        // let dir = Vector::new(0., -2.0_f32.sqrt() / 16.0, 2.0_f32.sqrt() / 2.0);
 
+        let origin = Point::new(0., 0., 2.0_f32.sqrt() / 2.);
+        let dir = Vector::new(0., 1., 0.);
+        let ray = Ray::new(origin, dir);
+        let mut plane = Object::new(Shape::Sphere(Sphere::new(1.0)));
+        plane.material.transparency = 1.;
+        plane.material.refractive_index = 1.;
+        let impact = plane.intersect(ray, 1.5).unwrap();
+        
+        let refracted_color = get_refracted_color(&impact, 1);
+        assert_eq!(refracted_color.r, 0.);
+        assert_eq!(refracted_color.g, 0.);
+        assert_eq!(refracted_color.b, 0.);
     }
+
+
 }
 
 
