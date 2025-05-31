@@ -63,7 +63,7 @@ mod tests {
     // 0.7363961 -> 0.76452106
     #[test]
     fn test_light_2() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
+        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., 0., -1.);
@@ -73,18 +73,18 @@ mod tests {
             position: Point::new(0., 10., -10.),
             intensity: Color::new(1., 1., 1.),
         };
-
+        obj.material.shininess = 200.;
         let result = World::lighting(&obj, &light, &position, &eyev, &normalv, false);
 
-        assert_eq!(result.red(), 0.76452106);
-        assert_eq!(result.green(), 0.76452106);
-        assert_eq!(result.blue(), 0.76452106);
+        assert_eq!(result.red(), 0.7363961);
+        assert_eq!(result.green(), 0.7363961);
+        assert_eq!(result.blue(), 0.7363961);
     }
 
     // 1.6363853 -> 1.6363955
     #[test]
     fn test_light_3() {
-        let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
+        let mut obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
         let eyev = Vector::new(0., -(2.0_f32.sqrt() / 2.0), -(2.0_f32.sqrt() / 2.0));
@@ -94,12 +94,12 @@ mod tests {
             position: Point::new(0., 10., -10.),
             intensity: Color::new(1., 1., 1.),
         };
-
+        obj.material.shininess = 200.;
         let result = World::lighting(&obj, &light, &position, &eyev, &normalv, false);
 
-        assert_eq!(result.red(), 1.6363955);
-        assert_eq!(result.green(), 1.6363955);
-        assert_eq!(result.blue(), 1.6363955);
+        assert_eq!(result.red(), 1.6363853);
+        assert_eq!(result.green(), 1.6363853);
+        assert_eq!(result.blue(), 1.6363853);
     }
 
     #[test]

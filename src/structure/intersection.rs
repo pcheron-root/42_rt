@@ -16,6 +16,7 @@ pub struct Intersection {
     pub over_point: Point,
     pub reflectv: Vector,
     pub n1: f32,
+    pub remaining: u32,
 }
 
 impl Intersection {
@@ -28,6 +29,7 @@ impl Intersection {
         over_point: Point,
         reflectv: Vector,
         n1: f32,
+        remaining: u32,
     ) -> Self {
         Intersection {
             object,
@@ -38,6 +40,7 @@ impl Intersection {
             over_point,
             reflectv,
             n1,
+            remaining,
         }
     }
 }

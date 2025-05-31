@@ -47,7 +47,7 @@ impl Object {
         self.world_to_local = self.local_to_world.inverse().unwrap();
     }
 
-    pub fn intersect(&self, ray: Ray, n1: f32) -> Option<Intersection> {
+    pub fn intersect(&self, ray: &Ray, n1: f32, remaining: u32) -> Option<Intersection> {
         // Transform ray to local space
         let local_ray = self.world_to_local.clone() * ray.clone();
 
@@ -68,6 +68,7 @@ impl Object {
                 over_point,
                 (ray.direction).reflect(&world_normal),
                 n1,
+                remaining,
             ))
         } else {
             None

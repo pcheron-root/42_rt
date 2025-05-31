@@ -21,11 +21,11 @@ impl World {
         self.light = light;
     }
 
-    pub fn intersect(&self, ray: Ray, n1: f32) -> Option<Intersection> {
+    pub fn intersect(&self, ray: &Ray, n1: f32, remaning: u32) -> Option<Intersection> {
         let mut closest_intersection = None;
 
         for object in &self.objects {
-            let intersection = object.intersect(ray.clone(), n1);
+            let intersection = object.intersect(&ray.clone(), n1, remaning);
 
             if intersection.is_some() {
                 if closest_intersection.is_none() {

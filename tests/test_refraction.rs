@@ -10,7 +10,7 @@
 
 #[cfg(test)]
 mod tests {
-    use rt::{light_utils::{get_over_point, get_refracted_color}, Plane, Material, Object, Point, Ray, Shape, Sphere, Vector, World};
+    use rt::{light_utils::{get_color_from_ray, get_over_point, get_refracted_color}, Color, Material, Object, Plane, Point, Ray, Shape, Sphere, Vector, World};
 
     #[test]
     fn test_default_material() {
@@ -34,7 +34,7 @@ mod tests {
         let mut world = World::new();
         world.add_object(sphere);
 
-        let impact = world.intersect(ray, 1.).unwrap();
+        let impact = world.intersect(&ray, 1., 1).unwrap();
 
         assert_eq!(impact.object.material.refractive_index, 1.);
     }
@@ -50,7 +50,7 @@ mod tests {
         let mut world = World::new();
         world.add_object(sphere);
 
-        let impact = world.intersect(ray, 1.).unwrap();
+        let impact = world.intersect(&ray, 1., 1).unwrap();
         let overpoint = get_over_point(&impact);
         assert_eq!(overpoint.x, 0.99999976);
         assert_eq!(overpoint.y, 0.);
@@ -67,10 +67,10 @@ mod tests {
         let mut world = World::new();
         world.add_object(sphere);
 
-        let impact = world.intersect(ray, 1.).unwrap();
-        assert_eq!(get_refracted_color(&impact, 2).r, 0.);
-        assert_eq!(get_refracted_color(&impact, 2).g, 0.);
-        assert_eq!(get_refracted_color(&impact, 2).b, 0.);
+        let impact = world.intersect(&ray, 1., 1).unwrap();
+        assert_eq!(get_refracted_color(&world, &impact, 2).r, 0.);
+        assert_eq!(get_refracted_color(&world, &impact, 2).g, 0.);
+        assert_eq!(get_refracted_color(&world, &impact, 2).b, 0.);
     }
 
     #[test]
@@ -84,10 +84,10 @@ mod tests {
         let mut world = World::new();
         world.add_object(sphere);
 
-        let impact = world.intersect(ray, 1.).unwrap();
-        assert_eq!(get_refracted_color(&impact, 0).r, 0.);
-        assert_eq!(get_refracted_color(&impact, 0).g, 0.);
-        assert_eq!(get_refracted_color(&impact, 0).b, 0.);
+        let impact = world.intersect(&ray, 1., 0).unwrap();
+        assert_eq!(get_refracted_color(&world, &impact, 0).r, 0.);
+        assert_eq!(get_refracted_color(&world, &impact, 0).g, 0.);
+        assert_eq!(get_refracted_color(&world, &impact, 0).b, 0.);
     }
 
     #[test]
@@ -98,18 +98,40 @@ mod tests {
         let origin = Point::new(0., 0., 2.0_f32.sqrt() / 2.);
         let dir = Vector::new(0., 1., 0.);
         let ray = Ray::new(origin, dir);
-        let mut plane = Object::new(Shape::Sphere(Sphere::new(1.0)));
-        plane.material.transparency = 1.;
-        plane.material.refractive_index = 1.;
-        let impact = plane.intersect(ray, 1.5).unwrap();
-        
-        let refracted_color = get_refracted_color(&impact, 1);
+        let mut sphere = Object::new(Shape::Sphere(Sphere::new(1.0)));
+        sphere.material.transparency = 1.;
+        sphere.material.refractive_index = 1.;
+        let impact = sphere.intersect(&ray, 1.5, 2).unwrap();
+        let w = World::new();
+        let refracted_color = get_refracted_color(&w, &impact, 1);
         assert_eq!(refracted_color.r, 0.);
         assert_eq!(refracted_color.g, 0.);
         assert_eq!(refracted_color.b, 0.);
     }
 
+    #[test]
+        fn finding_the_refracted_color() {
+        let mut w = World::new();
+        
+        let mut a = Object::new(Shape::Sphere(Sphere::new(1.0)));
+        a.material.ambient = 1.0;
+        // a.material.pattern = test_pattern();
 
+        let mut b = Object::new(Shape::Sphere(Sphere::new(0.5)));
+        b.material.transparency = 1.0;
+        b.material.refractive_index = 1.5;
+
+        w.add_object(a);
+        w.add_object(b);
+        let r = Ray::new(Point::new(0.0, 0.0, 0.1), Vector::new(0.0, 1.0, 0.0));
+
+        let c = get_color_from_ray(&w, &r, &Color::new(0., 0., 0.), 1., 5);
+        println!("color: {:?}", c);
+        assert_eq!(c.r, 0.0);
+        assert_eq!(c.g, 0.99888);
+        assert_eq!(c.b, 0.04725);
+            
+    }
 }
 
 
