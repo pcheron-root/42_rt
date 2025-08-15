@@ -52,7 +52,7 @@ mod tests {
 
         let impact = world.intersect(ray, 1.).unwrap();
         let overpoint = get_over_point(&impact);
-        assert_eq!(overpoint.x, 0.99999976);
+        assert_eq!(overpoint.x, 0.9999999999999996);
         assert_eq!(overpoint.y, 0.);
         assert_eq!(overpoint.z, 0.);
     }

@@ -35,7 +35,7 @@ impl Renderer {
                 self.size = current_size;
 
                 self.canvas.resize(self.size.0, self.size.1);
-                self.camera.resize(self.size.0 as f32 / self.size.1 as f32);
+                self.camera.resize(self.size.0 as f64 / self.size.1 as f64);
 
                 self.size = (current_size.0, current_size.1);
             }

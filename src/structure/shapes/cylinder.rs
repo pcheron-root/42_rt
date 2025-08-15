@@ -2,19 +2,19 @@ use crate::{constants::EPSILON, Intersect, LocalIntersection, Point, Ray, Vector
 
 #[derive(Debug, Clone)]
 pub struct Cylinder {
-    pub radius: f32,
-    pub height: f32,
+    pub radius: f64,
+    pub height: f64,
 }
 
 impl Cylinder {
-    pub fn new(radius: f32, height: f32) -> Self {
+    pub fn new(radius: f64, height: f64) -> Self {
         Self { radius, height }
     }
 }
 
 impl Intersect for Cylinder {
     fn intersect(&self, ray: Ray) -> Option<LocalIntersection> {
-        let intersect_tube = || -> Option<f32> {
+        let intersect_tube = || -> Option<f64> {
             let a = (ray.direction.x).powf(2.0) + (ray.direction.z).powf(2.0);
 
             if a < EPSILON {
@@ -47,7 +47,7 @@ impl Intersect for Cylinder {
             }
         };
 
-        let check_cap = |ray: Ray, t: f32| -> bool {
+        let check_cap = |ray: Ray, t: f64| -> bool {
             if t < 0.0 {
                 return false;
             }
@@ -58,7 +58,7 @@ impl Intersect for Cylinder {
             (x.powf(2.0) + z.powf(2.0)) <= self.radius.powf(2.0)
         };
 
-        let intersect_caps = || -> Option<f32> {
+        let intersect_caps = || -> Option<f64> {
             if ray.direction.y.abs() < EPSILON {
                 return None;
             }
@@ -81,7 +81,7 @@ impl Intersect for Cylinder {
                 let t0 = t0.unwrap();
                 let t1 = t1.unwrap();
 
-                f32::min(t0, t1)
+                f64::min(t0, t1)
             } else if t0.is_some() {
                 t0.unwrap()
             } else if t1.is_some() {

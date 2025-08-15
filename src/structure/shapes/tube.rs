@@ -3,12 +3,12 @@ use crate::{Intersect, LocalIntersection, Point, Ray, Vector};
 
 #[derive(Debug, Clone)]
 pub struct Tube {
-    pub height: f32,
-    pub radius: f32,
+    pub height: f64,
+    pub radius: f64,
 }
 
 impl Tube {
-    pub fn new(radius: f32, height: f32) -> Self {
+    pub fn new(radius: f64, height: f64) -> Self {
         Self { radius, height }
     }
 }

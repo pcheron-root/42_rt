@@ -4,19 +4,19 @@ use crate::{Intersect, LocalIntersection, Point, Ray, Vector};
 
 #[derive(Debug, Clone)]
 pub struct Cone {
-    pub radius: f32,
-    pub height: f32,
+    pub radius: f64,
+    pub height: f64,
 }
 
 impl Cone {
-    pub fn new(radius: f32, height: f32) -> Self {
+    pub fn new(radius: f64, height: f64) -> Self {
         Self { radius, height }
     }
 }
 
 impl Intersect for Cone {
     fn intersect(&self, ray: Ray) -> Option<LocalIntersection> {
-        let intersect_side = || -> Option<f32> {
+        let intersect_side = || -> Option<f64> {
             let tan_theta = self.radius / self.height;
             let tan_theta_squared = tan_theta.powf(2.0);
 
@@ -66,7 +66,7 @@ impl Intersect for Cone {
             }
         };
 
-        let intersect_base = || -> Option<f32> {
+        let intersect_base = || -> Option<f64> {
             if ray.direction.y.abs() > EPSILON {
                 let t = -ray.origin.y / ray.direction.y;
                 let p = ray.position(t);

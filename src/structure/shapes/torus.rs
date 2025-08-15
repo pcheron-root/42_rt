@@ -1,16 +1,15 @@
-use std::mem::swap;
-
 use crate::constants::EPSILON;
 use crate::{Intersect, LocalIntersection, Point, Ray, Vector};
+use std::f64::consts::PI;
 
 #[derive(Debug, Clone)]
 pub struct Torus {
-    pub major_radius: f32, // Distance from center of tube to center of torus
-    pub minor_radius: f32, // Radius of the tube
+    pub major_radius: f64, // Distance from center of tube to center of torus
+    pub minor_radius: f64, // Radius of the tube
 }
 
 impl Torus {
-    pub fn new(major_radius: f32, minor_radius: f32) -> Self {
+    pub fn new(major_radius: f64, minor_radius: f64) -> Self {
         Self {
             major_radius,
             minor_radius,
@@ -20,147 +19,198 @@ impl Torus {
 
 impl Intersect for Torus {
     fn intersect(&self, ray: Ray) -> Option<LocalIntersection> {
-        let mut po = 1.0;
-        let Ra2 = self.major_radius * self.major_radius;
-        let ra2 = self.minor_radius * self.minor_radius;
-        let ro = Vector::new(ray.origin.x, ray.origin.y, ray.origin.z);
-        let rd = ray.direction;
-        let m = ro.dot(&ro);
-        let n = ro.dot(&rd);
-        let h = n * n - m
-            + (self.major_radius + self.minor_radius) * (self.major_radius + self.minor_radius);
-        if h < 0.0 {
+        let d = ray.direction;
+        let o = ray.origin - Point::new(0.0, 0.0, 0.0);
+
+        let min_r = self.minor_radius;
+        let big_r = self.major_radius;
+
+        // Precompute
+        let dd = d.dot(&d);
+        let od = o.dot(&d);
+        let oo = o.dot(&o);
+
+        let k = oo - (min_r).powf(2.) + (big_r).powf(2.);
+        let dxy2 = d.x * d.x + d.y * d.y;
+        let oxy_dot = o.x * d.x + o.y * d.y;
+        let oxy2 = o.x * o.x + o.y * o.y;
+
+        // Quartic coefficients
+        let a4 = dd * dd;
+        let a3 = 4.0 * dd * od;
+        let a2 = 2.0 * dd * k + 4.0 * od * od - 4.0 * (big_r).powf(2.) * dxy2;
+        let a1 = 4.0 * od * k - 8.0 * (big_r).powf(2.) * oxy_dot;
+        let a0 = k * k - 4.0 * (big_r).powf(2.) * oxy2;
+
+        // Solve quartic
+        let mut roots = solve_quartic(a4, a3, a2, a1, a0);
+
+        // Keep only positive roots > EPSILON
+        roots.retain(|&t| t.is_finite() && t > EPSILON);
+
+        if roots.is_empty() {
             return None;
         }
-        let k = (m - ra2 - Ra2) / 2.0;
-        let mut k3 = n;
-        let mut k2 = n * n + Ra2 * rd.z * rd.z + k;
-        let mut k1 = k * n + Ra2 * ro.z * rd.z;
-        let mut k0 = k * k + Ra2 * ro.z * ro.z - Ra2 * ra2;
 
-        if (k3 * (k3 * k3 - k2) + k1).abs() < 0.01 {
-            po = -1.0;
-            swap(&mut k1, &mut k3);
-            k0 = 1.0 / k0;
-            k1 = k1 * k0;
-            k2 = k2 * k0;
-            k3 = k3 * k0;
-        }
+        // Find nearest intersection
+        let t = roots.into_iter().fold(f64::INFINITY, |acc, x| acc.min(x));
 
-        let c2 = (2.0 * k2 - 3.0 * k3 * k3) / 3.0;
-        let c1 = (k3 * (k3 * k3 - k2) + k1) * 2.0;
-        let c0 = (k3 * (k3 * (-3.0 * k3 * k3 + 4.0 * k2) - 8.0 * k1) + 4.0 * k0) / 3.0;
-
-        let Q = c2 * c2 + c0;
-        let R = 3.0 * c0 * c2 - c2 * c2 * c2 - c1 * c1;
-        let mut h = R * R - Q * Q * Q;
-        let mut z = 0.0;
-
-        if h < 0.0 {
-            let sQ = Q.sqrt();
-            z = c2 - (2.0 * sQ * ((R / (sQ * Q)).acos() / 3.0).cos());
-        } else {
-            let sQ = (h.sqrt() + R.abs()).powf(1.0 / 3.0);
-            z = c2 - (R.signum() * (sQ + Q / sQ).abs());
-        }
-
-        let mut d1 = z - 3.0 * c2;
-        let mut d2 = z * z - 3.0 * c0;
-        if d1.abs() < EPSILON {
-            if d2 < 0.0 {
-                return None;
-            }
-            d2 = d2.sqrt();
-        } else {
-            if d1 < 0.0 {
-                return None;
-            }
-            d1 = (d1 / 2.0).sqrt();
-            d2 = c1 / d1;
-        }
-
-        let mut result = 1e20;
-
-        h = d1 * d1 - z + d2;
-        if h > 0.0 {
-            h = (h).sqrt();
-            let t1 = if po < 0.0 {
-                2.0 / (-d1 - h - k3)
-            } else {
-                -d1 - h - k3
-            };
-            let t2 = if po < 0.0 {
-                2.0 / (-d1 + h - k3)
-            } else {
-                -d1 + h - k3
-            };
-            if t1 > 0.0 {
-                result = t1
-            };
-            if t2 > 0.0 {
-                result = result.min(t2)
-            };
-        }
-
-        h = d1 * d1 - z - d2;
-        if h > 0.0 {
-            h = (h).sqrt();
-            let t1 = if po < 0.0 {
-                2.0 / (d1 - h - k3)
-            } else {
-                d1 - h - k3
-            };
-            let t2 = if po < 0.0 {
-                2.0 / (d1 + h - k3)
-            } else {
-                d1 + h - k3
-            };
-            if t1 > 0.0 {
-                result = result.min(t1);
-            };
-            if t2 > 0.0 {
-                result = result.min(t2);
-            };
-        }
-
-        let t = result;
         let point = ray.position(t);
-        Some(LocalIntersection {
-            point,
-            normal: self.normal_at(point),
-            t,
-        })
+        let normal = self.normal_at(point);
+        Some(LocalIntersection { point, normal, t })
     }
 
-    fn normal_at(&self, point: Point) -> Vector {
-        // For a torus centered at origin with major radius R and minor radius r:
-        // The normal at point P is calculated as follows:
+    fn normal_at(&self, p: Point) -> Vector {
+        let big_r = self.major_radius;
+        let min_r = self.minor_radius;
 
-        let x = point.x;
-        let y = point.y;
-        let z = point.z;
+        let x = p.x;
+        let y = p.y;
+        let z = p.z;
 
-        // Distance from the point to the Z-axis (in XY plane)
-        let rho = (x * x + y * y).sqrt();
+        let inner = x * x + y * y + z * z + big_r * big_r - min_r * min_r;
 
-        // If we're exactly on the Z-axis, handle the degenerate case
-        if rho < f32::EPSILON {
-            // Point is on the Z-axis, normal points radially outward in XY plane
-            // This is a degenerate case that shouldn't normally occur on a torus surface
-            return Vector::new(1.0, 0.0, 0.0);
+        // Gradient of F(x,y,z)
+        let nx = 4.0 * x * inner - 8.0 * big_r * big_r * x;
+        let ny = 4.0 * y * inner - 8.0 * big_r * big_r * y;
+        let nz = 4.0 * z * inner;
+
+        -Vector::new(nx, ny, nz).normalize()
+    }
+}
+
+// Solve quadratic ax^2+bx+c=0
+fn solve_quadratic(a: f64, b: f64, c: f64) -> Vec<f64> {
+    if a.abs() < EPSILON {
+        if b.abs() < EPSILON {
+            return vec![];
         }
-
-        // Unit vector pointing from Z-axis toward the point in XY plane
-        let u_rho = Vector::new(x / rho, y / rho, 0.0);
-
-        // Center of the tube circle that this point lies on
-        // This is at distance major_radius from the origin in the XY plane
-        let tube_center = u_rho * self.major_radius;
-
-        // Vector from tube center to the point
-        let to_point = Vector::new(x, y, z) - tube_center;
-
-        // The normal is this vector normalized
-        to_point.normalize()
+        return vec![-c / b];
     }
+    let disc = b * b - 4.0 * a * c;
+    if disc.abs() < EPSILON {
+        return vec![-b / (2.0 * a)];
+    }
+    if disc > 0.0 {
+        let sqrt_disc = disc.sqrt();
+        vec![(-b + sqrt_disc) / (2.0 * a), (-b - sqrt_disc) / (2.0 * a)]
+    } else {
+        vec![]
+    }
+}
+
+// Solve cubic x^3 + ax^2 + bx + c = 0, return all real roots
+fn solve_cubic(a: f64, b: f64, c: f64) -> Vec<f64> {
+    let a2 = a * a;
+    let q = (3.0 * b - a2) / 9.0;
+    let r = (9.0 * a * b - 27.0 * c - 2.0 * a2 * a) / 54.0;
+    let disc = q * q * q + r * r;
+
+    if disc.abs() < EPSILON {
+        let s = r.cbrt();
+        return vec![2.0 * s - a / 3.0, -s - a / 3.0];
+    }
+
+    if disc > 0.0 {
+        // one real root
+        let s = (r + disc.sqrt()).cbrt();
+        let t = (r - disc.sqrt()).cbrt();
+        return vec![s + t - a / 3.0];
+    } else {
+        // three real roots
+        let rho = (-q * q * q).sqrt();
+        let theta = (r / rho).acos();
+        let r13 = (-q).sqrt();
+        return vec![
+            2.0 * r13 * (theta / 3.0).cos() - a / 3.0,
+            2.0 * r13 * ((theta + 2.0 * PI) / 3.0).cos() - a / 3.0,
+            2.0 * r13 * ((theta + 4.0 * PI) / 3.0).cos() - a / 3.0,
+        ];
+    }
+}
+
+// Quartic solver (Ferrari's method)
+fn solve_quartic(a: f64, b: f64, c: f64, d: f64, e: f64) -> Vec<f64> {
+    if a.abs() < EPSILON {
+        // Handle degenerate cases (cubic or lower)
+        if b.abs() < EPSILON {
+            if c.abs() < EPSILON {
+                if d.abs() < EPSILON {
+                    return vec![];
+                }
+                return vec![-e / d];
+            }
+            return solve_quadratic(c, d, e);
+        }
+        return solve_cubic(c / b, d / b, e / b);
+    }
+    // Normalize coefficients
+    let b = b / a;
+    let c = c / a;
+    let d = d / a;
+    let e = e / a;
+
+    // Compute depressed quartic coefficients
+    let p = c - 3.0 / 8.0 * b * b;
+    let q = d - 0.5 * b * c + b * b * b / 8.0;
+    let r = e - 0.25 * b * d + (b * b * c) / 16.0 - 3.0 * b * b * b * b / 256.0;
+
+    // Handle biquadratic case
+    if q.abs() < EPSILON {
+        let mut roots = vec![];
+        for y2 in solve_quadratic(1.0, p, r) {
+            if y2 >= 0.0 {
+                let y = y2.sqrt();
+                roots.push(y - b / 4.0);
+                roots.push(-y - b / 4.0);
+            }
+        }
+        return roots;
+    }
+
+    // Solve cubic resolvent
+    let cubic_a = -p / 2.0;
+    let cubic_b = -r;
+    let cubic_c = (4.0 * r * p - q * q) / 8.0;
+    let mut cubic_roots = solve_cubic(cubic_a, cubic_b, cubic_c);
+
+    // Filter and sort roots
+    cubic_roots.retain(|x| x.is_finite());
+    cubic_roots.sort_by(|a, b| b.partial_cmp(a).unwrap_or(std::cmp::Ordering::Equal));
+
+    const U_EPS: f64 = 1e-7;
+    let mut z0 = None;
+
+    // Find suitable cubic root
+    for root in cubic_roots {
+        let u_sq = 2.0 * root - p;
+        if u_sq < 0.0 {
+            continue;
+        }
+        let u_val = u_sq.sqrt();
+        if u_val < U_EPS {
+            continue;
+        }
+        z0 = Some(root);
+        break;
+    }
+
+    let z0 = match z0 {
+        Some(z) => z,
+        None => return vec![],
+    };
+
+    let u = (2.0 * z0 - p).sqrt();
+    let v = q / (2.0 * u);
+
+    // Solve resulting quadratics
+    let mut roots = vec![];
+    roots.extend(solve_quadratic(1.0, u, z0 + v));
+    roots.extend(solve_quadratic(1.0, -u, z0 - v));
+
+    // Convert back from depressed coordinates
+    for t in roots.iter_mut() {
+        *t -= b / 4.0;
+    }
+    roots
 }

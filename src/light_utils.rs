@@ -1,4 +1,4 @@
-use std::f32::EPSILON;
+use std::f64::EPSILON;
 
 use crate::{Color, Intersection, Light, Point, Ray, World};
 
@@ -37,7 +37,7 @@ pub fn shade_it(world: &World, comps: &Intersection) -> Color {
             shadowed,
         );
 
-        color += temporary_color * (1.0 / light_number as f32);
+        color += temporary_color * (1.0 / light_number as f64);
     }
 
     color

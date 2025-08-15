@@ -230,11 +230,11 @@ mod tests {
     #[test]
     fn test_half_quarter_rotation_x() {
         let p: Point = Point::new(0., 1., 0.);
-        let a: f32 = 45.;
+        let a: f64 = 45.;
 
         let m = Matrix::rotation_x(a.to_radians());
 
-        let r = Point::new(0., 2f32.sqrt() / 2., 2f32.sqrt() / 2.);
+        let r = Point::new(0., 2f64.sqrt() / 2., 2f64.sqrt() / 2.);
 
         assert_eq!(r, m * p);
     }
@@ -242,7 +242,7 @@ mod tests {
     #[test]
     fn test_full_quarter_rotation_x() {
         let p: Point = Point::new(0., 1., 0.);
-        let a: f32 = 90.;
+        let a: f64 = 90.;
 
         let m = Matrix::rotation_x(a.to_radians());
 
@@ -254,11 +254,11 @@ mod tests {
     #[test]
     fn test_half_quarter_counter_clockwise_rotation_x() {
         let p: Point = Point::new(0., 1., 0.);
-        let a: f32 = 45.;
+        let a: f64 = 45.;
 
         let m = Matrix::rotation_x(a.to_radians()).inverse().unwrap();
 
-        let r = Point::new(0., 2f32.sqrt() / 2., -2f32.sqrt() / 2.);
+        let r = Point::new(0., 2f64.sqrt() / 2., -2f64.sqrt() / 2.);
 
         assert_eq!(r, m * p);
     }
@@ -266,11 +266,11 @@ mod tests {
     #[test]
     fn test_half_quarter_rotation_y() {
         let p: Point = Point::new(0., 0., 1.);
-        let a: f32 = 45.;
+        let a: f64 = 45.;
 
         let m = Matrix::rotation_y(a.to_radians());
 
-        let r = Point::new(2f32.sqrt() / 2., 0., 2f32.sqrt() / 2.);
+        let r = Point::new(2f64.sqrt() / 2., 0., 2f64.sqrt() / 2.);
 
         assert_eq!(r, m * p);
     }
@@ -278,7 +278,7 @@ mod tests {
     #[test]
     fn test_full_quarter_rotation_y() {
         let p: Point = Point::new(0., 0., 1.);
-        let a: f32 = 90.;
+        let a: f64 = 90.;
 
         let m = Matrix::rotation_y(a.to_radians());
 
@@ -290,11 +290,11 @@ mod tests {
     #[test]
     fn test_half_quarter_counter_clockwise_rotation_y() {
         let p: Point = Point::new(0., 0., 1.);
-        let a: f32 = 45.;
+        let a: f64 = 45.;
 
         let m = Matrix::rotation_y(a.to_radians()).inverse().unwrap();
 
-        let r = Point::new(-2f32.sqrt() / 2., 0., 2f32.sqrt() / 2.);
+        let r = Point::new(-2f64.sqrt() / 2., 0., 2f64.sqrt() / 2.);
 
         assert_eq!(r, m * p);
     }
@@ -302,11 +302,11 @@ mod tests {
     #[test]
     fn test_half_quarter_rotation_z() {
         let p: Point = Point::new(0., 1., 0.);
-        let a: f32 = 45.;
+        let a: f64 = 45.;
 
         let m = Matrix::rotation_z(a.to_radians());
 
-        let r = Point::new(-2f32.sqrt() / 2., 2f32.sqrt() / 2., 0.);
+        let r = Point::new(-2f64.sqrt() / 2., 2f64.sqrt() / 2., 0.);
 
         assert_eq!(r, m * p);
     }
@@ -314,7 +314,7 @@ mod tests {
     #[test]
     fn test_full_quarter_rotation_z() {
         let p: Point = Point::new(0., 1., 0.);
-        let a: f32 = 90.;
+        let a: f64 = 90.;
 
         let m = Matrix::rotation_z(a.to_radians());
 
@@ -326,11 +326,11 @@ mod tests {
     #[test]
     fn test_half_quarter_counter_clockwise_rotation_z() {
         let p: Point = Point::new(0., 1., 0.);
-        let a: f32 = 45.;
+        let a: f64 = 45.;
 
         let m = Matrix::rotation_z(a.to_radians()).inverse().unwrap();
 
-        let r = Point::new(2f32.sqrt() / 2., 2f32.sqrt() / 2., 0.);
+        let r = Point::new(2f64.sqrt() / 2., 2f64.sqrt() / 2., 0.);
 
         assert_eq!(r, m * p);
     }

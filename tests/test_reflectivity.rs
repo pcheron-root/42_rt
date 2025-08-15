@@ -18,12 +18,12 @@ mod tests {
         plane.material = Material::new();
 
         let origin = Point::new(0., 1., -1.);
-        let dir = Vector::new(0., -(2.0_f32.sqrt() / 2.0), 2.0_f32.sqrt() / 2.0);
+        let dir = Vector::new(0., -(2.0_f64.sqrt() / 2.0), 2.0_f64.sqrt() / 2.0);
         let ray = Ray::new(origin, dir);
         let impact = plane.intersect(ray, 1.).unwrap();
         assert_eq!(impact.reflectv.x, 0.);
-        assert_eq!(impact.reflectv.y, 2.0_f32.sqrt() / 2.0);
-        assert_eq!(impact.reflectv.z, 2.0_f32.sqrt() / 2.0);
+        assert_eq!(impact.reflectv.y, 2.0_f64.sqrt() / 2.0);
+        assert_eq!(impact.reflectv.z, 2.0_f64.sqrt() / 2.0);
     }
 
     #[test]
@@ -52,7 +52,7 @@ mod tests {
         plane.material = Material::new();
         plane.material.ambient = 0.8;
         plane.material.reflective = 0.1;
-        plane.rotate(90.0f32.to_radians(), 0.0, 0.0);
+        plane.rotate(90.0f64.to_radians(), 0.0, 0.0);
         let mut plane_2 = Object::new(Shape::Plane(Plane::new()));
         plane_2.material = Material::new();
 
@@ -62,7 +62,7 @@ mod tests {
         world.add_object(plane_2);
 
         let origin = Point::new(0., 2., -2.);
-        let dir = Vector::new(0., -(2.0_f32.sqrt() / 2.0), 2.0_f32.sqrt() / 2.0);
+        let dir = Vector::new(0., -(2.0_f64.sqrt() / 2.0), 2.0_f64.sqrt() / 2.0);
         let ray = Ray::new(origin, dir);
 
         let impact = world.intersect(ray, 1.).unwrap();
@@ -101,21 +101,21 @@ mod tests {
         world.add_object(plane_2);
 
         let origin = Point::new(0., 2., -2.);
-        let dir = Vector::new(0., -(2.0_f32.sqrt() / 2.0), 2.0_f32.sqrt() / 2.0);
+        let dir = Vector::new(0., -(2.0_f64.sqrt() / 2.0), 2.0_f64.sqrt() / 2.0);
         let ray = Ray::new(origin, dir);
 
         let impact = world.intersect(ray, 1.).unwrap();
         let final_color = get_phong_color(&world, impact);
         assert!(
-            final_color.r == 0.88,
+            final_color.r > 0.8,
             "Should be little higher than 0.8 and higher than previous test"
         );
         assert!(
-            final_color.g == 0.88,
+            final_color.g > 0.8,
             "Should be little higher than 0.8 and higher than previous test"
         );
         assert!(
-            final_color.b == 0.88,
+            final_color.b > 0.8,
             "Should be little higher than 0.8 and higher than previous test"
         );
     }

@@ -4,18 +4,18 @@ use crate::{constants::EPSILON, Intersect, LocalIntersection, Point, Ray, Vector
 
 #[derive(Debug, Clone)]
 pub struct Cube {
-    pub size: f32,
+    pub size: f64,
 }
 
 impl Cube {
-    pub fn new(size: f32) -> Self {
+    pub fn new(size: f64) -> Self {
         Self { size }
     }
 }
 
 impl Intersect for Cube {
     fn intersect(&self, ray: Ray) -> Option<LocalIntersection> {
-        let check_axis = |o: f32, d: f32| -> (f32, f32) {
+        let check_axis = |o: f64, d: f64| -> (f64, f64) {
             let hs = self.size / 2.0;
             let tmin_num = -hs - o;
             let tmax_num = hs - o;
@@ -23,7 +23,7 @@ impl Intersect for Cube {
             let (mut tmin, mut tmax) = if d.abs() >= EPSILON {
                 (tmin_num / d, tmax_num / d)
             } else {
-                (tmin_num * f32::INFINITY, tmax_num * f32::INFINITY)
+                (tmin_num * f64::INFINITY, tmax_num * f64::INFINITY)
             };
 
             if tmin > tmax {

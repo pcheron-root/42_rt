@@ -6,11 +6,11 @@ use crate::Vector;
 
 #[derive(Debug, Clone)]
 pub struct Sphere {
-    pub radius: f32,
+    pub radius: f64,
 }
 
 impl Sphere {
-    pub fn new(radius: f32) -> Self {
+    pub fn new(radius: f64) -> Self {
         Sphere { radius }
     }
 }
@@ -27,7 +27,7 @@ impl Intersect for Sphere {
         let b = 2.0 * o.dot(&d);
         let c = o.dot(&o) - r * r;
 
-        let discriminant: f32 = b * b - 4.0 * a * c;
+        let discriminant: f64 = b * b - 4.0 * a * c;
 
         // No intersection if discriminant is negative
         if discriminant < 0.0 {

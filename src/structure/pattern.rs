@@ -22,9 +22,9 @@ pub struct Pattern {
     pub world_to_local: Matrix,
     pub scale: Vector,
     pub position: Point,
-    pub pitch: f32,
-    pub yaw: f32,
-    pub roll: f32,
+    pub pitch: f64,
+    pub yaw: f64,
+    pub roll: f64,
 }
 
 impl Pattern {
@@ -44,7 +44,7 @@ impl Pattern {
         }
     }
 
-    pub fn stripe_two_colors(&self, pos1: &f32, pos2: &f32) -> Color {
+    pub fn stripe_two_colors(&self, pos1: &f64, pos2: &f64) -> Color {
         if (pos1 * pos1 + pos2 * pos2).sqrt().floor() % 2. == 0. {
             self.a.clone()
         } else {
@@ -119,7 +119,7 @@ impl Transform for Pattern {
         self.update();
     }
 
-    fn rotate(&mut self, pitch: f32, yaw: f32, roll: f32) {
+    fn rotate(&mut self, pitch: f64, yaw: f64, roll: f64) {
         self.pitch = pitch;
         self.yaw = yaw;
         self.roll = roll;

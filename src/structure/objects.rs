@@ -5,9 +5,9 @@ use crate::{Intersection, Material, Matrix, Point, Ray, Shape, Transform, Vector
 pub struct Object {
     pub material: Material,
     pub position: Point,
-    pub pitch: f32,
-    pub yaw: f32,
-    pub roll: f32,
+    pub pitch: f64,
+    pub yaw: f64,
+    pub roll: f64,
     pub scale: Vector,
     pub shape: Shape,
 
@@ -47,7 +47,7 @@ impl Object {
         self.world_to_local = self.local_to_world.inverse().unwrap();
     }
 
-    pub fn intersect(&self, ray: Ray, n1: f32) -> Option<Intersection> {
+    pub fn intersect(&self, ray: Ray, n1: f64) -> Option<Intersection> {
         // Transform ray to local space
         let local_ray = self.world_to_local.clone() * ray.clone();
 
@@ -83,7 +83,7 @@ impl Transform for Object {
         self.update();
     }
 
-    fn rotate(&mut self, pitch: f32, yaw: f32, roll: f32) {
+    fn rotate(&mut self, pitch: f64, yaw: f64, roll: f64) {
         self.pitch = pitch;
         self.yaw = yaw;
         self.roll = roll;

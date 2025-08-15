@@ -45,7 +45,7 @@ mod tests {
         let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
-        let eyev = Vector::new(0., (2.0_f32).sqrt() / 2.0, (2.0_f32).sqrt() / 2.0);
+        let eyev = Vector::new(0., (2.0_f64).sqrt() / 2.0, (2.0_f64).sqrt() / 2.0);
         let normalv = Vector::new(0., 0., -1.);
 
         let light = Light {
@@ -75,9 +75,9 @@ mod tests {
 
         let result = World::lighting(&obj, &light, &position, &eyev, &normalv, false);
 
-        assert_eq!(result.red(), 0.7363961);
-        assert_eq!(result.green(), 0.7363961);
-        assert_eq!(result.blue(), 0.7363961);
+        assert_eq!(result.red(), 0.7363961030678927);
+        assert_eq!(result.green(), 0.7363961030678927);
+        assert_eq!(result.blue(), 0.7363961030678927);
     }
 
     #[test]
@@ -85,7 +85,7 @@ mod tests {
         let obj = Object::new(Shape::Sphere(Sphere::new(1.))).material(Material::new());
         let position = Point::new(0., 0., 0.);
 
-        let eyev = Vector::new(0., -(2.0_f32.sqrt() / 2.0), -(2.0_f32.sqrt() / 2.0));
+        let eyev = Vector::new(0., -(2.0_f64.sqrt() / 2.0), -(2.0_f64.sqrt() / 2.0));
         let normalv = Vector::new(0., 0., -1.);
 
         let light = Light {
@@ -95,9 +95,9 @@ mod tests {
 
         let result = World::lighting(&obj, &light, &position, &eyev, &normalv, false);
 
-        assert_eq!(result.red(), 1.6363853);
-        assert_eq!(result.green(), 1.6363853);
-        assert_eq!(result.blue(), 1.6363853);
+        assert_eq!(result.red(), 1.6363961030678928);
+        assert_eq!(result.green(), 1.6363961030678928);
+        assert_eq!(result.blue(), 1.6363961030678928);
     }
 
     #[test]

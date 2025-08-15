@@ -3,25 +3,25 @@ use std::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Color {
-    pub r: f32,
-    pub g: f32,
-    pub b: f32,
+    pub r: f64,
+    pub g: f64,
+    pub b: f64,
 }
 
 impl Color {
-    pub fn new(r: f32, g: f32, b: f32) -> Self {
+    pub fn new(r: f64, g: f64, b: f64) -> Self {
         Self { r, g, b }
     }
 
-    pub fn red(&self) -> f32 {
+    pub fn red(&self) -> f64 {
         self.r
     }
 
-    pub fn green(&self) -> f32 {
+    pub fn green(&self) -> f64 {
         self.g
     }
 
-    pub fn blue(&self) -> f32 {
+    pub fn blue(&self) -> f64 {
         self.b
     }
 }
@@ -38,9 +38,9 @@ impl Into<u32> for Color {
 
 impl From<u32> for Color {
     fn from(value: u32) -> Self {
-        let r = ((value >> 16) & 0xFF) as f32 / 255.0;
-        let g = ((value >> 8) & 0xFF) as f32 / 255.0;
-        let b = ((value >> 0) & 0xFF) as f32 / 255.0;
+        let r = ((value >> 16) & 0xFF) as f64 / 255.0;
+        let g = ((value >> 8) & 0xFF) as f64 / 255.0;
+        let b = ((value >> 0) & 0xFF) as f64 / 255.0;
 
         Color::new(r, g, b)
     }
@@ -78,16 +78,16 @@ impl SubAssign for Color {
     }
 }
 
-impl Mul<f32> for Color {
+impl Mul<f64> for Color {
     type Output = Color;
 
-    fn mul(self, rhs: f32) -> Self::Output {
+    fn mul(self, rhs: f64) -> Self::Output {
         Color::new(self.r * rhs, self.g * rhs, self.b * rhs)
     }
 }
 
-impl MulAssign<f32> for Color {
-    fn mul_assign(&mut self, rhs: f32) {
+impl MulAssign<f64> for Color {
+    fn mul_assign(&mut self, rhs: f64) {
         self.r *= rhs;
         self.g *= rhs;
         self.b *= rhs;

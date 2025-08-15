@@ -4,11 +4,11 @@ use std::ops::{Index, IndexMut, Mul, MulAssign};
 
 #[derive(Debug, Clone)]
 pub struct Matrix {
-    pub data: [[f32; 4]; 4],
+    pub data: [[f64; 4]; 4],
 }
 
 impl Index<usize> for Matrix {
-    type Output = [f32; 4];
+    type Output = [f64; 4];
 
     fn index(&self, i: usize) -> &Self::Output {
         &self.data[i]
@@ -28,11 +28,11 @@ impl Matrix {
         }
     }
 
-    pub fn from_col(cols: [[f32; 4]; 4]) -> Self {
+    pub fn from_col(cols: [[f64; 4]; 4]) -> Self {
         Matrix { data: cols }
     }
 
-    pub fn from_row(rows: [[f32; 4]; 4]) -> Self {
+    pub fn from_row(rows: [[f64; 4]; 4]) -> Self {
         let mut matrix = Matrix::new();
         for r in 0..4 {
             for c in 0..4 {
@@ -148,37 +148,37 @@ impl Matrix {
         Matrix::from_row(self.data)
     }
 
-    pub fn rotation(pitch: f32, yaw: f32, roll: f32) -> Matrix {
+    pub fn rotation(pitch: f64, yaw: f64, roll: f64) -> Matrix {
         Matrix::rotation_z(roll) * Matrix::rotation_y(yaw) * Matrix::rotation_x(pitch)
     }
 
-    pub fn rotation_x(angle: f32) -> Matrix {
+    pub fn rotation_x(angle: f64) -> Matrix {
         let mut r = Matrix::identity();
 
-        r[1][1] = f32::cos(angle);
-        r[1][2] = f32::sin(angle);
-        r[2][1] = -f32::sin(angle);
-        r[2][2] = f32::cos(angle);
+        r[1][1] = f64::cos(angle);
+        r[1][2] = f64::sin(angle);
+        r[2][1] = -f64::sin(angle);
+        r[2][2] = f64::cos(angle);
 
         r
     }
-    pub fn rotation_y(angle: f32) -> Matrix {
+    pub fn rotation_y(angle: f64) -> Matrix {
         let mut r = Matrix::identity();
 
-        r[0][0] = f32::cos(angle);
-        r[0][2] = -f32::sin(angle);
-        r[2][0] = f32::sin(angle);
-        r[2][2] = f32::cos(angle);
+        r[0][0] = f64::cos(angle);
+        r[0][2] = -f64::sin(angle);
+        r[2][0] = f64::sin(angle);
+        r[2][2] = f64::cos(angle);
 
         r
     }
-    pub fn rotation_z(angle: f32) -> Matrix {
+    pub fn rotation_z(angle: f64) -> Matrix {
         let mut r = Matrix::identity();
 
-        r[0][0] = f32::cos(angle);
-        r[0][1] = f32::sin(angle);
-        r[1][0] = -f32::sin(angle);
-        r[1][1] = f32::cos(angle);
+        r[0][0] = f64::cos(angle);
+        r[0][1] = f64::sin(angle);
+        r[1][0] = -f64::sin(angle);
+        r[1][1] = f64::cos(angle);
 
         r
     }
@@ -204,7 +204,7 @@ impl Matrix {
         s
     }
 
-    pub fn shearing(xy: f32, xz: f32, yx: f32, yz: f32, zx: f32, zy: f32) -> Matrix {
+    pub fn shearing(xy: f64, xz: f64, yx: f64, yz: f64, zx: f64, zy: f64) -> Matrix {
         let mut s = Matrix::identity();
 
         s[1][0] = xy;
@@ -235,7 +235,7 @@ impl Matrix {
         orientation * Matrix::translation(Vector::new(-from.x, -from.y, -from.z))
     }
 
-    pub fn projection(fov: f32, ratio: f32, near: f32, far: f32) -> Matrix {
+    pub fn projection(fov: f64, ratio: f64, near: f64, far: f64) -> Matrix {
         let tan_half_fov = (fov / 2.0).tan();
         let fov_factor = 1. / tan_half_fov;
         let range = near - far;
@@ -296,7 +296,7 @@ impl Matrix {
     }
 
     // Function to compute the determinant using LU Decomposition
-    pub fn determinant(&self) -> f32 {
+    pub fn determinant(&self) -> f64 {
         let (_, u, _, s) = self.lu_decomposition();
         let mut determinant = 1.;
 
@@ -306,7 +306,7 @@ impl Matrix {
         }
 
         // Adjust for row swaps
-        determinant *= (-1.0f32).powi(s as i32);
+        determinant *= (-1.0f64).powi(s as i32);
 
         determinant
     }

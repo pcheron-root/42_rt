@@ -68,7 +68,7 @@ mod tests {
         let v_a = Vector::new(1.0, 2.0, 3.0);
 
         let magn_va = v_a.magnitude();
-        let val = 14.0_f32;
+        let val = 14.0_f64;
         assert_eq!(magn_va, val.sqrt());
     }
 
@@ -77,7 +77,7 @@ mod tests {
         let v_a = Vector::new(-1.0, -2.0, -3.0);
 
         let magn_va = v_a.magnitude();
-        let val = 14.0_f32;
+        let val = 14.0_f64;
         assert_eq!(magn_va, val.sqrt());
     }
 

@@ -5,14 +5,14 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Neg, Sub, SubAssign};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Point {
-    pub x: f32,
-    pub y: f32,
-    pub z: f32,
-    pub w: f32,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+    pub w: f64,
 }
 
 impl Point {
-    pub fn new(x: f32, y: f32, z: f32) -> Self {
+    pub fn new(x: f64, y: f64, z: f64) -> Self {
         Self { x, y, z, w: 1.0 }
     }
 }
@@ -61,16 +61,16 @@ impl SubAssign<Vector> for Point {
     }
 }
 
-impl Div<f32> for Point {
+impl Div<f64> for Point {
     type Output = Point;
 
-    fn div(self, rhs: f32) -> Self::Output {
+    fn div(self, rhs: f64) -> Self::Output {
         Point::new(self.x / rhs, self.y / rhs, self.z / rhs)
     }
 }
 
-impl DivAssign<f32> for Point {
-    fn div_assign(&mut self, rhs: f32) {
+impl DivAssign<f64> for Point {
+    fn div_assign(&mut self, rhs: f64) {
         self.x /= rhs;
         self.y /= rhs;
         self.z /= rhs;

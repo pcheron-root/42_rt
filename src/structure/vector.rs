@@ -4,18 +4,18 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 
 #[derive(Debug, Clone, Copy)]
 pub struct Vector {
-    pub x: f32,
-    pub y: f32,
-    pub z: f32,
-    pub w: f32,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+    pub w: f64,
 }
 
 impl Vector {
-    pub fn new(x: f32, y: f32, z: f32) -> Self {
+    pub fn new(x: f64, y: f64, z: f64) -> Self {
         Self { x, y, z, w: 0.0 }
     }
 
-    pub fn magnitude(&self) -> f32 {
+    pub fn magnitude(&self) -> f64 {
         self.dot(self).sqrt()
     }
 
@@ -28,7 +28,7 @@ impl Vector {
         self.clone()
     }
 
-    pub fn dot(&self, other: &Self) -> f32 {
+    pub fn dot(&self, other: &Self) -> f64 {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
 
@@ -89,32 +89,32 @@ impl SubAssign for Vector {
     }
 }
 
-impl Mul<f32> for Vector {
+impl Mul<f64> for Vector {
     type Output = Vector;
 
-    fn mul(self, rhs: f32) -> Self::Output {
+    fn mul(self, rhs: f64) -> Self::Output {
         Vector::new(self.x * rhs, self.y * rhs, self.z * rhs)
     }
 }
 
-impl MulAssign<f32> for Vector {
-    fn mul_assign(&mut self, rhs: f32) {
+impl MulAssign<f64> for Vector {
+    fn mul_assign(&mut self, rhs: f64) {
         self.x *= rhs;
         self.y *= rhs;
         self.z *= rhs;
     }
 }
 
-impl Div<f32> for Vector {
+impl Div<f64> for Vector {
     type Output = Vector;
 
-    fn div(self, rhs: f32) -> Self::Output {
+    fn div(self, rhs: f64) -> Self::Output {
         Vector::new(self.x / rhs, self.y / rhs, self.z / rhs)
     }
 }
 
-impl DivAssign<f32> for Vector {
-    fn div_assign(&mut self, rhs: f32) {
+impl DivAssign<f64> for Vector {
+    fn div_assign(&mut self, rhs: f64) {
         self.x /= rhs;
         self.y /= rhs;
         self.z /= rhs;

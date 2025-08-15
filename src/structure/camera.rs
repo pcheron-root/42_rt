@@ -11,22 +11,22 @@ pub enum Direction {
 pub struct Camera {
     pub target: Point,
     pub position: Point,
-    pub aspect: f32,
-    pub fov: f32,
-    pub near: f32,
-    pub far: f32,
-    pub pitch: f32,
-    pub yaw: f32,
+    pub aspect: f64,
+    pub fov: f64,
+    pub near: f64,
+    pub far: f64,
+    pub pitch: f64,
+    pub yaw: f64,
 }
 
 impl Camera {
     pub fn new(
         position: Point,
         direction: Vector,
-        aspect: f32,
-        fov: f32,
-        near: f32,
-        far: f32,
+        aspect: f64,
+        fov: f64,
+        near: f64,
+        far: f64,
     ) -> Camera {
         let direction = direction.normalize();
         let pitch = direction.y.asin().to_degrees();
@@ -38,7 +38,7 @@ impl Camera {
             fov,
             near,
             far,
-            pitch: pitch.clamp(-89.0, 89.0), // Clamp pitch to prevent gimbal lock
+            pitch: pitch.clamp(-89.9, 89.9),
             yaw,
         }
     }
@@ -54,13 +54,12 @@ impl Camera {
         .normalize()
     }
 
-    pub fn rotate_x(&mut self, angle: f32) {
-        self.pitch = (self.pitch + angle).clamp(-89.0, 89.0); // Prevent full vertical rotation
+    pub fn rotate_x(&mut self, angle: f64) {
+        self.pitch = (self.pitch + angle).clamp(-89.9, 89.9);
     }
 
-    pub fn rotate_y(&mut self, angle: f32) {
+    pub fn rotate_y(&mut self, angle: f64) {
         self.yaw = (self.yaw + angle) % 360.0;
-        // Normalize yaw to [-180, 180] range for consistency
         if self.yaw > 180.0 {
             self.yaw -= 360.0;
         } else if self.yaw < -180.0 {
@@ -68,7 +67,7 @@ impl Camera {
         }
     }
 
-    pub fn resize(&mut self, aspect: f32) {
+    pub fn resize(&mut self, aspect: f64) {
         self.aspect = aspect;
     }
 
@@ -77,12 +76,13 @@ impl Camera {
         let forward = self.direction();
         let right = forward.cross(&up).normalize();
 
+        let speed = 1.0;
         let movement = match direction {
             Direction::Forward => forward,
             Direction::Backward => -forward,
             Direction::Left => -right,
             Direction::Right => right,
-        } * 1.0; // Movement speed
+        } * speed;
 
         self.target = self.position + movement;
     }

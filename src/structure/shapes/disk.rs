@@ -3,11 +3,11 @@ use crate::{Intersect, LocalIntersection, Point, Ray, Vector};
 
 #[derive(Debug, Clone)]
 pub struct Disk {
-    pub radius: f32,
+    pub radius: f64,
 }
 
 impl Disk {
-    pub fn new(radius: f32) -> Self {
+    pub fn new(radius: f64) -> Self {
         Self { radius }
     }
 }
