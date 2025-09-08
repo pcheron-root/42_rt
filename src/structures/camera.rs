@@ -11,14 +11,6 @@ where
     start * (1. - t) + end * t
 }
 
-
-pub enum Direction {
-    Forward,
-    Backward,
-    Left,
-    Right,
-}
-
 pub struct Camera {
     pub target: Point,
     pub position: Point,

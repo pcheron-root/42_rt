@@ -1,5 +1,7 @@
 use std::mem::swap;
 
+use std::f64::consts::PI;
+
 use crate::EPSILON;
 use crate::{Intersect, LocalIntersection, Point, Ray, Vector};
 
