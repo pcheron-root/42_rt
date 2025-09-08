@@ -1,6 +1,9 @@
+
+extern crate new_rt;
+
 #[cfg(test)]
 mod tests {
-    use rt::{Point, Ray, Vector};
+    use new_rt::{Point, Ray, Vector};
 
     #[test]
     fn test_position_ray_0() {

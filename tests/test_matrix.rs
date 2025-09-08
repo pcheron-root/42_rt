@@ -1,6 +1,9 @@
+
+extern crate new_rt;
+
 #[cfg(test)]
 mod tests {
-    use rt::{Matrix, Point, Vector};
+    use new_rt::{Matrix, Point, Vector};
 
     #[test]
     fn test_matrix_creation() {

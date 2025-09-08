@@ -1,6 +1,9 @@
+
+extern crate new_rt;
+
 #[cfg(test)]
 mod tests {
-    use rt::{Object, Point, Ray, Shape, Sphere, Transform, Vector};
+    use new_rt::{Object, Point, Ray, Shape, Sphere, Transform, Vector};
 
     #[test]
     fn test_sphere_intersection() {
@@ -8,7 +11,7 @@ mod tests {
 
         let ray = Ray::new(Point::new(0., 0., 5.), Vector::new(0., 0., -1.));
 
-        let result = obj.intersect(ray, 1.);
+        let result = obj.intersect(&ray, 1.);
 
         assert!(result.is_some(), "Expected an intersection, but got none");
     }
@@ -19,7 +22,7 @@ mod tests {
 
         let ray = Ray::new(Point::new(0., 0., 5.), Vector::new(0., 0., 1.));
 
-        let result = obj.intersect(ray, 1.);
+        let result = obj.intersect(&ray, 1.);
 
         assert!(result.is_none(), "Expected no intersection, but got one");
     }
@@ -31,7 +34,7 @@ mod tests {
 
         let ray = Ray::new(Point::new(0., 0., 0.), Vector::new(1., 0., 1.).normalize());
 
-        let result = obj.intersect(ray, 1.);
+        let result = obj.intersect(&ray, 1.);
 
         assert!(result.is_some(), "Expected an intersection, but got none");
     }
@@ -41,7 +44,7 @@ mod tests {
         let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
         let ray = Ray::new(Point::new(0., 0., -5.), Vector::new(0., 0., 1.).normalize());
-        let result = obj.intersect(ray, 1.).unwrap();
+        let result = obj.intersect(&ray, 1.).unwrap();
         assert_eq!(result.t, 4.);
     }
 
@@ -50,7 +53,7 @@ mod tests {
         let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
         let ray = Ray::new(Point::new(0., 1., -5.), Vector::new(0., 0., 1.).normalize());
-        let result = obj.intersect(ray, 1.).unwrap();
+        let result = obj.intersect(&ray, 1.).unwrap();
         assert_eq!(result.t, 5.);
     }
 
@@ -59,7 +62,7 @@ mod tests {
         let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
         let ray = Ray::new(Point::new(0., 2., -5.), Vector::new(0., 0., 1.).normalize());
-        let result = obj.intersect(ray, 1.).is_none();
+        let result = obj.intersect(&ray, 1.).is_none();
         assert_eq!(result, true);
     }
 
@@ -68,7 +71,7 @@ mod tests {
         let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
         let ray = Ray::new(Point::new(0., 0., 0.), Vector::new(0., 0., 1.).normalize());
-        let result = obj.intersect(ray, 1.).unwrap();
+        let result = obj.intersect(&ray, 1.).unwrap();
         assert_eq!(result.t, 1.);
     }
 
@@ -77,7 +80,7 @@ mod tests {
         let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
         let ray = Ray::new(Point::new(0., 0., 5.), Vector::new(0., 0., 1.).normalize());
-        let result = obj.intersect(ray, 1.).is_none();
+        let result = obj.intersect(&ray, 1.).is_none();
         assert_eq!(result, true);
     }
 
@@ -86,7 +89,7 @@ mod tests {
         let obj = Object::new(Shape::Sphere(Sphere::new(1.)));
 
         let ray = Ray::new(Point::new(0., 0., 5.), Vector::new(0., 0., 1.).normalize());
-        let result = obj.intersect(ray, 1.).is_none();
+        let result = obj.intersect(&ray, 1.).is_none();
         assert_eq!(result, true);
     }
 }

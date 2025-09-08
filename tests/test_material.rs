@@ -1,6 +1,9 @@
+
+extern crate new_rt;
+
 #[cfg(test)]
 mod tests {
-    use rt::{Color, Material, Object, Shape, Sphere};
+    use new_rt::{Color, Material, Object, Shape, Sphere};
 
     #[test]
     fn test_setup_material() {
@@ -16,6 +19,7 @@ mod tests {
             reflective: 0.,
             refractive_index: 1.,
             transparency: 0.,
+            tex: None,
         };
 
         assert_eq!(material.color.red(), 1.);

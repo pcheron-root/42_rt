@@ -1,0 +1,240 @@
+{
+  "canvas": {
+    "width": 512,
+    "height": 512
+  },
+  "world": {
+    "objects": [
+      {
+        "material": {
+          "color": {
+            "r": 1.0,
+            "g": 0.5,
+            "b": 0.2
+          },
+          "pattern": null,
+          "shininess": 50.0,
+          "ambient": 0.1,
+          "diffuse": 0.9,
+          "specular": 0.9,
+          "reflective": 0.0,
+          "refractive_index": 1.0,
+          "transparency": 0.0
+        },
+        "position": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": -5.0
+        },
+        "pitch": 0.0,
+        "yaw": 0.0,
+        "roll": 0.0,
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "shape": {
+          "Sphere": {
+            "radius": 1.0
+          }
+        },
+        "world_to_local": {
+          "data": [
+            [1.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0]
+          ]
+        },
+        "local_to_world": {
+          "data": [
+            [1.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0]
+          ]
+        }
+      },
+      {
+        "material": {
+          "color": {
+            "r": 1.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "pattern": null,
+          "shininess": 50.0,
+          "ambient": 0.1,
+          "diffuse": 0.9,
+          "specular": 0.9,
+          "reflective": 0.0,
+          "refractive_index": 1.0,
+          "transparency": 0.0
+        },
+        "position": {
+          "x": -2.5,
+          "y": 1.0,
+          "z": -5.0
+        },
+        "pitch": 0.0,
+        "yaw": 0.0,
+        "roll": 0.0,
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "shape": {
+          "Sphere": {
+            "radius": 1.0
+          }
+        },
+        "world_to_local": {
+          "data": [
+            [1.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0]
+          ]
+        },
+        "local_to_world": {
+          "data": [
+            [1.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0]
+          ]
+        }
+      },
+      {
+        "material": {
+          "color": {
+            "r": 0.0,
+            "g": 1.0,
+            "b": 0.0
+          },
+          "pattern": null,
+          "shininess": 50.0,
+          "ambient": 0.1,
+          "diffuse": 0.9,
+          "specular": 0.9,
+          "reflective": 0.0,
+          "refractive_index": 1.0,
+          "transparency": 0.0
+        },
+        "position": {
+          "x": 2.5,
+          "y": 1.0,
+          "z": -5.0
+        },
+        "pitch": 0.0,
+        "yaw": 0.0,
+        "roll": 0.0,
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "shape": {
+          "Sphere": {
+            "radius": 1.0
+          }
+        },
+        "world_to_local": {
+          "data": [
+            [1.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0]
+          ]
+        },
+        "local_to_world": {
+          "data": [
+            [1.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0]
+          ]
+        }
+      },
+      {
+        "material": {
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 1.0
+          },
+          "pattern": null,
+          "shininess": 50.0,
+          "ambient": 0.1,
+          "diffuse": 0.9,
+          "specular": 0.9,
+          "reflective": 0.0,
+          "refractive_index": 1.0,
+          "transparency": 0.0
+        },
+        "position": {
+          "x": 0.0,
+          "y": 3.0,
+          "z": -5.0
+        },
+        "pitch": 0.0,
+        "yaw": 0.0,
+        "roll": 0.0,
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "shape": {
+          "Sphere": {
+            "radius": 1.0
+          }
+        },
+        "world_to_local": {
+          "data": [
+            [1.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0]
+          ]
+        },
+        "local_to_world": {
+          "data": [
+            [1.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0]
+          ]
+        }
+      }
+    ],
+    "lights": [
+      {
+        "position": {
+          "x": 0.0,
+          "y": 10.0,
+          "z": -10.0
+        },
+        "intensity": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0
+        }
+      },
+      {
+        "position": {
+          "x": 3.0,
+          "y": 2.0,
+          "z": -2.0
+        },
+        "intensity": {
+          "r": 1.0,
+          "g": 0.0,
+          "b": 0.0
+        }
+      }
+    ]
+  }
+}

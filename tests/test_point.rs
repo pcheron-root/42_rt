@@ -1,6 +1,9 @@
+
+extern crate new_rt;
+
 #[cfg(test)]
 mod tests {
-    use rt::{Point, Vector};
+    use new_rt::{Point, Vector};
 
     #[test]
     fn test_create_point() {

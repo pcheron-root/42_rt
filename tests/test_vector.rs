@@ -1,7 +1,10 @@
+
+extern crate new_rt;
+
 #[cfg(test)]
 mod tests {
-    use rt::utils::are_almost_equal;
-    use rt::Vector;
+    use new_rt::utils::are_almost_equal;
+    use new_rt::Vector;
 
     #[test]
     fn test_create_vector() {
@@ -39,7 +42,7 @@ mod tests {
         assert_eq!(v_b.z, -3.0);
     }
 
-    #[test]
+        #[test]
     fn test_magnitude_of_vector_1() {
         let v_a = Vector::new(1.0, 0.0, 0.0);
 
@@ -144,4 +147,5 @@ mod tests {
         assert_eq!(result.y, 1.0);
         assert_eq!(result.z, 0.0);
     }
+    
 }

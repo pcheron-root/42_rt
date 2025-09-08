@@ -1,7 +1,10 @@
+
+extern crate new_rt;
+
 #[cfg(test)]
 mod tests {
-    use rt::utils::are_almost_equal;
-    use rt::Color;
+    use new_rt::utils::are_almost_equal;
+    use new_rt::Color;
 
     #[test]
     fn test_create_color() {

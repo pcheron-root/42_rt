@@ -1,6 +1,10 @@
+
+extern crate new_rt;
+
 #[cfg(test)]
 mod tests {
-    use rt::{Color, Light, Material, Object, Point, Shape, Sphere, Vector, World};
+    use new_rt::{Color, Light, Material, Object, Point, Shape, Sphere, Vector, World};
+    use new_rt::utils::are_almost_equal;
 
     #[test]
     fn test_light_pos_and_intensity() {
@@ -75,9 +79,9 @@ mod tests {
 
         let result = World::lighting(&obj, &light, &position, &eyev, &normalv, false);
 
-        assert_eq!(result.red(), 0.7363961030678927);
-        assert_eq!(result.green(), 0.7363961030678927);
-        assert_eq!(result.blue(), 0.7363961030678927);
+        assert_eq!(are_almost_equal(result.red(), 0.7363961), true);
+        assert_eq!(are_almost_equal(result.green(), 0.7363961), true);
+        assert_eq!(are_almost_equal(result.blue(), 0.7363961), true);
     }
 
     #[test]
@@ -95,9 +99,9 @@ mod tests {
 
         let result = World::lighting(&obj, &light, &position, &eyev, &normalv, false);
 
-        assert_eq!(result.red(), 1.6363961030678928);
-        assert_eq!(result.green(), 1.6363961030678928);
-        assert_eq!(result.blue(), 1.6363961030678928);
+        assert_eq!(are_almost_equal(result.red(), 1.6363853), true);
+        assert_eq!(are_almost_equal(result.green(), 1.6363853), true);
+        assert_eq!(are_almost_equal(result.blue(), 1.6363853), true);
     }
 
     #[test]

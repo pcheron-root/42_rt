@@ -1,6 +1,9 @@
+
+extern crate new_rt;
+
 #[cfg(test)]
 mod tests {
-    use rt::{
+    use new_rt::{
         Axis, Color, Light, Material, Matrix, Object, Pattern, Point, Shape, Sphere, Transform,
         Vector, World,
     };
@@ -59,6 +62,7 @@ mod tests {
         assert_eq!(color1.r, 1.);
     }
 
+    // ce test ne passe pas
     #[test]
     fn test_lighting_with_a_pattern_applied() {
         let white = Color::new(1., 1., 1.);
