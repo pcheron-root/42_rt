@@ -184,8 +184,6 @@ impl Renderer {
 
                 // faire la moyenne entre les differents rayons
 
-                let test = 
-
                 let color = self.get_pixel(&ray);
                 self.canvas.write(x as usize, y as usize, color);
                 
