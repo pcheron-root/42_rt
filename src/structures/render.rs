@@ -164,21 +164,42 @@ impl Renderer {
         let view_proj = projection * view;
         let inv_view_proj = view_proj.inverse().unwrap();
 
+        let offsets = [
+            (0.25, 0.25),
+            (0.75, 0.25),
+            (0.25, 0.75),
+            (0.75, 0.75),
+        ];
+
+        // for y in 0..self.canvas.height {
+        //     let ndc_y = 1.0 - 2.0 * ((self.canvas.height - y) as f64 + 0.5) / self.canvas.height as f64;
+
+        //     for x in 0..self.canvas.width {
+        //         let ndc_x = 2.0 * (x as f64 + 0.5) / self.canvas.width as f64 - 1.0;
+
+        //         let origin = inv_view_proj.clone() * Point::new(ndc_x, ndc_y, -1.0);
+        //         let target = inv_view_proj.clone() * Point::new(ndc_x, ndc_y, 1.0);
+
+        //         let direction = (target - origin).normalize();
         for y in 0..self.canvas.height {
-            let ndc_y = 1.0 - 2.0 * ((self.canvas.height - y) as f64 + 0.5) / self.canvas.height as f64;
+            // let ndc_y = 1.0 - 2.0 * ((self.canvas.height - y) as f64 + 0.5) / self.canvas.height as f64;
 
             for x in 0..self.canvas.width {
-                let ndc_x = 2.0 * (x as f64 + 0.5) / self.canvas.width as f64 - 1.0;
+                let mut mean_color = Color::new(0., 0., 0.);
+                for (ox, oy) in &offsets {
+                    let ndc_x = 2.0 * (x as f64 + ox) / self.canvas.width as f64 - 1.0;
+                    let ndc_y = 1.0 - 2.0 * ((self.canvas.height - y) as f64 + oy) / self.canvas.height as f64;
 
-                let origin = inv_view_proj.clone() * Point::new(ndc_x, ndc_y, -1.0);
-                let target = inv_view_proj.clone() * Point::new(ndc_x, ndc_y, 1.0);
+                    let origin = inv_view_proj.clone() * Point::new(ndc_x, ndc_y, -1.0);
+                    let target = inv_view_proj.clone() * Point::new(ndc_x, ndc_y, 1.0);
 
-                let direction = (target - origin).normalize();
+                    let direction = (target - origin).normalize();
+                    let ray = Ray::new(Point::new(origin.x, origin.y, origin.z), direction);
+                    let color = self.get_pixel(&ray);
+                    mean_color += color;
+                }
 
-                let ray = Ray::new(Point::new(origin.x, origin.y, origin.z), direction);
-                // 
-                let color = self.get_pixel(&ray);
-                self.canvas.write(x as usize, y as usize, color);
+                self.canvas.write(x as usize, y as usize, mean_color * 0.25);
                 
             }
         }
