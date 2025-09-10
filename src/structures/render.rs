@@ -176,7 +176,16 @@ impl Renderer {
                 let direction = (target - origin).normalize();
 
                 let ray = Ray::new(Point::new(origin.x, origin.y, origin.z), direction);
-                // 
+                
+                // lancer un boucle lancer plusieurs rayons pour le meme pixel
+
+
+                // faire une variation du ray
+
+                // faire la moyenne entre les differents rayons
+
+                let test = 
+
                 let color = self.get_pixel(&ray);
                 self.canvas.write(x as usize, y as usize, color);
                 
