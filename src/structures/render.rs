@@ -182,13 +182,13 @@ impl Renderer {
 
         //         let direction = (target - origin).normalize();
         for y in 0..self.canvas.height {
-            let ndc_y = 1.0 - 2.0 * ((self.canvas.height - y) as f64 + 0.5) / self.canvas.height as f64;
+            // let ndc_y = 1.0 - 2.0 * ((self.canvas.height - y) as f64 + 0.5) / self.canvas.height as f64;
 
             for x in 0..self.canvas.width {
                 let mut mean_color = Color::new(0., 0., 0.);
                 for (ox, oy) in &offsets {
                     let ndc_x = 2.0 * (x as f64 + ox) / self.canvas.width as f64 - 1.0;
-                    let ndc_y = 1.0 - 2.0 * (y as f64 + oy) / self.canvas.height as f64;
+                    let ndc_y = 1.0 - 2.0 * ((self.canvas.height - y) as f64 + oy) / self.canvas.height as f64;
 
                     let origin = inv_view_proj.clone() * Point::new(ndc_x, ndc_y, -1.0);
                     let target = inv_view_proj.clone() * Point::new(ndc_x, ndc_y, 1.0);
